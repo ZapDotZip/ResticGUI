@@ -10,10 +10,17 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 	
 	@IBOutlet var outline: NSOutlineView!
 	@IBOutlet var profilesDataSource: ProfilesDataSource!
+	@IBOutlet var MainEditorView: NSView!
+	@IBOutlet var RepoSelector: NSPopUpButton!
+	@IBOutlet var DeleteProfileButton: NSButton!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		//MainEditorView.isHidden = true
+		DeleteProfileButton.isEnabled = false
 		// Do any additional setup after loading the view.
+		let krList = UserDefaults.standard.stringArray(forKey: "Known Repositories") ?? ["test 1", "test 2"]// [String]()
+		RepoSelector.addItems(withTitles: krList)
 	}
 	
 	override var representedObject: Any? {
@@ -44,11 +51,38 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 	
 	func outlineViewSelectionDidChange(_ notification: Notification) {
 		if let selected = outline.item(atRow: outline.selectedRow) as? Profile {
-			
-			
+			if selected.isHeader {
+				DeleteProfileButton.isEnabled = false
+				MainEditorView.isHidden = true
+			} else {
+				DeleteProfileButton.isEnabled = true
+				setupMainEditorView(profile: selected)
+			}
+		} else {
+			DeleteProfileButton.isEnabled = false
+			MainEditorView.isHidden = true
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	func setupMainEditorView(profile: Profile) {
+		
+		
+		
+		
+		MainEditorView.isHidden = false
+	}
 	
 	
 }
