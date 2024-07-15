@@ -13,6 +13,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 	@IBOutlet var MainEditorView: NSView!
 	@IBOutlet var RepoSelector: NSPopUpButton!
 	@IBOutlet var DeleteProfileButton: NSButton!
+	@IBOutlet var BackupPathsListView: BackupPathsManager!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

@@ -14,7 +14,7 @@
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
 		ED75B9542C43241000EB9E39 /* ProfilesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */; };
-		ED75B9562C4350DE00EB9E39 /* RepoEditSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9552C4350DE00EB9E39 /* RepoEditSheetController.swift */; };
+		ED75B9582C4387CC00EB9E39 /* BackupPathsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +49,7 @@
 		ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUIUITests.swift; sourceTree = "<group>"; };
 		ED75B9472C43212700EB9E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilesDataSource.swift; sourceTree = "<group>"; };
-		ED75B9552C4350DE00EB9E39 /* RepoEditSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoEditSheetController.swift; sourceTree = "<group>"; };
+		ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +103,9 @@
 				ED75B9272C43212600EB9E39 /* AppDelegate.swift */,
 				ED75B9292C43212600EB9E39 /* ViewController.swift */,
 				ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */,
+				ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */,
 				ED75B92B2C43212600EB9E39 /* Assets.xcassets */,
 				ED75B92D2C43212600EB9E39 /* Main.storyboard */,
-				ED75B9552C4350DE00EB9E39 /* RepoEditSheetController.swift */,
 				ED75B9302C43212600EB9E39 /* Info.plist */,
 				ED75B9312C43212600EB9E39 /* ResticGUI.entitlements */,
 			);
@@ -260,8 +260,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED75B9582C4387CC00EB9E39 /* BackupPathsManager.swift in Sources */,
 				ED75B92A2C43212600EB9E39 /* ViewController.swift in Sources */,
-				ED75B9562C4350DE00EB9E39 /* RepoEditSheetController.swift in Sources */,
 				ED75B9542C43241000EB9E39 /* ProfilesDataSource.swift in Sources */,
 				ED75B9282C43212600EB9E39 /* AppDelegate.swift in Sources */,
 			);
@@ -435,7 +435,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -455,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
