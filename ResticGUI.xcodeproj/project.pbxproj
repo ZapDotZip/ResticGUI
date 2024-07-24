@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED2756572C44BCA0005C38C5 /* RepoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2756562C44BCA0005C38C5 /* RepoManager.swift */; };
 		ED75B9282C43212600EB9E39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9272C43212600EB9E39 /* AppDelegate.swift */; };
 		ED75B92A2C43212600EB9E39 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9292C43212600EB9E39 /* ViewController.swift */; };
 		ED75B92C2C43212600EB9E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED75B92B2C43212600EB9E39 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ED2756562C44BCA0005C38C5 /* RepoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoManager.swift; sourceTree = "<group>"; };
 		ED75B9242C43212600EB9E39 /* ResticGUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResticGUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9272C43212600EB9E39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED75B9292C43212600EB9E39 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				ED75B92D2C43212600EB9E39 /* Main.storyboard */,
 				ED75B9302C43212600EB9E39 /* Info.plist */,
 				ED75B9312C43212600EB9E39 /* ResticGUI.entitlements */,
+				ED2756562C44BCA0005C38C5 /* RepoManager.swift */,
 			);
 			path = ResticGUI;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED75B9582C4387CC00EB9E39 /* BackupPathsManager.swift in Sources */,
+				ED2756572C44BCA0005C38C5 /* RepoManager.swift in Sources */,
 				ED75B92A2C43212600EB9E39 /* ViewController.swift in Sources */,
 				ED75B9542C43241000EB9E39 /* ProfilesDataSource.swift in Sources */,
 				ED75B9282C43212600EB9E39 /* AppDelegate.swift in Sources */,

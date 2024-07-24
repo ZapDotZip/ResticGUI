@@ -10,16 +10,17 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 	
 	@IBOutlet var outline: NSOutlineView!
 	@IBOutlet var profilesDataSource: ProfilesDataSource!
-	@IBOutlet var MainEditorView: NSView!
 	@IBOutlet var RepoSelector: NSPopUpButton!
 	@IBOutlet var DeleteProfileButton: NSButton!
-	@IBOutlet var BackupPathsListView: BackupPathsManager!
+	@IBOutlet var ExcludeTextView: NSTextView!
+	@IBOutlet var BackupPathsDS: BackupPathsDataSource!
 	
+	
+// MARK: primary view function
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		//MainEditorView.isHidden = true
+		self.view.window?.title = "ResticGUI"
 		DeleteProfileButton.isEnabled = false
-		// Do any additional setup after loading the view.
 		let krList = UserDefaults.standard.stringArray(forKey: "Known Repositories") ?? ["test 1", "test 2"]// [String]()
 		RepoSelector.addItems(withTitles: krList)
 	}
@@ -30,6 +31,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 		}
 	}
 	
+	
+	
+	
+// MARK: profile sidebar functions
 	func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
 		var profilesCellView: NSTableCellView
 		if (item as! Profile).isHeader {
@@ -54,37 +59,67 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
 		if let selected = outline.item(atRow: outline.selectedRow) as? Profile {
 			if selected.isHeader {
 				DeleteProfileButton.isEnabled = false
-				MainEditorView.isHidden = true
+				self.view.window?.title = "ResticGUI"
 			} else {
 				DeleteProfileButton.isEnabled = true
+				self.view.window?.title = selected.name
 				setupMainEditorView(profile: selected)
 			}
 		} else {
 			DeleteProfileButton.isEnabled = false
-			MainEditorView.isHidden = true
+			self.view.window?.title = "ResticGUI"
 		}
 	}
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	func setupMainEditorView(profile: Profile) {
-		
-		
-		
-		
-		MainEditorView.isHidden = false
+// MARK: profile view header (repo)
+	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
+		if sender.selectedSegment == 1 {
+			// Delete alert
+			// confirm delete
+		} else {
+			self.performSegue(withIdentifier: "repoEditStoryboard", sender: self)
+			
+		}
 	}
 	
 	
-}
+	
+	
+// MARK: profile tabs: setup
+	func setupMainEditorView(profile: Profile) {
+		BackupPathsDS.load(fromProfile: profile)
+		
+		
+	}
+	
+	
+	
+	
+// MARK: profile tabs: paths
+	@IBAction func importPathsFromTextFile(_ sender: Any) {
+		
+	}
+	
+	@IBAction func importPathsFromClipboard(_ sender: Any) {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
+	
+	
+}
