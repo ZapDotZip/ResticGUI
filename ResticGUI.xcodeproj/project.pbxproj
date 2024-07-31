@@ -14,7 +14,7 @@
 		ED75B92F2C43212600EB9E39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED75B92D2C43212600EB9E39 /* Main.storyboard */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
-		ED75B9542C43241000EB9E39 /* ProfilesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */; };
+		ED75B9542C43241000EB9E39 /* ProfilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9532C43241000EB9E39 /* ProfilesManager.swift */; };
 		ED75B9582C4387CC00EB9E39 /* BackupPathsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +50,7 @@
 		ED75B9412C43212700EB9E39 /* ResticGUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUIUITests.swift; sourceTree = "<group>"; };
 		ED75B9472C43212700EB9E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilesDataSource.swift; sourceTree = "<group>"; };
+		ED75B9532C43241000EB9E39 /* ProfilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilesManager.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,13 +104,13 @@
 			children = (
 				ED75B9272C43212600EB9E39 /* AppDelegate.swift */,
 				ED75B9292C43212600EB9E39 /* ViewController.swift */,
-				ED75B9532C43241000EB9E39 /* ProfilesDataSource.swift */,
+				ED75B9532C43241000EB9E39 /* ProfilesManager.swift */,
 				ED75B9572C4387CC00EB9E39 /* BackupPathsManager.swift */,
+				ED2756562C44BCA0005C38C5 /* RepoManager.swift */,
 				ED75B92B2C43212600EB9E39 /* Assets.xcassets */,
 				ED75B92D2C43212600EB9E39 /* Main.storyboard */,
 				ED75B9302C43212600EB9E39 /* Info.plist */,
 				ED75B9312C43212600EB9E39 /* ResticGUI.entitlements */,
-				ED2756562C44BCA0005C38C5 /* RepoManager.swift */,
 			);
 			path = ResticGUI;
 			sourceTree = "<group>";
@@ -266,7 +266,7 @@
 				ED75B9582C4387CC00EB9E39 /* BackupPathsManager.swift in Sources */,
 				ED2756572C44BCA0005C38C5 /* RepoManager.swift in Sources */,
 				ED75B92A2C43212600EB9E39 /* ViewController.swift in Sources */,
-				ED75B9542C43241000EB9E39 /* ProfilesDataSource.swift in Sources */,
+				ED75B9542C43241000EB9E39 /* ProfilesManager.swift in Sources */,
 				ED75B9282C43212600EB9E39 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

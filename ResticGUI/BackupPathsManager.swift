@@ -8,20 +8,22 @@ import Cocoa
 
 class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var table: NSTableView!
+	var viewCon: ViewController!
 	
 // MARK: data source/delegate implementation
 	var paths: [String] = []
 	
 	func load(fromProfile profile: Profile) {
 		// TODO: load saved items
-		append("/")
-		append("/Users")
+		paths = profile.paths
 		table.reloadData()
 	}
 	
 	func append(_ path: String) {
 		paths.append(path)
 		table.reloadData()
+		viewCon.selectedProfile?.paths = paths
+		
 	}
 	
 	func numberOfRows(in tableView: NSTableView) -> Int {
@@ -34,7 +36,9 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 		return cell
 	}
 	
-	
+	@IBAction func doubleClick(_ sender: NSTableView) {
+		NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: paths[table.clickedRow])
+	}
 	
 	
 // MARK: dragging implementation
