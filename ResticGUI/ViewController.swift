@@ -15,24 +15,20 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	
-// MARK: primary view function
+// MARK: ViewController functionality
 	override func viewDidLoad() {
+		// view itself setup
 		super.viewDidLoad()
 		self.view.window?.title = "ResticGUI"
+		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
 		profiles.append(ProfileOrHeader.init(header: "Profiles"))
-		
 		DeleteProfileButton.isEnabled = false
-		let krList = UserDefaults.standard.stringArray(forKey: "Known Repositories") ?? ["test 1", "test 2"]// [String]()
-		RepoSelector.addItems(withTitles: krList)
-		append(profiles: profManager.load())
 		BackupPathsDS.viewCon = self
 		
-		
-		// re-do
+		// view data setup
+		initSidebar(profManager.load())
 		initRepoSelector()
-		
-		
-		
+		// TODO: get last selected profile and select/load it.
 		
 	}
 	
@@ -68,7 +64,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// MARK: profile sidebar functions
+// MARK: Profile Sidebar
 	@IBOutlet var outline: NSOutlineView!
 	@IBOutlet var DeleteProfileButton: NSButton!
 	var selectedProfile: Profile?
@@ -88,7 +84,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			selected.name = sender.stringValue
 		}
 	}
-
+	
+	
 	
 // OutlineDataSource
 	var profiles: [ProfileOrHeader] = []
@@ -98,7 +95,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		outline.reloadData()
 	}
 	
-	func append(profiles newProfiles: [Profile]) {
+	func initSidebar(_ newProfiles: [Profile]) {
 		profiles.reserveCapacity(profiles.count + newProfiles.count)
 		for i in newProfiles {
 			profiles.append(ProfileOrHeader.init(profile: i))
@@ -166,7 +163,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// MARK: profile view header (repo)
+// MARK: Profile View Header (repo selector)
 	@IBOutlet var RepoSelector: NSPopUpButton!
 	var repos: [Repo] = []
 	
@@ -181,9 +178,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				}
 			}
 		}
-		//RepoSelector.selectItem(withTitle: )
-		
-		
+	}
+	
+	func addRepo(_ repo: Repo) {
 		
 	}
 	
@@ -202,16 +199,43 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// MARK: profile tabs: setup
+// MARK: Profile Tabs: setup
+	/// Configures the UI based off the provided profile. Saves the existing profile if selected and modified.
+	/// - Parameter profile: The profile to load.
 	func setupMainEditorView(profile: Profile) {
 		// save the existing profile if it has been modified
-		if let prof = selectedProfile, NSApplication.shared.mainWindow?.isDocumentEdited ?? false {
+		if let prof = selectedProfile {
 			profManager.save(profile: prof)
 		}
 		self.view.window?.title = profile.name
 		selectedProfile = profile
 		BackupPathsDS.load(fromProfile: profile)
 		ExcludeTextView.string = profile.exclusions.joined(separator: "\n")
+		ExcludeCaseSensitive.state = profile.exclusionsCS ? .on : .off
+		ExcludeCacheDirs.state = profile.excludeCacheDirs ? .on : .off
+		if let val = profile.excludeMaxFilesize {
+			ExcludeFilesOver.state = .on
+			ExcludeFilesOver.stringValue = val
+		} else {
+			ExcludeFilesOver.state = .off
+		}
+		
+		ExcludeTMDefault.state = profile.excludesTMDefault ? .on : .off
+		ExcludeTMUser.state = profile.excludesTMUser ? .on : .off
+		ExcludePatternFile.stringValue = profile.excludePatternFile ?? ""
+		ExcludePatternFileCS.state = profile.excludePatternFileCS ? .on : .off
+		Compression.selectItem(withTitle: profile.compression ?? "auto")
+		if let val = profile.readConcurrency {
+			ReadConcurrency.stringValue = String(val)
+		} else {
+			ReadConcurrency.stringValue = ""
+		}
+		if let val = profile.packSize {
+			PackSize.stringValue = String(val)
+		} else {
+			PackSize.stringValue = ""
+		}
+		
 		
 		
 	}
@@ -221,7 +245,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// MARK: profile tabs: paths
+// MARK: Profile Tab: paths
 	@IBAction func importPathsFromTextFile(_ sender: Any) {
 		
 	}
@@ -233,15 +257,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// MARK: Profile Tabs: Excludes & Options
+// MARK: Profile Tab: Excludes & Options
 	@IBOutlet var ExcludeTextView: NSTextView!
 	@IBOutlet var ExcludeCaseSensitive: NSButton!
 	@IBOutlet var ExcludeCacheDirs: NSButton!
-	@IBOutlet var ExcludeTMDefault: NSView!
+	@IBOutlet var ExcludeTMDefault: NSButton!
 	@IBOutlet var ExcludeTMUser: NSButton!
 	@IBOutlet var ExcludeFilesOver: NSButton!
 	@IBOutlet var ExcludeFilesOverValue: NSTextField!
 	@IBOutlet var ExcludePatternFile: NSTextField!
+	@IBOutlet var ExcludePatternFileCS: NSButton!
 	@IBOutlet var Compression: NSPopUpButton!
 	@IBOutlet var ReadConcurrency: NSTextField!
 	@IBOutlet var PackSize: NSTextField!
@@ -249,13 +274,21 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	@IBAction func ExcludeCaseSensitiveChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.exclusionsCaseSensitive = true
+			selectedProfile?.exclusionsCS = true
 		} else {
-			selectedProfile?.exclusionsCaseSensitive = false
+			selectedProfile?.exclusionsCS = false
 		}
 		
 	}
 	
+	@IBAction func ExcludeFilesOverChanged(_ sender: NSButton) {
+		if sender.state == .on {
+			ExcludeFilesOverValue.isEnabled = true
+			selectedProfile?.excludeMaxFilesize = ExcludeFilesOverValue.stringValue
+		} else {
+			ExcludeFilesOverValue.isEnabled = false
+		}
+	}
 	
 	
 	
@@ -292,5 +325,4 @@ class NewProfileVC: NSViewController {
 			dismiss(self)
 		}
 	}
-	
 }

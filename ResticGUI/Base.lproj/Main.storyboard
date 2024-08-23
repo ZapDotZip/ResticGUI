@@ -859,7 +859,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView id="c99-ze-Uce">
+                                    <customView ambiguous="YES" id="c99-ze-Uce">
                                         <rect key="frame" x="185" y="0.0" width="545" height="521"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
@@ -873,13 +873,13 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="534" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
                                                     <tabViewItem label="Paths" identifier="" id="e39-yg-8uZ">
-                                                        <view key="view" id="okT-KA-L6k">
-                                                            <rect key="frame" x="10" y="33" width="514" height="351"/>
+                                                        <view key="view" ambiguous="YES" id="okT-KA-L6k">
+                                                            <rect key="frame" x="10" y="33" width="514" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button toolTip="Add a path" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Hz-zg-MrD">
@@ -904,14 +904,14 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                 </button>
-                                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
-                                                                    <rect key="frame" x="16" y="40" width="482" height="307"/>
-                                                                    <clipView key="contentView" drawsBackground="NO" id="H86-0r-Zjb">
-                                                                        <rect key="frame" x="1" y="1" width="480" height="305"/>
+                                                                <scrollView ambiguous="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
+                                                                    <rect key="frame" x="16" y="40" width="482" height="338"/>
+                                                                    <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="H86-0r-Zjb">
+                                                                        <rect key="frame" x="1" y="1" width="480" height="336"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="480" height="305"/>
+                                                                            <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="480" height="336"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1042,7 +1042,7 @@
                                                                     <rect key="frame" x="16" y="202" width="482" height="153"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="480" height="151"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="480" height="151"/>
@@ -1135,6 +1135,9 @@
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="ExcludeFilesOverChanged:" target="XfG-lQ-9wD" id="Yom-An-jp8"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <textField toolTip="Exclude any files over the specified size. Use k/K, m/M, g/G, t/T." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UbQ-zx-q0h">
                                                                     <rect key="frame" x="416" y="177" width="82" height="21"/>
@@ -1303,7 +1306,7 @@
                                                 </tabViewItems>
                                             </tabView>
                                             <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Uvc-3d-UVP">
-                                                <rect key="frame" x="16" y="13" width="100" height="20"/>
+                                                <rect key="frame" x="16" y="12" width="100" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="2zg-vi-NYF"/>
                                                 </constraints>
@@ -1323,7 +1326,7 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="91" y="485" width="331" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="FRX-O4-l8T"/>
@@ -1334,7 +1337,7 @@
                                                     <menu key="menu" id="Fwb-sH-DcC"/>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="493" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="C4J-Wf-Hfy"/>
@@ -1346,7 +1349,7 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="429" y="486" width="104" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>
@@ -1371,11 +1374,11 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FZR-tC-zvK" secondAttribute="trailing" constant="20" symbolic="YES" id="49V-vL-V1c"/>
                                             <constraint firstItem="8Na-Eb-99D" firstAttribute="firstBaseline" secondItem="0HO-Va-zu4" secondAttribute="firstBaseline" id="Btb-Y2-Yd0"/>
                                             <constraint firstItem="Uvc-3d-UVP" firstAttribute="leading" secondItem="c99-ze-Uce" secondAttribute="leading" constant="16" id="Btf-sE-pKm"/>
-                                            <constraint firstItem="Uvc-3d-UVP" firstAttribute="top" secondItem="FZR-tC-zvK" secondAttribute="bottom" constant="8" id="FGw-aS-jwg"/>
                                             <constraint firstAttribute="bottom" secondItem="0HO-Va-zu4" secondAttribute="bottom" constant="12" id="HhL-7m-Bgx"/>
                                             <constraint firstItem="O0D-t8-hRL" firstAttribute="leading" secondItem="c99-ze-Uce" secondAttribute="leading" constant="12" id="MHh-UY-g6i"/>
                                             <constraint firstItem="qYd-g4-pqo" firstAttribute="leading" secondItem="c99-ze-Uce" secondAttribute="leading" constant="12" id="NCc-Ad-kVK"/>
                                             <constraint firstAttribute="trailing" secondItem="6Ls-TL-A39" secondAttribute="trailing" constant="14" id="O3z-ne-oUM"/>
+                                            <constraint firstItem="Uvc-3d-UVP" firstAttribute="top" secondItem="8Na-Eb-99D" secondAttribute="top" id="P8Q-nm-Kql"/>
                                             <constraint firstItem="qYd-g4-pqo" firstAttribute="top" secondItem="c99-ze-Uce" secondAttribute="top" constant="12" id="Ytk-dg-zcH"/>
                                             <constraint firstAttribute="trailing" secondItem="O0D-t8-hRL" secondAttribute="trailing" constant="13" id="bkt-oi-obJ"/>
                                             <constraint firstItem="TN6-dg-ymR" firstAttribute="leading" secondItem="qYd-g4-pqo" secondAttribute="trailing" constant="12" id="cyP-2e-p3C"/>
@@ -1383,7 +1386,6 @@
                                             <constraint firstItem="FZR-tC-zvK" firstAttribute="top" secondItem="O0D-t8-hRL" secondAttribute="bottom" constant="11" id="eHZ-I8-8lz"/>
                                             <constraint firstItem="FZR-tC-zvK" firstAttribute="leading" secondItem="c99-ze-Uce" secondAttribute="leading" constant="16" id="jMj-XM-4HF"/>
                                             <constraint firstAttribute="trailing" secondItem="0HO-Va-zu4" secondAttribute="trailing" constant="12" id="mwl-OM-Kwe"/>
-                                            <constraint firstItem="Uvc-3d-UVP" firstAttribute="centerY" secondItem="8Na-Eb-99D" secondAttribute="centerY" id="nnM-GM-rcC"/>
                                             <constraint firstItem="0HO-Va-zu4" firstAttribute="leading" secondItem="8Na-Eb-99D" secondAttribute="trailing" constant="12" id="rSf-b7-AC3"/>
                                             <constraint firstItem="O0D-t8-hRL" firstAttribute="top" secondItem="TN6-dg-ymR" secondAttribute="bottom" constant="12" id="sBk-cC-Ekz"/>
                                             <constraint firstItem="6Ls-TL-A39" firstAttribute="top" secondItem="c99-ze-Uce" secondAttribute="top" constant="12" id="vjg-Xd-fGi"/>
@@ -1414,7 +1416,8 @@
                         <outlet property="ExcludeFilesOver" destination="Msk-1X-0UL" id="KMG-GE-4qf"/>
                         <outlet property="ExcludeFilesOverValue" destination="UbQ-zx-q0h" id="NSI-J5-543"/>
                         <outlet property="ExcludePatternFile" destination="LbG-3p-FKz" id="aOa-Fm-iPe"/>
-                        <outlet property="ExcludeTMDefault" destination="ZmO-L8-GnV" id="mn6-RD-6r6"/>
+                        <outlet property="ExcludePatternFileCS" destination="Bh1-J4-fjG" id="8ar-3A-nzf"/>
+                        <outlet property="ExcludeTMDefault" destination="HUZ-xu-71e" id="VfH-Nu-ilE"/>
                         <outlet property="ExcludeTMUser" destination="LLA-O8-ExL" id="WWX-9R-uxh"/>
                         <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="el1-cH-vc6"/>
                         <outlet property="PackSize" destination="DJl-hF-Ijv" id="j3t-w1-dnX"/>
@@ -1426,7 +1429,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="231" y="803"/>
+            <point key="canvasLocation" x="231" y="802.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mQo-6I-SN3">
