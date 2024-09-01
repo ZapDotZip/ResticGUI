@@ -94,6 +94,8 @@ class RepoEditViewController: NSViewController {
 			repo!.cacheDir = cacheDirLabel.stringValue
 		}
 		// TODO: add env table.
+		
+		viewCon.ProfileEditor.addRepo(repo!)
 	}
 	
 	@objc func controlTextDidChange(_ sender: NSTextField) {
@@ -101,6 +103,14 @@ class RepoEditViewController: NSViewController {
 		saveButton.isEnabled = enable
 		createRepoButton.isEnabled = enable
 		testRepoButton.isEnabled = enable
+	}
+	
+	func rename(_ profile: Profile) {
+		// TODO: Implement
+	}
+	
+	func copy(_ profile: Profile) {
+		// TODO: Implement
 	}
 	
 	

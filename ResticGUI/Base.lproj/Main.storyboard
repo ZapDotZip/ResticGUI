@@ -859,7 +859,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView ambiguous="YES" id="c99-ze-Uce">
+                                    <customView id="c99-ze-Uce" customClass="ProfileEditor" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="185" y="0.0" width="545" height="521"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
@@ -873,12 +873,12 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="534" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
                                                     <tabViewItem label="Paths" identifier="" id="e39-yg-8uZ">
-                                                        <view key="view" ambiguous="YES" id="okT-KA-L6k">
+                                                        <view key="view" misplaced="YES" id="okT-KA-L6k">
                                                             <rect key="frame" x="10" y="33" width="514" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -904,13 +904,13 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                 </button>
-                                                                <scrollView ambiguous="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
+                                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
                                                                     <rect key="frame" x="16" y="40" width="482" height="338"/>
-                                                                    <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="H86-0r-Zjb">
+                                                                    <clipView key="contentView" drawsBackground="NO" id="H86-0r-Zjb">
                                                                         <rect key="frame" x="1" y="1" width="480" height="336"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
+                                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="480" height="336"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -990,7 +990,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="importPathsFromTextFile:" target="XfG-lQ-9wD" id="8yM-Ou-wfw"/>
+                                                                        <action selector="importPathsFromTextFile:" target="c99-ze-Uce" id="iwH-dR-Yah"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Adds paths from your clipboard, one path per line." verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FsH-6W-xQq">
@@ -1000,7 +1000,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="importPathsFromClipboard:" target="XfG-lQ-9wD" id="SoK-ei-8DV"/>
+                                                                        <action selector="importPathsFromClipboard:" target="c99-ze-Uce" id="8KC-Fz-1sZ"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -1042,7 +1042,7 @@
                                                                     <rect key="frame" x="16" y="202" width="482" height="153"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="480" height="151"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="480" height="151"/>
@@ -1116,7 +1116,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="ExcludeCaseSensitiveChanged:" target="XfG-lQ-9wD" id="tcd-79-Qtg"/>
+                                                                        <action selector="ExcludeCaseSensitiveChanged:" target="c99-ze-Uce" id="Qwy-WE-fvH"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bh1-J4-fjG">
@@ -1125,9 +1125,6 @@
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
-                                                                    <connections>
-                                                                        <action selector="ExcludeCaseSensitiveChanged:" target="XfG-lQ-9wD" id="CYZ-E1-mFo"/>
-                                                                    </connections>
                                                                 </button>
                                                                 <button toolTip="Exclude any files over the specified size. Use k/K, m/M, g/G, t/T." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Msk-1X-0UL">
                                                                     <rect key="frame" x="280" y="178" width="136" height="18"/>
@@ -1136,7 +1133,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="ExcludeFilesOverChanged:" target="XfG-lQ-9wD" id="Yom-An-jp8"/>
+                                                                        <action selector="ExcludeFilesOverChanged:" target="c99-ze-Uce" id="JRz-0I-R19"/>
                                                                     </connections>
                                                                 </button>
                                                                 <textField toolTip="Exclude any files over the specified size. Use k/K, m/M, g/G, t/T." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UbQ-zx-q0h">
@@ -1182,7 +1179,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField toolTip="Sets the number of files that will be read concurrently during the backup." verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqB-3y-K0L">
-                                                                    <rect key="frame" x="140" y="36" width="43" height="21"/>
+                                                                    <rect key="frame" x="140" y="36" width="45" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="MzG-7X-tfk"/>
                                                                     </constraints>
@@ -1205,7 +1202,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField toolTip="Set the target pack size in MiB, created pack files may be larger." verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJl-hF-Ijv">
-                                                                    <rect key="frame" x="140" y="9" width="43" height="21"/>
+                                                                    <rect key="frame" x="140" y="9" width="45" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="hq7-hF-3mz"/>
                                                                     </constraints>
@@ -1247,7 +1244,7 @@
                                                                 <constraint firstItem="am1-jG-hoC" firstAttribute="top" secondItem="gAo-o1-7vr" secondAttribute="bottom" constant="8" id="BHe-pW-w4L"/>
                                                                 <constraint firstItem="1CY-0N-dcr" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" id="BqG-XR-PKy"/>
                                                                 <constraint firstAttribute="trailing" secondItem="T6s-gH-n91" secondAttribute="trailing" constant="16" id="CYc-ma-fH5"/>
-                                                                <constraint firstItem="DWF-GC-Wgb" firstAttribute="leading" secondItem="JqB-3y-K0L" secondAttribute="trailing" constant="4" id="FTX-nM-GmV"/>
+                                                                <constraint firstItem="DWF-GC-Wgb" firstAttribute="leading" secondItem="JqB-3y-K0L" secondAttribute="trailing" constant="2" id="FTX-nM-GmV"/>
                                                                 <constraint firstItem="fM8-GB-TgT" firstAttribute="firstBaseline" secondItem="T6s-gH-n91" secondAttribute="firstBaseline" id="FuJ-V1-1oL"/>
                                                                 <constraint firstAttribute="trailing" secondItem="LbG-3p-FKz" secondAttribute="trailing" constant="16" id="Fxb-ZI-5ZI"/>
                                                                 <constraint firstAttribute="trailing" secondItem="LLA-O8-ExL" secondAttribute="trailing" constant="30" id="G1z-hs-qYW"/>
@@ -1268,8 +1265,8 @@
                                                                 <constraint firstItem="gAo-o1-7vr" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" constant="16" id="dW1-c8-ejf"/>
                                                                 <constraint firstItem="Wfa-U0-3TP" firstAttribute="centerY" secondItem="tAt-oj-zgA" secondAttribute="centerY" id="dZU-6d-0gI"/>
                                                                 <constraint firstAttribute="trailing" secondItem="1CY-0N-dcr" secondAttribute="trailing" id="dfh-3m-EiA"/>
-                                                                <constraint firstItem="Ou3-Qe-taC" firstAttribute="leading" secondItem="DJl-hF-Ijv" secondAttribute="trailing" constant="4" id="fWE-ee-BO3"/>
-                                                                <constraint firstItem="Ou3-Qe-taC" firstAttribute="leading" secondItem="DJl-hF-Ijv" secondAttribute="trailing" constant="4" id="ge7-Wx-rgW"/>
+                                                                <constraint firstItem="Ou3-Qe-taC" firstAttribute="leading" secondItem="DJl-hF-Ijv" secondAttribute="trailing" constant="2" id="fWE-ee-BO3"/>
+                                                                <constraint firstItem="Ou3-Qe-taC" firstAttribute="leading" secondItem="DJl-hF-Ijv" secondAttribute="trailing" constant="2" id="ge7-Wx-rgW"/>
                                                                 <constraint firstItem="KRr-0f-BPY" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" constant="16" id="hGg-eu-y1d"/>
                                                                 <constraint firstItem="DJl-hF-Ijv" firstAttribute="leading" secondItem="V2h-Kc-Jab" secondAttribute="trailing" constant="61" id="hQy-eH-1wf"/>
                                                                 <constraint firstItem="fM8-GB-TgT" firstAttribute="baseline" secondItem="T6s-gH-n91" secondAttribute="baseline" id="hSm-Et-x29"/>
@@ -1299,7 +1296,7 @@
                                                     </tabViewItem>
                                                     <tabViewItem label="Snapshots" identifier="" id="cSN-eS-QzS">
                                                         <view key="view" id="JsC-XZ-ZD3">
-                                                            <rect key="frame" x="10" y="33" width="514" height="351"/>
+                                                            <rect key="frame" x="10" y="33" width="514" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </view>
                                                     </tabViewItem>
@@ -1326,7 +1323,7 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="91" y="485" width="331" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="FRX-O4-l8T"/>
@@ -1337,7 +1334,7 @@
                                                     <menu key="menu" id="Fwb-sH-DcC"/>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="493" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="C4J-Wf-Hfy"/>
@@ -1349,7 +1346,7 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="429" y="486" width="104" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>
@@ -1365,7 +1362,7 @@
                                                     </segments>
                                                 </segmentedCell>
                                                 <connections>
-                                                    <action selector="repoEditButton:" target="XfG-lQ-9wD" id="UG4-qP-MuB"/>
+                                                    <action selector="repoEditButton:" target="c99-ze-Uce" id="pdR-f4-OKP"/>
                                                 </connections>
                                             </segmentedControl>
                                         </subviews>
@@ -1392,6 +1389,21 @@
                                             <constraint firstItem="8Na-Eb-99D" firstAttribute="leading" secondItem="Uvc-3d-UVP" secondAttribute="trailing" constant="8" id="vmc-AH-v1I"/>
                                             <constraint firstItem="6Ls-TL-A39" firstAttribute="leading" secondItem="TN6-dg-ymR" secondAttribute="trailing" constant="12" id="zIi-vY-0TQ"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="Compression" destination="tAt-oj-zgA" id="RAI-VX-v6T"/>
+                                            <outlet property="ExcludeCacheDirs" destination="am1-jG-hoC" id="9qc-pj-fXx"/>
+                                            <outlet property="ExcludeCaseSensitive" destination="T6s-gH-n91" id="JSX-Ol-T9R"/>
+                                            <outlet property="ExcludeFilesOver" destination="Msk-1X-0UL" id="adL-Ob-rDw"/>
+                                            <outlet property="ExcludeFilesOverValue" destination="UbQ-zx-q0h" id="7O7-3x-N2K"/>
+                                            <outlet property="ExcludePatternFile" destination="LbG-3p-FKz" id="7zE-Dx-j0S"/>
+                                            <outlet property="ExcludePatternFileCS" destination="Bh1-J4-fjG" id="aYE-cq-4oF"/>
+                                            <outlet property="ExcludeTMDefault" destination="HUZ-xu-71e" id="PeN-27-8Io"/>
+                                            <outlet property="ExcludeTMUser" destination="LLA-O8-ExL" id="6YD-4d-EPr"/>
+                                            <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="0FA-Wa-DUX"/>
+                                            <outlet property="PackSize" destination="DJl-hF-Ijv" id="Y30-pb-b72"/>
+                                            <outlet property="ReadConcurrency" destination="JqB-3y-K0L" id="keE-8r-B0m"/>
+                                            <outlet property="RepoSelector" destination="TN6-dg-ymR" id="o0z-bm-zN0"/>
+                                        </connections>
                                     </customView>
                                 </subviews>
                                 <holdingPriorities>
@@ -1409,20 +1421,8 @@
                     </view>
                     <connections>
                         <outlet property="BackupPathsDS" destination="Usp-Mm-JLV" id="CqC-XZ-Eyd"/>
-                        <outlet property="Compression" destination="tAt-oj-zgA" id="V1U-Xo-w5j"/>
                         <outlet property="DeleteProfileButton" destination="6RP-yk-0SW" id="mCT-b4-G6b"/>
-                        <outlet property="ExcludeCacheDirs" destination="am1-jG-hoC" id="Nso-fQ-UiO"/>
-                        <outlet property="ExcludeCaseSensitive" destination="T6s-gH-n91" id="HJy-oz-eQ1"/>
-                        <outlet property="ExcludeFilesOver" destination="Msk-1X-0UL" id="KMG-GE-4qf"/>
-                        <outlet property="ExcludeFilesOverValue" destination="UbQ-zx-q0h" id="NSI-J5-543"/>
-                        <outlet property="ExcludePatternFile" destination="LbG-3p-FKz" id="aOa-Fm-iPe"/>
-                        <outlet property="ExcludePatternFileCS" destination="Bh1-J4-fjG" id="8ar-3A-nzf"/>
-                        <outlet property="ExcludeTMDefault" destination="HUZ-xu-71e" id="VfH-Nu-ilE"/>
-                        <outlet property="ExcludeTMUser" destination="LLA-O8-ExL" id="WWX-9R-uxh"/>
-                        <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="el1-cH-vc6"/>
-                        <outlet property="PackSize" destination="DJl-hF-Ijv" id="j3t-w1-dnX"/>
-                        <outlet property="ReadConcurrency" destination="JqB-3y-K0L" id="FiB-Aw-Jij"/>
-                        <outlet property="RepoSelector" destination="TN6-dg-ymR" id="CBF-CQ-s64"/>
+                        <outlet property="ProfileEditor" destination="c99-ze-Uce" id="fNV-yl-rE1"/>
                         <outlet property="outline" destination="nN4-Bd-kyN" id="3Ui-kA-xcl"/>
                         <segue destination="E8d-iE-4P2" kind="sheet" identifier="RepoEdit" id="IuM-6R-rqv"/>
                     </connections>
@@ -1579,9 +1579,6 @@ Gw
                                 <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="eQw-yd-ThI">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
-                                    <string key="keyEquivalent" base64-UTF8="YES">
-Gw
-</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="saveRepo:" target="E8d-iE-4P2" id="Kg2-WS-XIi"/>
@@ -1656,7 +1653,6 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="pathFieldChanged:" target="E8d-iE-4P2" id="SKr-ab-cmD"/>
                                     <outlet property="delegate" destination="E8d-iE-4P2" id="Uvn-Wa-SQB"/>
                                 </connections>
                             </textField>
@@ -1671,7 +1667,6 @@ Gw
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
                                 <connections>
-                                    <action selector="passFieldChanged:" target="E8d-iE-4P2" id="KHj-Vz-4Uj"/>
                                     <outlet property="delegate" destination="E8d-iE-4P2" id="Qrz-tt-3Pr"/>
                                 </connections>
                             </secureTextField>
