@@ -8,9 +8,7 @@ import Cocoa
 
 class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
 	
-	@IBOutlet var BackupPathsDS: BackupPathsDataSource!
 	@IBOutlet var ProfileEditor: ProfileEditor!
-	
 	
 	let profManager: ProfilesManager = {
 		return ProfilesManager.init()
@@ -26,7 +24,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		ProfileEditor.profManager = profManager
 		profiles.append(ProfileOrHeader.init(header: "Profiles"))
 		DeleteProfileButton.isEnabled = false
-		BackupPathsDS.viewCon = self
 		
 		// view data setup
 		initSidebar(profManager.load())
@@ -165,7 +162,17 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	
-	
+	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
+		if sender.selectedSegment == 1 {
+			// Delete alert
+			// confirm delete
+		} else if sender.selectedSegment == 0 {
+			self.performSegue(withIdentifier: "RepoEdit", sender: self)
+		} else {
+			self.performSegue(withIdentifier: "RepoEdit", sender: self)
+		}
+	}
+
 	
 
 	

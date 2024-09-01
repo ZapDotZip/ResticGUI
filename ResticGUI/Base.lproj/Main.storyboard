@@ -892,6 +892,9 @@
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="addPath:" target="c99-ze-Uce" id="Abl-4b-SYs"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button toolTip="Remove a path" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="84i-5H-v8n">
                                                                     <rect key="frame" x="41" y="7" width="24" height="26"/>
@@ -903,6 +906,9 @@
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="deletePath:" target="c99-ze-Uce" id="Mct-1A-a5f"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
                                                                     <rect key="frame" x="16" y="40" width="482" height="338"/>
@@ -1362,7 +1368,7 @@
                                                     </segments>
                                                 </segmentedCell>
                                                 <connections>
-                                                    <action selector="repoEditButton:" target="c99-ze-Uce" id="pdR-f4-OKP"/>
+                                                    <action selector="repoEditButton:" target="XfG-lQ-9wD" id="XEO-aZ-Wfj"/>
                                                 </connections>
                                             </segmentedControl>
                                         </subviews>
@@ -1390,6 +1396,7 @@
                                             <constraint firstItem="6Ls-TL-A39" firstAttribute="leading" secondItem="TN6-dg-ymR" secondAttribute="trailing" constant="12" id="zIi-vY-0TQ"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="BackupPathsDS" destination="Usp-Mm-JLV" id="ceq-Gk-cll"/>
                                             <outlet property="Compression" destination="tAt-oj-zgA" id="RAI-VX-v6T"/>
                                             <outlet property="ExcludeCacheDirs" destination="am1-jG-hoC" id="9qc-pj-fXx"/>
                                             <outlet property="ExcludeCaseSensitive" destination="T6s-gH-n91" id="JSX-Ol-T9R"/>
@@ -1420,7 +1427,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="BackupPathsDS" destination="Usp-Mm-JLV" id="CqC-XZ-Eyd"/>
                         <outlet property="DeleteProfileButton" destination="6RP-yk-0SW" id="mCT-b4-G6b"/>
                         <outlet property="ProfileEditor" destination="c99-ze-Uce" id="fNV-yl-rE1"/>
                         <outlet property="outline" destination="nN4-Bd-kyN" id="3Ui-kA-xcl"/>

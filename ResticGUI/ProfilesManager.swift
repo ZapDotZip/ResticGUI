@@ -161,4 +161,9 @@ class Profile: Codable, Equatable {
 			lhs.packSize == rhs.packSize
 	}
 	
+	func addPath(_ path: String) {
+		// TODO: Check if path already exists.
+		paths.append(path)
+	}
+	
 }

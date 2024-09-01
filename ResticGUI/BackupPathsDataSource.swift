@@ -11,33 +11,36 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	var viewCon: ViewController!
 	
 // MARK: data source/delegate implementation
-	var paths: [String] = []
+	var profile: Profile?
 	
 	func load(fromProfile profile: Profile) {
 		// TODO: load saved items
-		paths = profile.paths
+		self.profile = profile
+		table.reloadData()
+	}
+	
+	func reload() {
 		table.reloadData()
 	}
 	
 	func append(_ path: String) {
-		paths.append(path)
+		profile?.addPath(path)
 		table.reloadData()
-		viewCon.selectedProfile?.paths = paths
 		
 	}
 	
 	func numberOfRows(in tableView: NSTableView) -> Int {
-		paths.count
+		return profile?.paths.count ?? 0
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else {return nil}
-		cell.textField!.stringValue = paths[row]
+		cell.textField!.stringValue = profile!.paths[row]
 		return cell
 	}
 	
 	@IBAction func doubleClick(_ sender: NSTableView) {
-		NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: paths[table.clickedRow])
+		NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: profile!.paths[table.clickedRow])
 	}
 	
 	

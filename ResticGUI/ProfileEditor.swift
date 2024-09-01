@@ -12,8 +12,10 @@ class ProfileEditor: NSView {
 	
 	func viewDidLoad() {
 		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
+		BackupPathsDS.viewCon = viewCon
 	}
 	
+	@IBOutlet var BackupPathsDS: BackupPathsDataSource!
 	var selectedProfile: Profile?
 	
 	
@@ -39,19 +41,6 @@ class ProfileEditor: NSView {
 	}
 	
 	
-	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
-		if sender.selectedSegment == 1 {
-			// Delete alert
-			// confirm delete
-		} else if sender.selectedSegment == 0 {
-			viewCon.performSegue(withIdentifier: "RepoEdit", sender: self)
-		} else {
-			viewCon.performSegue(withIdentifier: "RepoEdit", sender: self)
-		}
-	}
-	
-	
-	
 	
 // MARK: Profile Tabs: setup
 	/// Configures the UI based off the provided profile. Saves the existing profile if selected and modified.
@@ -63,7 +52,7 @@ class ProfileEditor: NSView {
 		}
 		viewCon.view.window?.title = profile.name
 		selectedProfile = profile
-		viewCon.BackupPathsDS.load(fromProfile: profile)
+		BackupPathsDS.load(fromProfile: profile)
 		ExcludeTextView.string = profile.exclusions.joined(separator: "\n")
 		ExcludeCaseSensitive.state = profile.exclusionsCS ? .on : .off
 		ExcludeCacheDirs.state = profile.excludeCacheDirs ? .on : .off
@@ -99,19 +88,38 @@ class ProfileEditor: NSView {
 	
 	
 	
-	// MARK: Profile Tab: paths
-	@IBAction func importPathsFromTextFile(_ sender: Any) {
+// MARK: Profile Tab: paths
+	@IBAction func addPath(_ sender: NSButton) {
+		let openPanel = NSOpenPanel()
+		openPanel.canChooseDirectories = true
+		openPanel.canChooseFiles = true
+		openPanel.allowsMultipleSelection = true
+		openPanel.canCreateDirectories = false
+		openPanel.message = "Select items you would like to back up."
+		openPanel.prompt = "Add"
+		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
+			for url in openPanel.urls {
+				selectedProfile?.addPath(url.path)
+			}
+			BackupPathsDS.reload()
+		}
+	}
+	@IBAction func deletePath(_ sender: NSButton) {
 		
 	}
 	
-	@IBAction func importPathsFromClipboard(_ sender: Any) {
+	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
+		
+	}
+	
+	@IBAction func importPathsFromClipboard(_ sender: NSButton) {
 		
 	}
 	
 	
 	
 	
-	// MARK: Profile Tab: Excludes & Options
+// MARK: Profile Tab: Excludes & Options
 	@IBOutlet var ExcludeTextView: NSTextView!
 	@IBOutlet var ExcludeCaseSensitive: NSButton!
 	@IBOutlet var ExcludeCacheDirs: NSButton!
