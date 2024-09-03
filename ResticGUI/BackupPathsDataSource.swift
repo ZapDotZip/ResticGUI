@@ -8,14 +8,16 @@ import Cocoa
 
 class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var table: NSTableView!
+	@IBOutlet var deleteButton: NSButton!
 	var viewCon: ViewController!
 	
 // MARK: data source/delegate implementation
-	var profile: Profile?
+	var selectedProfile: Profile?
 	
 	func load(fromProfile profile: Profile) {
 		// TODO: load saved items
-		self.profile = profile
+		self.selectedProfile = profile
+		deleteButton.isEnabled = false
 		table.reloadData()
 	}
 	
@@ -24,23 +26,32 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	func append(_ path: String) {
-		profile?.addPath(path)
+		selectedProfile?.addPath(path)
 		table.reloadData()
-		
 	}
 	
 	func numberOfRows(in tableView: NSTableView) -> Int {
-		return profile?.paths.count ?? 0
+		return selectedProfile?.paths.count ?? 0
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else {return nil}
-		cell.textField!.stringValue = profile!.paths[row]
+		cell.textField!.stringValue = selectedProfile!.paths[row]
 		return cell
 	}
 	
 	@IBAction func doubleClick(_ sender: NSTableView) {
-		NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: profile!.paths[table.clickedRow])
+		if selectedProfile?.paths.count ?? 0 > 0 {
+			NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: selectedProfile!.paths[table.clickedRow])
+		}
+	}
+	
+	func tableViewSelectionDidChange(_ notification: Notification) {
+		if table.selectedRowIndexes.count == 0 {
+			deleteButton.isEnabled = false
+		} else {
+			deleteButton.isEnabled = true
+		}
 	}
 	
 	
@@ -89,6 +100,43 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 		self.layer?.borderWidth = 0.0
 		self.layer?.borderColor = NormalBorderColor
 	}
+	
+	
+	
+	
+	
+	
+	// MARK: Profile Tab: paths
+	@IBAction func addPath(_ sender: NSButton) {
+		let openPanel = NSOpenPanel()
+		openPanel.canChooseDirectories = true
+		openPanel.canChooseFiles = true
+		openPanel.allowsMultipleSelection = true
+		openPanel.canCreateDirectories = false
+		openPanel.message = "Select items you would like to back up."
+		openPanel.prompt = "Add"
+		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
+			for url in openPanel.urls {
+				selectedProfile?.addPath(url.path)
+			}
+			reload()
+		}
+	}
+	@IBAction func deletePath(_ sender: NSButton) {
+		for i in table.selectedRowIndexes.enumerated().reversed() {
+			selectedProfile?.paths.remove(at: i.element)
+		}
+		reload()
+	}
+	
+	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
+		
+	}
+	
+	@IBAction func importPathsFromClipboard(_ sender: NSButton) {
+		
+	}
+
 	
 }
 

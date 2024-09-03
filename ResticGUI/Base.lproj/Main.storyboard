@@ -859,7 +859,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView id="c99-ze-Uce" customClass="ProfileEditor" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditor" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="185" y="0.0" width="545" height="521"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
@@ -873,12 +873,12 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="534" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
                                                     <tabViewItem label="Paths" identifier="" id="e39-yg-8uZ">
-                                                        <view key="view" misplaced="YES" id="okT-KA-L6k">
+                                                        <view key="view" ambiguous="YES" id="okT-KA-L6k">
                                                             <rect key="frame" x="10" y="33" width="514" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -893,7 +893,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="addPath:" target="c99-ze-Uce" id="Abl-4b-SYs"/>
+                                                                        <action selector="addPath:" target="Usp-Mm-JLV" id="h3Q-L6-ncU"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Remove a path" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="84i-5H-v8n">
@@ -902,21 +902,21 @@
                                                                         <constraint firstAttribute="width" constant="24" id="Nkw-5Z-88i"/>
                                                                         <constraint firstAttribute="height" constant="24" id="h4O-Kj-vzm"/>
                                                                     </constraints>
-                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hDt-qH-OMI">
+                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hDt-qH-OMI">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="deletePath:" target="c99-ze-Uce" id="Mct-1A-a5f"/>
+                                                                        <action selector="deletePath:" target="Usp-Mm-JLV" id="5Mi-kn-NHU"/>
                                                                     </connections>
                                                                 </button>
-                                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
+                                                                <scrollView ambiguous="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
                                                                     <rect key="frame" x="16" y="40" width="482" height="338"/>
-                                                                    <clipView key="contentView" drawsBackground="NO" id="H86-0r-Zjb">
+                                                                    <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="H86-0r-Zjb">
                                                                         <rect key="frame" x="1" y="1" width="480" height="336"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
+                                                                            <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="480" height="336"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -986,6 +986,7 @@
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
                                                                     <connections>
+                                                                        <outlet property="deleteButton" destination="84i-5H-v8n" id="sac-hw-klN"/>
                                                                         <outlet property="table" destination="VQh-7L-SL1" id="W9w-yg-bGO"/>
                                                                     </connections>
                                                                 </scrollView>
@@ -996,7 +997,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="importPathsFromTextFile:" target="c99-ze-Uce" id="iwH-dR-Yah"/>
+                                                                        <action selector="importPathsFromTextFile:" target="Usp-Mm-JLV" id="SMy-DV-9PS"/>
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Adds paths from your clipboard, one path per line." verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FsH-6W-xQq">
@@ -1006,7 +1007,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="importPathsFromClipboard:" target="c99-ze-Uce" id="8KC-Fz-1sZ"/>
+                                                                        <action selector="importPathsFromClipboard:" target="Usp-Mm-JLV" id="dbr-f7-WcR"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -1329,7 +1330,7 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="91" y="485" width="331" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="FRX-O4-l8T"/>
@@ -1340,7 +1341,7 @@
                                                     <menu key="menu" id="Fwb-sH-DcC"/>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="493" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="C4J-Wf-Hfy"/>
@@ -1352,7 +1353,7 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                            <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="429" y="486" width="104" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>

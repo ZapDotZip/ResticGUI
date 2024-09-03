@@ -88,33 +88,6 @@ class ProfileEditor: NSView {
 	
 	
 	
-// MARK: Profile Tab: paths
-	@IBAction func addPath(_ sender: NSButton) {
-		let openPanel = NSOpenPanel()
-		openPanel.canChooseDirectories = true
-		openPanel.canChooseFiles = true
-		openPanel.allowsMultipleSelection = true
-		openPanel.canCreateDirectories = false
-		openPanel.message = "Select items you would like to back up."
-		openPanel.prompt = "Add"
-		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
-			for url in openPanel.urls {
-				selectedProfile?.addPath(url.path)
-			}
-			BackupPathsDS.reload()
-		}
-	}
-	@IBAction func deletePath(_ sender: NSButton) {
-		
-	}
-	
-	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
-		
-	}
-	
-	@IBAction func importPathsFromClipboard(_ sender: NSButton) {
-		
-	}
 	
 	
 	
