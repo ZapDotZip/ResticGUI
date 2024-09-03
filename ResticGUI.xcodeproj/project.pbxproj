@@ -17,6 +17,7 @@
 		ED75B9542C43241000EB9E39 /* ProfilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9532C43241000EB9E39 /* ProfilesManager.swift */; };
 		ED75B9582C4387CC00EB9E39 /* BackupPathsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9572C4387CC00EB9E39 /* BackupPathsDataSource.swift */; };
 		EDB655402C8515EA00BBBFD5 /* ProfileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB6553F2C8515EA00BBBFD5 /* ProfileEditor.swift */; };
+		EDB655422C853AC100BBBFD5 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB655412C853AC100BBBFD5 /* DataClasses.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		ED75B9532C43241000EB9E39 /* ProfilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilesManager.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		ED75B9572C4387CC00EB9E39 /* BackupPathsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsDataSource.swift; sourceTree = "<group>"; };
 		EDB6553F2C8515EA00BBBFD5 /* ProfileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditor.swift; sourceTree = "<group>"; };
+		EDB655412C853AC100BBBFD5 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +109,10 @@
 				ED75B9272C43212600EB9E39 /* AppDelegate.swift */,
 				ED75B9292C43212600EB9E39 /* ViewController.swift */,
 				EDB6553F2C8515EA00BBBFD5 /* ProfileEditor.swift */,
-				ED75B9532C43241000EB9E39 /* ProfilesManager.swift */,
 				ED75B9572C4387CC00EB9E39 /* BackupPathsDataSource.swift */,
 				ED2756562C44BCA0005C38C5 /* RepoEditViewController.swift */,
+				ED75B9532C43241000EB9E39 /* ProfilesManager.swift */,
+				EDB655412C853AC100BBBFD5 /* DataClasses.swift */,
 				ED75B92B2C43212600EB9E39 /* Assets.xcassets */,
 				ED75B92D2C43212600EB9E39 /* Main.storyboard */,
 				ED75B9302C43212600EB9E39 /* Info.plist */,
@@ -268,6 +271,7 @@
 			files = (
 				ED75B9582C4387CC00EB9E39 /* BackupPathsDataSource.swift in Sources */,
 				ED2756572C44BCA0005C38C5 /* RepoEditViewController.swift in Sources */,
+				EDB655422C853AC100BBBFD5 /* DataClasses.swift in Sources */,
 				EDB655402C8515EA00BBBFD5 /* ProfileEditor.swift in Sources */,
 				ED75B92A2C43212600EB9E39 /* ViewController.swift in Sources */,
 				ED75B9542C43241000EB9E39 /* ProfilesManager.swift in Sources */,

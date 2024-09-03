@@ -116,14 +116,3 @@ class RepoEditViewController: NSViewController {
 	
 }
 
-final class Repo: Codable {
-	var name: String?
-	var path: String
-	var password: String
-	var cacheDir: String?
-	var env: [String : String]?
-	init(path: String, password: String) {
-		self.path = path
-		self.password = password
-	}
-}
