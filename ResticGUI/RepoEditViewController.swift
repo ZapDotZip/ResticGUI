@@ -12,7 +12,7 @@ import AppKit
 class RepoEditViewController: NSViewController {
 	
 	var viewCon: ViewController!
-	var repo: Repo?
+	var selectedRepo: Repo?
 	
 	@IBOutlet var pathField: NSTextField!
 	private var pathFilled = false
@@ -29,7 +29,7 @@ class RepoEditViewController: NSViewController {
 		if let customCache = UserDefaults.standard.string(forKey: "Cache Directory") {
 			cacheDirLabel.stringValue = "App Default (\(customCache))"
 		}
-		if let r = repo {
+		if let r = selectedRepo {
 			if r.name != nil {
 				nameField.stringValue = r.name!
 			}
@@ -81,21 +81,21 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	@IBAction func saveRepo(_ sender: NSButton) {
-		if let r = repo {
+		if let r = selectedRepo {
 			r.path = pathField.stringValue
 			r.password = passwordField.stringValue
 		} else {
-			repo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
+			selectedRepo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
 		}
 		if nameField.stringValue.count != 0 {
-			repo!.name = nameField.stringValue
+			selectedRepo!.name = nameField.stringValue
 		}
 		if cacheDirLabel.stringValue.count != 0 {
-			repo!.cacheDir = cacheDirLabel.stringValue
+			selectedRepo!.cacheDir = cacheDirLabel.stringValue
 		}
 		// TODO: add env table.
 		
-		viewCon.ProfileEditor.addRepo(repo!)
+		viewCon.ProfileEditor.addRepo(selectedRepo!)
 	}
 	
 	@objc func controlTextDidChange(_ sender: NSTextField) {
