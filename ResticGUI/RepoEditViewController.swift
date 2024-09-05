@@ -11,9 +11,9 @@ import AppKit
 
 class RepoEditViewController: NSViewController {
 	
-	var viewCon: ViewController!
+	var repoManager: ReposManager!
 	var selectedRepo: Repo?
-	
+		
 	@IBOutlet var pathField: NSTextField!
 	private var pathFilled = false
 	@IBOutlet var passwordField: NSSecureTextField!
@@ -30,14 +30,22 @@ class RepoEditViewController: NSViewController {
 			cacheDirLabel.stringValue = "App Default (\(customCache))"
 		}
 		if let r = selectedRepo {
-			if r.name != nil {
-				nameField.stringValue = r.name!
-			}
+			nameField.stringValue = r.name ?? ""
 			pathField.stringValue = r.path
 			passwordField.stringValue = r.password
-			if r.cacheDir != nil {
-				cacheDirLabel.stringValue = r.cacheDir!
-			}
+			cacheDirLabel.stringValue = r.cacheDir ?? ""
+			cacheDirLabel.toolTip = r.cacheDir ?? ""
+			saveButton.isEnabled = true
+			createRepoButton.isEnabled = true
+			testRepoButton.isEnabled = true
+		} else {
+			saveButton.isEnabled = false
+			createRepoButton.isEnabled = false
+			testRepoButton.isEnabled = false
+			nameField.stringValue = ""
+			passwordField.stringValue = ""
+			cacheDirLabel.stringValue = ""
+			cacheDirLabel.toolTip = ""
 		}
 	}
 	
@@ -68,9 +76,15 @@ class RepoEditViewController: NSViewController {
 		if openPanel.runModal() == NSApplication.ModalResponse.OK {
 			if openPanel.urls.count == 1 {
 				cacheDirLabel.stringValue = openPanel.urls[0].path
+				cacheDirLabel.toolTip = openPanel.urls[0].path
 			}
 		}
 	}
+	
+	@IBAction func clearCacheDir(_ sender: NSButton) {
+		cacheDirLabel.stringValue = ""
+	}
+	
 	
 	@IBAction func createRepo(_ sender: NSButton) {
 		
@@ -82,20 +96,28 @@ class RepoEditViewController: NSViewController {
 	
 	@IBAction func saveRepo(_ sender: NSButton) {
 		if let r = selectedRepo {
+			repoManager.remove(r)
 			r.path = pathField.stringValue
 			r.password = passwordField.stringValue
 		} else {
 			selectedRepo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
 		}
+		
 		if nameField.stringValue.count != 0 {
 			selectedRepo!.name = nameField.stringValue
+		} else {
+			selectedRepo!.name = nil
 		}
 		if cacheDirLabel.stringValue.count != 0 {
 			selectedRepo!.cacheDir = cacheDirLabel.stringValue
+		} else {
+			selectedRepo!.cacheDir = nil
 		}
 		// TODO: add env table.
 		
-		viewCon.ProfileEditor.addRepo(selectedRepo!)
+		repoManager.add(selectedRepo!)
+		selectedRepo = nil
+		dismiss(self)
 	}
 	
 	@objc func controlTextDidChange(_ sender: NSTextField) {
@@ -105,14 +127,4 @@ class RepoEditViewController: NSViewController {
 		testRepoButton.isEnabled = enable
 	}
 	
-	func rename(_ profile: Profile) {
-		// TODO: Implement
-	}
-	
-	func copy(_ profile: Profile) {
-		// TODO: Implement
-	}
-	
-	
 }
-

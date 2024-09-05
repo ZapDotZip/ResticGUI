@@ -9,6 +9,8 @@ import Cocoa
 class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
 	
 	@IBOutlet var ProfileEditor: ProfileEditor!
+	@IBOutlet var RepoManager: ReposManager!
+	@IBOutlet var repoEditButton: NSSegmentedControl!
 	
 	let profManager: ProfilesManager = {
 		return ProfilesManager.init()
@@ -28,9 +30,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		// view data setup
 		initSidebar(profManager.load())
 		ProfileEditor.viewDidLoad()
-		ProfileEditor.initRepoSelector()
 		// TODO: get last selected profile and select/load it.
-		
+		RepoManager.initUIView()
 	}
 	
 	override var representedObject: Any? {
@@ -45,7 +46,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			vc.viewCon = self
 		} else if segue.identifier == "RepoEdit" {
 			let vc = segue.destinationController as! RepoEditViewController
-			vc.viewCon = self
+			vc.repoManager = RepoManager
+			if let selectedRepo = sender as? Repo {
+				vc.selectedRepo = selectedRepo
+			}
 		} else {
 			NSLog("Error: segue \"\(segue.identifier ?? "nil")\" not properly set up!")
 		}
@@ -169,7 +173,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		} else if sender.selectedSegment == 0 {
 			self.performSegue(withIdentifier: "RepoEdit", sender: self)
 		} else {
-			self.performSegue(withIdentifier: "RepoEdit", sender: self)
+			self.performSegue(withIdentifier: "RepoEdit", sender: RepoManager.getSelectedRepo())
 		}
 	}
 

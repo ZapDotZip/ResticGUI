@@ -21,24 +21,6 @@ class ProfileEditor: NSView {
 	
 // MARK: Profile View Header (repo selector)
 	@IBOutlet var RepoSelector: NSPopUpButton!
-	var repos: [Repo] = []
-	
-	func initRepoSelector() {
-		if let reposdata = UserDefaults.standard.array(forKey: "Repos") {
-			repos.reserveCapacity(reposdata.count)
-			let decoder = PropertyListDecoder()
-			for i in reposdata {
-				if let d = try? decoder.decode(Repo.self, from: (i as! Data)) {
-					repos.append(d)
-					RepoSelector.addItem(withTitle: d.name ?? d.path)
-				}
-			}
-		}
-	}
-	
-	func addRepo(_ repo: Repo) {
-		
-	}
 	
 	
 	

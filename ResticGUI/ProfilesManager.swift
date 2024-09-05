@@ -55,7 +55,6 @@ class ProfilesManager {
 			return nil
 		}
 		
-		let decoder = PropertyListDecoder.init()
 		do {
 			let data = try Data.init(contentsOf: URL(string: filePath)!)
 			let p = try decoder.decode(Profile.self, from: data)
