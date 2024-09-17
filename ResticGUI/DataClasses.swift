@@ -10,7 +10,7 @@ final class Profile: Codable, Equatable {
 	var name: String
 	var selectedRepo: String?
 	var paths: [String] = []
-	var exclusions: [String] = []
+	var exclusions: String?
 	var exclusionsCS: Bool = true
 	var excludeCacheDirs: Bool = false
 	var excludeMaxFilesize: String?

@@ -122,6 +122,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 			reload()
 		}
 	}
+	
 	@IBAction func deletePath(_ sender: NSButton) {
 		for i in table.selectedRowIndexes.enumerated().reversed() {
 			selectedProfile?.paths.remove(at: i.element)

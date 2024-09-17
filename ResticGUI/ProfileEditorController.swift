@@ -6,7 +6,7 @@
 import Cocoa
 
 /// Controls the editor panel in the UI.
-class ProfileEditorController: NSView {
+class ProfileEditorController: NSView, NSTextViewDelegate {
 	
 	var viewCon: ViewController!
 	var repoManager: ReposManager!
@@ -31,14 +31,15 @@ class ProfileEditorController: NSView {
 		viewCon.view.window?.title = profile.name
 		selectedProfile = profile
 		BackupPathsDS.load(fromProfile: profile)
-		ExcludeTextView.string = profile.exclusions.joined(separator: "\n")
+		ExcludeTextView.string = profile.exclusions ?? ""
 		ExcludeCaseSensitive.state = profile.exclusionsCS ? .on : .off
 		ExcludeCacheDirs.state = profile.excludeCacheDirs ? .on : .off
 		if let val = profile.excludeMaxFilesize {
 			ExcludeFilesOver.state = .on
-			ExcludeFilesOver.stringValue = val
+			ExcludeFilesOverValue.stringValue = val
 		} else {
 			ExcludeFilesOver.state = .off
+			ExcludeFilesOverValue.stringValue = ""
 		}
 		
 		ExcludeTMDefault.state = profile.excludesTMDefault ? .on : .off
@@ -63,7 +64,9 @@ class ProfileEditorController: NSView {
 		
 	}
 	
-	
+	func setSelectedRepo(_ repo: String) {
+		selectedProfile?.selectedRepo = repo
+	}
 	
 	
 	
@@ -98,16 +101,93 @@ class ProfileEditorController: NSView {
 	@IBAction func ExcludeFilesOverChanged(_ sender: NSButton) {
 		if sender.state == .on {
 			ExcludeFilesOverValue.isEnabled = true
-			selectedProfile?.excludeMaxFilesize = ExcludeFilesOverValue.stringValue
+			ExcludeFilesOverValue.stringValue = selectedProfile?.excludeMaxFilesize ?? ""
+			ExcludeFilesOverValue.becomeFirstResponder()
 		} else {
 			ExcludeFilesOverValue.isEnabled = false
+			selectedProfile?.excludeMaxFilesize = nil
 		}
 	}
 	
+	@IBAction func ExcludeFilesOverValueChanged(_ sender: NSTextField) {
+		selectedProfile?.excludeMaxFilesize = sender.stringValue
+	}
 	
-	func setSelectedRepo(_ repo: String) {
-		selectedProfile?.selectedRepo = repo
+	
+	@IBAction func ExcludeCacheDirectoriesChanged(_ sender: NSButton) {
+		if sender.state == .on {
+			selectedProfile?.excludeCacheDirs = true
+		} else {
+			selectedProfile?.excludeCacheDirs = false
+		}
+	}
+	
+	@IBAction func ExcludeTMDefaultChanged(_ sender: NSButton) {
+		if sender.state == .on {
+			selectedProfile?.excludesTMDefault = true
+		} else {
+			selectedProfile?.excludesTMDefault = false
+		}
+	}
+	
+	@IBAction func ExcludeTMUserChanged(_ sender: NSButton) {
+		if sender.state == .on {
+			selectedProfile?.excludesTMUser = true
+		} else {
+			selectedProfile?.excludesTMUser = false
+		}
+	}
+	
+	@IBAction func setExcludeFile(_ sender: NSButton) {
+		let openPanel = NSOpenPanel()
+		openPanel.canChooseDirectories = false
+		openPanel.canChooseFiles = true
+		openPanel.allowsMultipleSelection = false
+		openPanel.canCreateDirectories = false
+		openPanel.message = "Select your exclude pattern file."
+		openPanel.prompt = "Select"
+		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
+			selectedProfile?.excludePatternFile = openPanel.urls[0].path
+			ExcludePatternFile.stringValue = openPanel.urls[0].path
+			
+		}
+	}
+	
+	@IBAction func ExcludePatternFileCSChanged(_ sender: NSButton) {
+		if sender.state == .on {
+			selectedProfile?.excludePatternFileCS = true
+		} else {
+			selectedProfile?.excludePatternFileCS = false
+		}
+	}
+	
+	@IBAction func CompressionChanged(_ sender: NSPopUpButton) {
+		if let type = sender.selectedItem?.title {
+			selectedProfile?.compression = type
+		}
 	}
 
+	@IBAction func ReadConcurrencyChanged(_ sender: NSTextField) {
+		if let val = Int(sender.stringValue) {
+			selectedProfile?.readConcurrency = val
+		}
+	}
+	
+	func textDidEndEditing(_ notification: Notification) {
+		selectedProfile?.exclusions = ExcludeTextView.string
+	}
+
+	
+	
+
     
+}
+
+final class NumbersTextField: NumberFormatter {
+	override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+		if let _ = UInt64(partialString) {
+			return true
+		}
+		return partialString.count == 0
+	}
 }

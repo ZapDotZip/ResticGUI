@@ -86,6 +86,8 @@ struct ProfileManager {
 				NSLog("Error saving Profile: \(error)")
 				Alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 			}
+		} else {
+			NSLog("Profile not saved because it was unmodified.")
 		}
 	}
 	

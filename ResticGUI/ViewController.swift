@@ -12,7 +12,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet var repoManager: ReposManager!
 	@IBOutlet var repoEditButton: NSSegmentedControl!
 	
-	private var appDel: AppDelegate!
+	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
 	
 	
 	
@@ -21,8 +21,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		// view itself setup
 		super.viewDidLoad()
 		self.view.window?.title = "ResticGUI"
-		
-		appDel = (NSApplication.shared.delegate as! AppDelegate)
 		
 		appDel.viewFinishedLoading(vc: self)
 		
@@ -81,7 +79,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	@IBAction func deleteProfile(_ sender: NSButton) {
-		print("delete")
 		if let p = selectedProfile {
 			let alertResponse = Alert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, buttons: ["Delete", "Cancel"])
 			if alertResponse == .alertFirstButtonReturn {
@@ -94,7 +91,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				}
 				outline.reloadData()
 			} else {
-				print("Delete cancelled")
+				NSLog("Delete cancelled")
 			}
 		} else {
 			NSLog("No profile selected to delete.")
@@ -161,6 +158,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	func outlineViewSelectionDidChange(_ notification: Notification) {
+		save()
 		if let selected = outline.item(atRow: outline.selectedRow) as? ProfileOrHeader {
 			if let p = selected.profile {
 				DeleteProfileButton.isEnabled = true
@@ -176,10 +174,15 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	@IBAction func saveProfile(_ sender: NSMenuItem) {
+	private func save() {
 		if let p = selectedProfile {
+			self.view.window?.makeFirstResponder(self) // removes control from text fields
 			ProfileManager.save(p)
 		}
+	}
+	
+	@IBAction func saveProfile(_ sender: NSMenuItem) {
+		save()
 	}
 	
 	@IBAction func newProfile(_ sender: NSMenuItem) {
@@ -188,7 +191,14 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	@IBAction func revertToSaved(_ sender: NSMenuItem) {
 		if let p = selectedProfile {
-			ProfileManager.load(name: p.name)
+			if let saved = ProfileManager.load(name: p.name) {
+				if let i = profiles.firstIndex(where: { (poh) -> Bool in
+					return poh.profile === selectedProfile
+				}) {
+					profiles[i].profile = saved
+					outline.reloadData()
+				}
+			}
 		}
 	}
 	
@@ -234,4 +244,6 @@ class NewProfileVC: NSViewController {
 			dismiss(self)
 		}
 	}
+	
+	
 }
