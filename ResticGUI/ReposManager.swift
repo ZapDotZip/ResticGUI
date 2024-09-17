@@ -11,27 +11,24 @@ class ReposManager: NSObject {
 	
 	@IBOutlet weak var RepoMenu: NSPopUpButton!
 	@IBOutlet weak var repoEditControl: NSSegmentedControl!
+	@IBOutlet weak var profileEditor: ProfileEditorController!
 	
 	let repolistFile: URL = {
 		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Repositories.plist", isDirectory: false)
 	}()
 	
-	let encoder = PropertyListEncoder.init()
+	private let encoder = PropertyListEncoder.init()
+	private let decoder = PropertyListDecoder.init()
 	
 	override init() {
 		super.init()
 		if FileManager.default.fileExists(atPath: repolistFile.path) {
-			let decoder = PropertyListDecoder.init()
+			
 			do {
 				repolist = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
-				let alert = NSAlert()
-				alert.messageText = "An error occured trying to load the list of repositories."
-				alert.informativeText = "\(error.localizedDescription)"
-				alert.alertStyle = .critical
-				alert.addButton(withTitle: "Ok")
-				alert.runModal()
+				Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 			}
 		}
 	}
@@ -60,12 +57,7 @@ class ReposManager: NSObject {
 			try data.write(to: repolistFile)
 		} catch {
 			NSLog("Error saving Profile: \(error)")
-			let alert = NSAlert()
-			alert.messageText = "An error occured trying to save repository list."
-			alert.informativeText = "\(error.localizedDescription)"
-			alert.alertStyle = .critical
-			alert.addButton(withTitle: "Ok")
-			alert.runModal()
+			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 		}
 	}
 	
@@ -75,7 +67,7 @@ class ReposManager: NSObject {
 		let name: String = repo.name ?? repo.path
 		repolist[name] = repo
 		fillMenu()
-		setSelectedItem(title: name)
+		setSelectedRepo(title: name)
 		save()
 	}
 	
@@ -95,9 +87,14 @@ class ReposManager: NSObject {
 		return repolist[RepoMenu.titleOfSelectedItem ?? ""]
 	}
 	
-	func setSelectedItem(title: String) {
+	func setSelectedRepo(title: String) {
 		RepoMenu.selectItem(withTitle: title)
 	}
+	
+	@IBAction func selectorDidChange(_ sender: NSPopUpButton) {
+		profileEditor.setSelectedRepo(sender.titleOfSelectedItem!)
+	}
+	
 	
 	
 }

@@ -8,13 +8,16 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
-	var viewCon: ViewController {
-		return NSApplication.shared.mainWindow?.contentViewController as! ViewController
-	}
+	private var viewCon: ViewController!
 	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
 		// Insert code here to initialize your application
+		
+	}
+	
+	func viewFinishedLoading(vc: ViewController) {
+		viewCon = vc
 	}
 	
 	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -22,9 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-		if NSApplication.shared.mainWindow?.isDocumentEdited ?? false {
-			viewCon.saveQuit()
-		}
+		viewCon.saveQuit()
 		return .terminateNow
 	}
 	
@@ -32,9 +33,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Insert code here to tear down your application
 	}
 	
-	@IBAction func save(_ sender: NSMenuItem) {
-		viewCon.saveSelectedProfile()
-	}
-	
 }
 
+@discardableResult
+func Alert(title: String, message: String, style: NSAlert.Style, buttons: [String]) -> NSApplication.ModalResponse {
+	let alert = NSAlert()
+	alert.messageText = title
+	alert.informativeText = message
+	alert.alertStyle = .critical
+	for btn in buttons {
+		alert.addButton(withTitle: btn)
+	}
+	return alert.runModal()
+}

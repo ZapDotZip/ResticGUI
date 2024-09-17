@@ -60,12 +60,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New" keyEquivalent="n" id="Was-JA-tGl">
+                                        <menuItem title="New Profile" keyEquivalent="n" id="Was-JA-tGl">
                                             <connections>
-                                                <action selector="newDocument:" target="Ady-hI-5gd" id="4Si-XN-c54"/>
+                                                <action selector="newProfile:" target="Ady-hI-5gd" id="6On-ZT-g57"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
+                                        <menuItem title="Open…" enabled="NO" keyEquivalent="o" id="IAo-SY-fd9">
                                             <connections>
                                                 <action selector="openDocument:" target="Ady-hI-5gd" id="bVn-NM-KNZ"/>
                                             </connections>
@@ -91,7 +91,7 @@
                                         </menuItem>
                                         <menuItem title="Save Profile" keyEquivalent="s" id="pxx-59-PXV">
                                             <connections>
-                                                <action selector="save:" target="Voe-Tx-rLC" id="Gwx-wp-69l"/>
+                                                <action selector="saveProfile:" target="Ady-hI-5gd" id="gKm-X8-S31"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Save As…" enabled="NO" keyEquivalent="s" id="Bw7-FT-i3A">
@@ -100,11 +100,7 @@
                                                 <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="mDf-zr-I0C"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Revert to Saved" keyEquivalent="r" id="KaW-ft-85H">
-                                            <connections>
-                                                <action selector="revertDocumentToSaved:" target="Ady-hI-5gd" id="iJ3-Pv-kwq"/>
-                                            </connections>
-                                        </menuItem>
+                                        <menuItem title="Revert to Saved" keyEquivalent="r" id="KaW-ft-85H"/>
                                         <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
                                         <menuItem title="Page Setup…" enabled="NO" keyEquivalent="P" id="qIS-W8-SiK">
                                             <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
@@ -680,20 +676,17 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="-457" y="476"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
+                <windowController showSeguePresentationStyle="single" id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="ResticGUI" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Main Window" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <connections>
-                            <outlet property="delegate" destination="B8D-0N-5wS" id="MS0-qL-3Yx"/>
-                        </connections>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -701,7 +694,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="74" y="267"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -828,7 +821,7 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                                 <connections>
-                                                    <segue destination="BkC-YG-4SH" kind="sheet" identifier="NewProfile" id="v29-J5-6NS"/>
+                                                    <segue destination="BkC-YG-4SH" kind="sheet" identifier="NewProfile" destinationCreationSelector="profileSegue:" id="v29-J5-6NS"/>
                                                 </connections>
                                             </button>
                                             <button toolTip="Delete Profile" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6RP-yk-0SW">
@@ -844,7 +837,7 @@
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                                 <connections>
-                                                    <action selector="deleteProfile:" target="XfG-lQ-9wD" id="umY-bc-dWq"/>
+                                                    <action selector="deleteProfile:" target="XfG-lQ-9wD" id="was-TW-4HR"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -859,7 +852,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditor" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="185" y="0.0" width="545" height="521"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
@@ -1340,6 +1333,9 @@
                                                     <font key="font" metaFont="menu"/>
                                                     <menu key="menu" id="Fwb-sH-DcC"/>
                                                 </popUpButtonCell>
+                                                <connections>
+                                                    <action selector="selectorDidChange:" target="S7I-Xn-HVk" id="tTF-3C-xA8"/>
+                                                </connections>
                                             </popUpButton>
                                             <segmentedControl horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="429" y="486" width="104" height="24"/>
@@ -1408,7 +1404,6 @@
                                             <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="0FA-Wa-DUX"/>
                                             <outlet property="PackSize" destination="DJl-hF-Ijv" id="Y30-pb-b72"/>
                                             <outlet property="ReadConcurrency" destination="JqB-3y-K0L" id="keE-8r-B0m"/>
-                                            <outlet property="RepoSelector" destination="TN6-dg-ymR" id="o0z-bm-zN0"/>
                                         </connections>
                                     </customView>
                                 </subviews>
@@ -1427,10 +1422,10 @@
                     </view>
                     <connections>
                         <outlet property="DeleteProfileButton" destination="6RP-yk-0SW" id="mCT-b4-G6b"/>
-                        <outlet property="ProfileEditor" destination="c99-ze-Uce" id="fNV-yl-rE1"/>
-                        <outlet property="RepoManager" destination="S7I-Xn-HVk" id="YTJ-Wo-JYe"/>
                         <outlet property="outline" destination="nN4-Bd-kyN" id="3Ui-kA-xcl"/>
+                        <outlet property="profileEditor" destination="c99-ze-Uce" id="fNV-yl-rE1"/>
                         <outlet property="repoEditButton" destination="6Ls-TL-A39" id="rGC-KL-JGe"/>
+                        <outlet property="repoManager" destination="S7I-Xn-HVk" id="YTJ-Wo-JYe"/>
                         <segue destination="E8d-iE-4P2" kind="sheet" identifier="RepoEdit" id="IuM-6R-rqv"/>
                     </connections>
                 </viewController>
@@ -1438,11 +1433,12 @@
                 <customObject id="S7I-Xn-HVk" customClass="ReposManager" customModule="ResticGUI" customModuleProvider="target">
                     <connections>
                         <outlet property="RepoMenu" destination="TN6-dg-ymR" id="Jcw-d5-FrB"/>
+                        <outlet property="profileEditor" destination="c99-ze-Uce" id="Dnu-XG-JFh"/>
                         <outlet property="repoEditControl" destination="6Ls-TL-A39" id="LBg-en-SuV"/>
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="231" y="802.5"/>
+            <point key="canvasLocation" x="74" y="888"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mQo-6I-SN3">
@@ -1577,7 +1573,7 @@ Gw
                 </viewController>
                 <customObject id="DC4-8A-Auw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-318.5" y="1266"/>
+            <point key="canvasLocation" x="-352" y="1324"/>
         </scene>
         <!--Repo Edit View Controller-->
         <scene sceneID="Ds7-x8-iE3">

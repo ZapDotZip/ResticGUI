@@ -5,20 +5,21 @@
 
 import Cocoa
 
-class ProfilesManager {
-	let PROFILE_EXT = "plist"
-	let PROFILE_EXT_DOT = ".plist"
+/// Loads and saves profiles.
+struct ProfileManager {
+	private static let PROFILE_EXT = "plist"
+	private static let PROFILE_EXT_DOT = ".plist"
 	
-	let profileDir: URL = {
+	private static let profileDir: URL = {
 		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Profiles", isDirectory: true)
 	}()
 	
-	let encoder = PropertyListEncoder.init()
-	let decoder = PropertyListDecoder.init()
+	private static let encoder = PropertyListEncoder.init()
+	private static let decoder = PropertyListDecoder.init()
 	
 	/// Loads all saved profiles and returns an array of Profiles.
 	/// - Returns: an array of profiles, empty if there are none.
-	func load() -> [Profile] {
+	static func load() -> [Profile] {
 		if !FileManager.default.fileExists(atPath: profileDir.path) {
 			return []
 		}
@@ -33,12 +34,7 @@ class ProfilesManager {
 						profiles.append(p)
 					} catch {
 						NSLog("Error loading profile: \(error)")
-						let alert = NSAlert()
-						alert.messageText = "An error occured trying to load the saved profile \"\(i.lastPathComponent)\"."
-						alert.informativeText = "\(error.localizedDescription)"
-						alert.alertStyle = .critical
-						alert.addButton(withTitle: "Ok")
-						alert.runModal()
+						Alert(title: "An error occured trying to load the saved profile \"\(i.lastPathComponent)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 					}
 				}
 			}
@@ -46,17 +42,21 @@ class ProfilesManager {
 		return profiles
 	}
 	
+	private static func getProfilePath(_ name: String) -> URL {
+		return profileDir.appendingPathComponent(name + PROFILE_EXT_DOT)
+	}
+	
 	/// Loads a single profile with the specified name, if it exists.
 	/// - Parameter name: the name of the profile
 	/// - Returns: the Profile if found, otherwise nil.
-	func load(name: String) -> Profile? {
-		let filePath = profileDir.appendingPathComponent(name + PROFILE_EXT_DOT).path
-		if !FileManager.default.fileExists(atPath: filePath) {
+	static func load(name: String) -> Profile? {
+		let filePath: URL = getProfilePath(name)
+		if !FileManager.default.fileExists(atPath: filePath.path) {
 			return nil
 		}
 		
 		do {
-			let data = try Data.init(contentsOf: URL(string: filePath)!)
+			let data = try Data.init(contentsOf: filePath)
 			let p = try decoder.decode(Profile.self, from: data)
 			return p
 		} catch {
@@ -67,36 +67,37 @@ class ProfilesManager {
 
 	/// Saves the provided profile, overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
-	func save(profile: Profile) {
+	static func save(_ profile: Profile) {
 		if !FileManager.default.fileExists(atPath: profileDir.path) {
 			do {
 				try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
 			} catch {
 				NSLog("Error creating Profiles directory: \(error)")
-				let alert = NSAlert()
-				alert.messageText = "An error occured trying to create the Profiles directory."
-				alert.informativeText = "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)"
-				alert.alertStyle = .critical
-				alert.addButton(withTitle: "Ok")
-				alert.runModal()
-				NSApplication.shared.terminate(nil)
+				Alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
 			}
 		}
 		
 		if profile != load(name: profile.name) {
-			let filePath = profileDir.appendingPathComponent(profile.name + PROFILE_EXT_DOT)
+			let filePath = getProfilePath(profile.name)
 			do {
 				let data = try encoder.encode(profile)
 				try data.write(to: filePath)
 			} catch {
 				NSLog("Error saving Profile: \(error)")
-				let alert = NSAlert()
-				alert.messageText = "An error occured trying to save the Profile \"\(profile.name)\"."
-				alert.informativeText = "\(error.localizedDescription)"
-				alert.alertStyle = .critical
-				alert.addButton(withTitle: "Ok")
-				alert.runModal()
+				Alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 			}
+		}
+	}
+	
+	static func delete(_ profile: Profile) {
+		let filePath = getProfilePath(profile.name)
+		if FileManager.default.fileExists(atPath: filePath.path) {
+			do {
+				try FileManager.default.trashItem(at: filePath, resultingItemURL: nil)
+			} catch {
+				
+			}
+			
 		}
 	}
 	

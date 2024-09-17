@@ -8,13 +8,12 @@ import Cocoa
 
 class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
 	
-	@IBOutlet var ProfileEditor: ProfileEditor!
-	@IBOutlet var RepoManager: ReposManager!
+	@IBOutlet var profileEditor: ProfileEditorController!
+	@IBOutlet var repoManager: ReposManager!
 	@IBOutlet var repoEditButton: NSSegmentedControl!
 	
-	let profManager: ProfilesManager = {
-		return ProfilesManager.init()
-	}()
+	private var appDel: AppDelegate!
+	
 	
 	
 // MARK: ViewController functionality
@@ -22,16 +21,21 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		// view itself setup
 		super.viewDidLoad()
 		self.view.window?.title = "ResticGUI"
-		ProfileEditor.viewCon = self
-		ProfileEditor.profManager = profManager
+		
+		appDel = (NSApplication.shared.delegate as! AppDelegate)
+		
+		appDel.viewFinishedLoading(vc: self)
+		
+		profileEditor.viewCon = self
+		profileEditor.repoManager = repoManager
 		profiles.append(ProfileOrHeader.init(header: "Profiles"))
 		DeleteProfileButton.isEnabled = false
 		
 		// view data setup
-		initSidebar(profManager.load())
-		ProfileEditor.viewDidLoad()
+		initSidebar(ProfileManager.load())
+		profileEditor.viewDidLoad()
 		// TODO: get last selected profile and select/load it.
-		RepoManager.initUIView()
+		repoManager.initUIView()
 	}
 	
 	override var representedObject: Any? {
@@ -46,7 +50,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			vc.viewCon = self
 		} else if segue.identifier == "RepoEdit" {
 			let vc = segue.destinationController as! RepoEditViewController
-			vc.repoManager = RepoManager
+			vc.repoManager = repoManager
 			if let selectedRepo = sender as? Repo {
 				vc.selectedRepo = selectedRepo
 			}
@@ -55,15 +59,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	
-	func modified() {
-		NSApplication.shared.mainWindow?.windowController?.setDocumentEdited(true)
-		
-	}
-	
 	func saveQuit() {
-		if let prof = selectedProfile {
-			profManager.save(profile: prof)
+		if let profile = selectedProfile {
+			ProfileManager.save(profile)
+		} else {
+			NSLog("No profile selected to save.")
 		}
 	}
 	
@@ -77,11 +77,28 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	func newProfile(name: String) {
 		let new = Profile.init(name: name)
 		append(profile: new)
-		profManager.save(profile: new)
+		ProfileManager.save(new)
 	}
 	
-	@IBAction func deleteProfile(_ sender: Any) {
-		
+	@IBAction func deleteProfile(_ sender: NSButton) {
+		print("delete")
+		if let p = selectedProfile {
+			let alertResponse = Alert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, buttons: ["Delete", "Cancel"])
+			if alertResponse == .alertFirstButtonReturn {
+				ProfileManager.delete(p)
+				profiles = profiles.filter { (poh) -> Bool in
+					if let p = poh.profile {
+						return p == selectedProfile
+					}
+					return false
+				}
+				outline.reloadData()
+			} else {
+				print("Delete cancelled")
+			}
+		} else {
+			NSLog("No profile selected to delete.")
+		}
 	}
 	
 	func editProfileName(_ sender: NSTextField) {
@@ -145,12 +162,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	func outlineViewSelectionDidChange(_ notification: Notification) {
 		if let selected = outline.item(atRow: outline.selectedRow) as? ProfileOrHeader {
-			if selected.isHeader {
+			if let p = selected.profile {
+				DeleteProfileButton.isEnabled = true
+				profileEditor.setupMainEditorView(profile: p)
+				selectedProfile = p
+			} else {
 				DeleteProfileButton.isEnabled = false
 				self.view.window?.title = "ResticGUI"
-			} else {
-				DeleteProfileButton.isEnabled = true
-				ProfileEditor.setupMainEditorView(profile: selected.profile!)
 			}
 		} else {
 			DeleteProfileButton.isEnabled = false
@@ -158,13 +176,21 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	func saveSelectedProfile() {
+	@IBAction func saveProfile(_ sender: NSMenuItem) {
 		if let p = selectedProfile {
-			profManager.save(profile: p)
-		NSApplication.shared.mainWindow?.windowController?.setDocumentEdited(false)
+			ProfileManager.save(p)
 		}
 	}
 	
+	@IBAction func newProfile(_ sender: NSMenuItem) {
+		performSegue(withIdentifier: "NewProfile", sender: sender)
+	}
+	
+	@IBAction func revertToSaved(_ sender: NSMenuItem) {
+		if let p = selectedProfile {
+			ProfileManager.load(name: p.name)
+		}
+	}
 	
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
@@ -173,7 +199,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		} else if sender.selectedSegment == 0 {
 			self.performSegue(withIdentifier: "RepoEdit", sender: self)
 		} else {
-			self.performSegue(withIdentifier: "RepoEdit", sender: RepoManager.getSelectedRepo())
+			self.performSegue(withIdentifier: "RepoEdit", sender: repoManager.getSelectedRepo())
 		}
 	}
 

@@ -5,10 +5,11 @@
 
 import Cocoa
 
-class ProfileEditor: NSView {
+/// Controls the editor panel in the UI.
+class ProfileEditorController: NSView {
 	
 	var viewCon: ViewController!
-	var profManager: ProfilesManager!
+	var repoManager: ReposManager!
 	
 	func viewDidLoad() {
 		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
@@ -19,18 +20,13 @@ class ProfileEditor: NSView {
 	var selectedProfile: Profile?
 	
 	
-// MARK: Profile View Header (repo selector)
-	@IBOutlet var RepoSelector: NSPopUpButton!
-	
-	
-	
 // MARK: Profile Tabs: setup
 	/// Configures the UI based off the provided profile. Saves the existing profile if selected and modified.
 	/// - Parameter profile: The profile to load.
 	func setupMainEditorView(profile: Profile) {
 		// save the existing profile if it has been modified
 		if let prof = selectedProfile {
-			profManager.save(profile: prof)
+			ProfileManager.save(prof)
 		}
 		viewCon.view.window?.title = profile.name
 		selectedProfile = profile
@@ -60,11 +56,12 @@ class ProfileEditor: NSView {
 		} else {
 			PackSize.stringValue = ""
 		}
-		
+		if let selectedRepo = profile.selectedRepo {
+			repoManager.setSelectedRepo(title: selectedRepo)
+		}
 		
 		
 	}
-	
 	
 	
 	
@@ -105,6 +102,11 @@ class ProfileEditor: NSView {
 		} else {
 			ExcludeFilesOverValue.isEnabled = false
 		}
+	}
+	
+	
+	func setSelectedRepo(_ repo: String) {
+		selectedProfile?.selectedRepo = repo
 	}
 
     
