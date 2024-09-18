@@ -91,7 +91,7 @@
                                         </menuItem>
                                         <menuItem title="Save Profile" keyEquivalent="s" id="pxx-59-PXV">
                                             <connections>
-                                                <action selector="saveProfile:" target="Ady-hI-5gd" id="gKm-X8-S31"/>
+                                                <action selector="saveProfile:" target="Ady-hI-5gd" id="muH-AR-kbM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Save As…" enabled="NO" keyEquivalent="s" id="Bw7-FT-i3A">
@@ -1194,6 +1194,9 @@
                                                                             </items>
                                                                         </menu>
                                                                     </popUpButtonCell>
+                                                                    <connections>
+                                                                        <action selector="CompressionChanged:" target="c99-ze-Uce" id="W0A-bg-0si"/>
+                                                                    </connections>
                                                                 </popUpButton>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u9k-7M-Jhv">
                                                                     <rect key="frame" x="14" y="39" width="120" height="15"/>
@@ -1238,6 +1241,7 @@
                                                                         <constraint firstAttribute="height" constant="21" id="hq7-hF-3mz"/>
                                                                     </constraints>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="16MiB" drawsBackground="YES" id="ZDP-2k-MwX">
+                                                                        <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="fAm-jc-YiA" customClass="NumbersTextField" customModule="ResticGUI" customModuleProvider="target"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1245,19 +1249,32 @@
                                                                             <outlet property="formatter" destination="fAm-jc-YiA" id="uRr-NL-nlJ"/>
                                                                         </connections>
                                                                     </textFieldCell>
+                                                                    <connections>
+                                                                        <action selector="PackSizeChanged:" target="c99-ze-Uce" id="wfY-5t-C74"/>
+                                                                    </connections>
                                                                 </textField>
                                                                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ou3-Qe-taC">
                                                                     <rect key="frame" x="184" y="6" width="19" height="27"/>
                                                                     <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="5PQ-c5-FMI"/>
                                                                 </stepper>
-                                                                <textField horizontalHuggingPriority="100" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LbG-3p-FKz">
-                                                                    <rect key="frame" x="14" y="103" width="486" height="16"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="Ot7-XI-618">
+                                                                <textField horizontalHuggingPriority="100" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="LbG-3p-FKz">
+                                                                    <rect key="frame" x="14" y="103" width="480" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="No Exclude Pattern File Selected" id="Ot7-XI-618">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
+                                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5RH-Id-oa6">
+                                                                    <rect key="frame" x="496" y="104" width="14" height="14"/>
+                                                                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="hNJ-AQ-Faa">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                        <font key="font" metaFont="system"/>
+                                                                    </buttonCell>
+                                                                    <connections>
+                                                                        <action selector="removeExcludeFile:" target="c99-ze-Uce" id="Fft-Ha-g4P"/>
+                                                                    </connections>
+                                                                </button>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="JqB-3y-K0L" firstAttribute="leading" secondItem="u9k-7M-Jhv" secondAttribute="trailing" constant="8" id="1je-vZ-9gx"/>
@@ -1279,8 +1296,8 @@
                                                                 <constraint firstItem="1CY-0N-dcr" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" id="BqG-XR-PKy"/>
                                                                 <constraint firstAttribute="trailing" secondItem="T6s-gH-n91" secondAttribute="trailing" constant="16" id="CYc-ma-fH5"/>
                                                                 <constraint firstItem="DWF-GC-Wgb" firstAttribute="leading" secondItem="JqB-3y-K0L" secondAttribute="trailing" constant="3" id="FTX-nM-GmV"/>
+                                                                <constraint firstItem="5RH-Id-oa6" firstAttribute="centerY" secondItem="LbG-3p-FKz" secondAttribute="centerY" id="FmS-cZ-kF0"/>
                                                                 <constraint firstItem="fM8-GB-TgT" firstAttribute="firstBaseline" secondItem="T6s-gH-n91" secondAttribute="firstBaseline" id="FuJ-V1-1oL"/>
-                                                                <constraint firstAttribute="trailing" secondItem="LbG-3p-FKz" secondAttribute="trailing" constant="16" id="Fxb-ZI-5ZI"/>
                                                                 <constraint firstAttribute="trailing" secondItem="LLA-O8-ExL" secondAttribute="trailing" constant="30" id="G1z-hs-qYW"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Ou3-Qe-taC" secondAttribute="bottom" constant="8" id="GAT-1d-uRa"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bh1-J4-fjG" secondAttribute="trailing" constant="16" id="KbN-Sk-EhU"/>
@@ -1313,11 +1330,13 @@
                                                                 <constraint firstItem="UbQ-zx-q0h" firstAttribute="leading" secondItem="Msk-1X-0UL" secondAttribute="trailing" constant="2" id="nbb-iQ-60H"/>
                                                                 <constraint firstItem="tAt-oj-zgA" firstAttribute="top" secondItem="1CY-0N-dcr" secondAttribute="bottom" constant="9" id="pSN-L4-awR"/>
                                                                 <constraint firstItem="HUZ-xu-71e" firstAttribute="baseline" secondItem="LLA-O8-ExL" secondAttribute="firstBaseline" id="qq2-MZ-Rzn"/>
+                                                                <constraint firstAttribute="trailing" secondItem="5RH-Id-oa6" secondAttribute="trailing" constant="4" id="rTH-lJ-7pg"/>
                                                                 <constraint firstItem="u9k-7M-Jhv" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" constant="16" id="rj2-5b-qSp"/>
                                                                 <constraint firstItem="am1-jG-hoC" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" constant="16" id="siG-m4-8Dy"/>
                                                                 <constraint firstItem="Ou3-Qe-taC" firstAttribute="centerY" secondItem="DJl-hF-Ijv" secondAttribute="centerY" id="swu-wH-ue1"/>
                                                                 <constraint firstItem="LbG-3p-FKz" firstAttribute="leading" secondItem="ZmO-L8-GnV" secondAttribute="leading" constant="16" id="tK4-Rm-cs7"/>
                                                                 <constraint firstItem="UbQ-zx-q0h" firstAttribute="centerY" secondItem="Msk-1X-0UL" secondAttribute="centerY" id="ufL-Qp-vDO"/>
+                                                                <constraint firstItem="5RH-Id-oa6" firstAttribute="leading" secondItem="LbG-3p-FKz" secondAttribute="trailing" constant="4" id="v55-76-dxA"/>
                                                                 <constraint firstItem="fM8-GB-TgT" firstAttribute="centerY" secondItem="NXo-8A-zYx" secondAttribute="centerY" id="vDr-qF-zNK"/>
                                                                 <constraint firstItem="JqB-3y-K0L" firstAttribute="leading" secondItem="u9k-7M-Jhv" secondAttribute="trailing" constant="8" id="vTI-MA-UT4"/>
                                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tAt-oj-zgA" secondAttribute="trailing" constant="20" symbolic="YES" id="wyR-Bm-mha"/>
@@ -1432,6 +1451,7 @@
                                             <outlet property="ExcludeFilesOverValue" destination="UbQ-zx-q0h" id="7O7-3x-N2K"/>
                                             <outlet property="ExcludePatternFile" destination="LbG-3p-FKz" id="7zE-Dx-j0S"/>
                                             <outlet property="ExcludePatternFileCS" destination="Bh1-J4-fjG" id="aYE-cq-4oF"/>
+                                            <outlet property="ExcludePatternFileClearButton" destination="5RH-Id-oa6" id="gPD-ph-oNo"/>
                                             <outlet property="ExcludeTMDefault" destination="HUZ-xu-71e" id="PeN-27-8Io"/>
                                             <outlet property="ExcludeTMUser" destination="LLA-O8-ExL" id="6YD-4d-EPr"/>
                                             <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="0FA-Wa-DUX"/>
@@ -1470,9 +1490,8 @@
                         <outlet property="repoEditControl" destination="6Ls-TL-A39" id="LBg-en-SuV"/>
                     </connections>
                 </customObject>
-                <numberFormatter formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="fAm-jc-YiA" customClass="NumbersTextField" customModule="ResticGUI" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="74" y="888"/>
+            <point key="canvasLocation" x="74" y="887.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mQo-6I-SN3">

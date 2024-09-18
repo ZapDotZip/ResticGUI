@@ -45,6 +45,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 		ExcludeTMDefault.state = profile.excludesTMDefault ? .on : .off
 		ExcludeTMUser.state = profile.excludesTMUser ? .on : .off
 		ExcludePatternFile.stringValue = profile.excludePatternFile ?? ""
+		ExcludePatternFileClearButton.isEnabled = ExcludePatternFile.stringValue.count != 0
 		ExcludePatternFileCS.state = profile.excludePatternFileCS ? .on : .off
 		Compression.selectItem(withTitle: profile.compression ?? "auto")
 		if let val = profile.readConcurrency {
@@ -83,6 +84,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	@IBOutlet var ExcludeFilesOver: NSButton!
 	@IBOutlet var ExcludeFilesOverValue: NSTextField!
 	@IBOutlet var ExcludePatternFile: NSTextField!
+	@IBOutlet var ExcludePatternFileClearButton: NSButton!
 	@IBOutlet var ExcludePatternFileCS: NSButton!
 	@IBOutlet var Compression: NSPopUpButton!
 	@IBOutlet var ReadConcurrency: NSTextField!
@@ -149,8 +151,14 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
 			selectedProfile?.excludePatternFile = openPanel.urls[0].path
 			ExcludePatternFile.stringValue = openPanel.urls[0].path
-			
+			ExcludePatternFileClearButton.isEnabled = true
 		}
+	}
+	
+	@IBAction func removeExcludeFile(_ sender: NSButton) {
+		ExcludePatternFile.stringValue = ""
+		selectedProfile?.excludePatternFile = nil
+		ExcludePatternFileClearButton.isEnabled = false
 	}
 	
 	@IBAction func ExcludePatternFileCSChanged(_ sender: NSButton) {
@@ -170,6 +178,16 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	@IBAction func ReadConcurrencyChanged(_ sender: NSTextField) {
 		if let val = Int(sender.stringValue) {
 			selectedProfile?.readConcurrency = val
+		} else if sender.stringValue.count == 0 {
+			selectedProfile?.readConcurrency = nil
+		}
+	}
+	
+	@IBAction func PackSizeChanged(_ sender: NSTextField) {
+		if let val = Int(sender.stringValue) {
+			selectedProfile?.packSize = val
+		} else if sender.stringValue.count == 0 {
+			selectedProfile?.packSize = nil
 		}
 	}
 	

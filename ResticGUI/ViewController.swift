@@ -176,12 +176,12 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	private func save() {
 		if let p = selectedProfile {
-			self.view.window?.makeFirstResponder(self) // removes control from text fields
 			ProfileManager.save(p)
 		}
 	}
 	
 	@IBAction func saveProfile(_ sender: NSMenuItem) {
+		self.view.window?.makeFirstResponder(self) // removes control from text fields
 		save()
 	}
 	
