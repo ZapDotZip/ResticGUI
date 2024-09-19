@@ -39,6 +39,7 @@ struct ProfileManager {
 				}
 			}
 		}
+		profiles.sort { $0.name < $1.name }
 		return profiles
 	}
 	
@@ -97,7 +98,11 @@ struct ProfileManager {
 			do {
 				try FileManager.default.trashItem(at: filePath, resultingItemURL: nil)
 			} catch {
-				
+				NSLog("Error deleting profile: \(error)")
+				let res = Alert(title: "Unable to delete profile.", message: "Couldn't delete the profile \(profile.name)\n\n\(error.localizedDescription)", style: .warning, buttons: ["Retry", "Cancel"])
+				if res == .alertFirstButtonReturn {
+					delete(profile)
+				}
 			}
 			
 		}

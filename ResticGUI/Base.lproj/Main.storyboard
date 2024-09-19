@@ -1353,6 +1353,9 @@
                                                         </view>
                                                     </tabViewItem>
                                                 </tabViewItems>
+                                                <connections>
+                                                    <outlet property="delegate" destination="c99-ze-Uce" id="Hxx-u0-4lt"/>
+                                                </connections>
                                             </tabView>
                                             <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Uvc-3d-UVP">
                                                 <rect key="frame" x="16" y="12" width="100" height="20"/>
@@ -1457,6 +1460,7 @@
                                             <outlet property="ExcludeTextView" destination="NMX-2X-1oj" id="0FA-Wa-DUX"/>
                                             <outlet property="PackSize" destination="DJl-hF-Ijv" id="Y30-pb-b72"/>
                                             <outlet property="ReadConcurrency" destination="JqB-3y-K0L" id="keE-8r-B0m"/>
+                                            <outlet property="TabView" destination="O0D-t8-hRL" id="lrN-h7-T7h"/>
                                         </connections>
                                     </customView>
                                 </subviews>

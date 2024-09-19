@@ -26,14 +26,35 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		
 		profileEditor.viewCon = self
 		profileEditor.repoManager = repoManager
-		profiles.append(ProfileOrHeader.init(header: "Profiles"))
+		profileSidebarList.append(ProfileOrHeader.init(header: "Profiles"))
 		DeleteProfileButton.isEnabled = false
 		
 		// view data setup
 		initSidebar(ProfileManager.load())
 		profileEditor.viewDidLoad()
-		// TODO: get last selected profile and select/load it.
 		repoManager.initUIView()
+		if let s = UserDefaults.standard.string(forKey: "LastSelectedProfile") {
+			selectedProfile = ProfileManager.load(name: s)
+			if let p = selectedProfile {
+				outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(p.name) ?? 1), byExtendingSelection: false)
+			}
+		}
+		
+	}
+	
+	override func viewDidAppear() {
+		if profileSidebarList.count == 1 {
+			performSegue(withIdentifier: "NewProfile", sender: self)
+		}
+	}
+	
+	func indexOfProfile(_ name: String) -> Int? {
+		for (idx, poh) in profileSidebarList.enumerated() {
+			if poh.profile?.name == name {
+				return idx
+			}
+		}
+		return nil
 	}
 	
 	override var representedObject: Any? {
@@ -76,20 +97,31 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		let new = Profile.init(name: name)
 		append(profile: new)
 		ProfileManager.save(new)
+		outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(new.name) ?? 1), byExtendingSelection: false)
 	}
 	
 	@IBAction func deleteProfile(_ sender: NSButton) {
 		if let p = selectedProfile {
+			var index = (indexOfProfile(p.name) ?? 0) - 1
+			if index <= 0 {
+				index = 1
+			}
 			let alertResponse = Alert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, buttons: ["Delete", "Cancel"])
 			if alertResponse == .alertFirstButtonReturn {
 				ProfileManager.delete(p)
-				profiles = profiles.filter { (poh) -> Bool in
+				profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
 					if let p = poh.profile {
-						return p == selectedProfile
+						return p != selectedProfile
 					}
-					return false
+					return true
 				}
 				outline.reloadData()
+				selectedProfile = nil
+				if profileSidebarList.count == 1 {
+					performSegue(withIdentifier: "NewProfile", sender: sender)
+				} else {
+					outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
+				}
 			} else {
 				NSLog("Delete cancelled")
 			}
@@ -107,23 +139,29 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 // OutlineDataSource
-	var profiles: [ProfileOrHeader] = []
+	var profileSidebarList: [ProfileOrHeader] = []
 	
 	func append(profile: Profile) {
-		profiles.append(ProfileOrHeader.init(profile: profile))
+		profileSidebarList.append(ProfileOrHeader.init(profile: profile))
+		profileSidebarList.sort { (a, b) -> Bool in
+			if let ap = a.profile, let bp = b.profile {
+				return ap.name < bp.name
+			}
+			return false
+		}
 		outline.reloadData()
 	}
 	
 	func initSidebar(_ newProfiles: [Profile]) {
-		profiles.reserveCapacity(profiles.count + newProfiles.count)
+		profileSidebarList.reserveCapacity(profileSidebarList.count + newProfiles.count)
 		for i in newProfiles {
-			profiles.append(ProfileOrHeader.init(profile: i))
+			profileSidebarList.append(ProfileOrHeader.init(profile: i))
 		}
 		outline.reloadData()
 	}
 	
 	func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-		profiles[index]
+		profileSidebarList[index]
 	}
 	
 	func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
@@ -131,7 +169,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-		profiles.count
+		profileSidebarList.count
 	}
 	
 // OutlineDelegate
@@ -164,6 +202,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				DeleteProfileButton.isEnabled = true
 				profileEditor.setupMainEditorView(profile: p)
 				selectedProfile = p
+				UserDefaults.standard.set(p.name, forKey: "LastSelectedProfile")
 			} else {
 				DeleteProfileButton.isEnabled = false
 				self.view.window?.title = "ResticGUI"
@@ -192,10 +231,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func revertToSaved(_ sender: NSMenuItem) {
 		if let p = selectedProfile {
 			if let saved = ProfileManager.load(name: p.name) {
-				if let i = profiles.firstIndex(where: { (poh) -> Bool in
+				if let i = profileSidebarList.firstIndex(where: { (poh) -> Bool in
 					return poh.profile === selectedProfile
 				}) {
-					profiles[i].profile = saved
+					profileSidebarList[i].profile = saved
 					outline.reloadData()
 				}
 			}

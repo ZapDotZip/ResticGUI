@@ -6,18 +6,28 @@
 import Cocoa
 
 /// Controls the editor panel in the UI.
-class ProfileEditorController: NSView, NSTextViewDelegate {
+class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	
+	@IBOutlet var TabView: NSTabView!
 	var viewCon: ViewController!
 	var repoManager: ReposManager!
 	
 	func viewDidLoad() {
 		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
 		BackupPathsDS.viewCon = viewCon
+		TabView.selectTabViewItem(at: UserDefaults.standard.integer(forKey: "ProfileEditorTabIndex"))
+	}
+	
+	func tabView(_ tabView: NSTabView, didSelect tabViewItem: NSTabViewItem?) {
+		for (i, tvi) in TabView.tabViewItems.enumerated() {
+			if tvi == tabViewItem {
+				UserDefaults.standard.set(i, forKey: "ProfileEditorTabIndex")
+				break
+			}
+		}
 	}
 	
 	@IBOutlet var BackupPathsDS: BackupPathsDataSource!
-	var selectedProfile: Profile?
 	
 	
 // MARK: Profile Tabs: setup
@@ -25,11 +35,11 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	/// - Parameter profile: The profile to load.
 	func setupMainEditorView(profile: Profile) {
 		// save the existing profile if it has been modified
-		if let prof = selectedProfile {
+		if let prof = viewCon.selectedProfile {
 			ProfileManager.save(prof)
 		}
 		viewCon.view.window?.title = profile.name
-		selectedProfile = profile
+		viewCon.selectedProfile = profile
 		BackupPathsDS.load(fromProfile: profile)
 		ExcludeTextView.string = profile.exclusions ?? ""
 		ExcludeCaseSensitive.state = profile.exclusionsCS ? .on : .off
@@ -66,7 +76,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	}
 	
 	func setSelectedRepo(_ repo: String) {
-		selectedProfile?.selectedRepo = repo
+		viewCon.selectedProfile?.selectedRepo = repo
 	}
 	
 	
@@ -93,9 +103,9 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	
 	@IBAction func ExcludeCaseSensitiveChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.exclusionsCS = true
+			viewCon.selectedProfile?.exclusionsCS = true
 		} else {
-			selectedProfile?.exclusionsCS = false
+			viewCon.selectedProfile?.exclusionsCS = false
 		}
 		
 	}
@@ -103,40 +113,40 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	@IBAction func ExcludeFilesOverChanged(_ sender: NSButton) {
 		if sender.state == .on {
 			ExcludeFilesOverValue.isEnabled = true
-			ExcludeFilesOverValue.stringValue = selectedProfile?.excludeMaxFilesize ?? ""
+			ExcludeFilesOverValue.stringValue = viewCon.selectedProfile?.excludeMaxFilesize ?? ""
 			ExcludeFilesOverValue.becomeFirstResponder()
 		} else {
 			ExcludeFilesOverValue.isEnabled = false
-			selectedProfile?.excludeMaxFilesize = nil
+			viewCon.selectedProfile?.excludeMaxFilesize = nil
 		}
 	}
 	
 	@IBAction func ExcludeFilesOverValueChanged(_ sender: NSTextField) {
-		selectedProfile?.excludeMaxFilesize = sender.stringValue
+		viewCon.selectedProfile?.excludeMaxFilesize = sender.stringValue
 	}
 	
 	
 	@IBAction func ExcludeCacheDirectoriesChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.excludeCacheDirs = true
+			viewCon.selectedProfile?.excludeCacheDirs = true
 		} else {
-			selectedProfile?.excludeCacheDirs = false
+			viewCon.selectedProfile?.excludeCacheDirs = false
 		}
 	}
 	
 	@IBAction func ExcludeTMDefaultChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.excludesTMDefault = true
+			viewCon.selectedProfile?.excludesTMDefault = true
 		} else {
-			selectedProfile?.excludesTMDefault = false
+			viewCon.selectedProfile?.excludesTMDefault = false
 		}
 	}
 	
 	@IBAction func ExcludeTMUserChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.excludesTMUser = true
+			viewCon.selectedProfile?.excludesTMUser = true
 		} else {
-			selectedProfile?.excludesTMUser = false
+			viewCon.selectedProfile?.excludesTMUser = false
 		}
 	}
 	
@@ -149,7 +159,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 		openPanel.message = "Select your exclude pattern file."
 		openPanel.prompt = "Select"
 		if openPanel.runModal() == NSApplication.ModalResponse.OK, openPanel.urls.count != 0 {
-			selectedProfile?.excludePatternFile = openPanel.urls[0].path
+			viewCon.selectedProfile?.excludePatternFile = openPanel.urls[0].path
 			ExcludePatternFile.stringValue = openPanel.urls[0].path
 			ExcludePatternFileClearButton.isEnabled = true
 		}
@@ -157,42 +167,42 @@ class ProfileEditorController: NSView, NSTextViewDelegate {
 	
 	@IBAction func removeExcludeFile(_ sender: NSButton) {
 		ExcludePatternFile.stringValue = ""
-		selectedProfile?.excludePatternFile = nil
+		viewCon.selectedProfile?.excludePatternFile = nil
 		ExcludePatternFileClearButton.isEnabled = false
 	}
 	
 	@IBAction func ExcludePatternFileCSChanged(_ sender: NSButton) {
 		if sender.state == .on {
-			selectedProfile?.excludePatternFileCS = true
+			viewCon.selectedProfile?.excludePatternFileCS = true
 		} else {
-			selectedProfile?.excludePatternFileCS = false
+			viewCon.selectedProfile?.excludePatternFileCS = false
 		}
 	}
 	
 	@IBAction func CompressionChanged(_ sender: NSPopUpButton) {
 		if let type = sender.selectedItem?.title {
-			selectedProfile?.compression = type
+			viewCon.selectedProfile?.compression = type
 		}
 	}
 
 	@IBAction func ReadConcurrencyChanged(_ sender: NSTextField) {
 		if let val = Int(sender.stringValue) {
-			selectedProfile?.readConcurrency = val
+			viewCon.selectedProfile?.readConcurrency = val
 		} else if sender.stringValue.count == 0 {
-			selectedProfile?.readConcurrency = nil
+			viewCon.selectedProfile?.readConcurrency = nil
 		}
 	}
 	
 	@IBAction func PackSizeChanged(_ sender: NSTextField) {
 		if let val = Int(sender.stringValue) {
-			selectedProfile?.packSize = val
+			viewCon.selectedProfile?.packSize = val
 		} else if sender.stringValue.count == 0 {
-			selectedProfile?.packSize = nil
+			viewCon.selectedProfile?.packSize = nil
 		}
 	}
 	
 	func textDidEndEditing(_ notification: Notification) {
-		selectedProfile?.exclusions = ExcludeTextView.string
+		viewCon.selectedProfile?.exclusions = ExcludeTextView.string
 	}
 
 	
