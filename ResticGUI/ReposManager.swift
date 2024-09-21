@@ -35,19 +35,18 @@ class ReposManager: NSObject {
 	
 	func initUIView() {
 		guard repolist.count != 0 else {
+			repoEditControl.setEnabled(false, forSegment: 1)
 			repoEditControl.setEnabled(false, forSegment: 2)
 			return
 		}
 		fillMenu()
-		if UserDefaults.standard.bool(forKey: "Global Repo Selection"), let selected = UserDefaults.standard.string(forKey: "Selected Repo") {
+		if UserDefaults.standard.bool(forKey: "Global Repo Selection"), let selected = UserDefaults.standard.string(forKey: "Selected Repo"), repolist[selected] != nil {
 			RepoMenu.selectItem(withTitle: selected)
 		}
 	}
 	
 	func fillMenu() {
-		for i in repolist.keys.sorted() {
-			RepoMenu.addItem(withTitle: i)
-		}
+		RepoMenu.addItems(withTitles: repolist.keys.sorted())
 	}
 	
 	/// Saves the repository list.
@@ -69,6 +68,8 @@ class ReposManager: NSObject {
 		fillMenu()
 		setSelectedRepo(title: name)
 		save()
+		repoEditControl.setEnabled(true, forSegment: 1)
+		repoEditControl.setEnabled(true, forSegment: 2)
 	}
 	
 	/// Removes the repo from the repo list. Does not delete the repo itself.
@@ -77,6 +78,10 @@ class ReposManager: NSObject {
 		let name: String = repo.name ?? repo.path
 		repolist.removeValue(forKey: name)
 		RepoMenu.removeItem(withTitle: name)
+		if repolist.count == 0 {
+			repoEditControl.setEnabled(false, forSegment: 1)
+			repoEditControl.setEnabled(false, forSegment: 2)
+		}
 		save()
 	}
 	
@@ -89,7 +94,9 @@ class ReposManager: NSObject {
 	}
 	
 	func setSelectedRepo(title: String) {
-		RepoMenu.selectItem(withTitle: title)
+		if repolist[title] != nil {
+			RepoMenu.selectItem(withTitle: title)
+		}
 	}
 	
 	@IBAction func selectorDidChange(_ sender: NSPopUpButton) {
