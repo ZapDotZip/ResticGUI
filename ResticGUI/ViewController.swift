@@ -243,8 +243,12 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
-			// Delete alert
-			// confirm delete
+			if let selectedRepo = repoManager.getSelectedRepo() {
+				let res = Alert(title: "Remove repository \"\(selectedRepo.name ?? selectedRepo.path)\"", message: "The repository will be removed from the list.", style: .informational, buttons: ["Delete", "Cancel"])
+				if res == .alertFirstButtonReturn {
+					repoManager.remove(selectedRepo)
+				}
+			}
 		} else if sender.selectedSegment == 0 {
 			self.performSegue(withIdentifier: "RepoEdit", sender: self)
 		} else {

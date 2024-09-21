@@ -56,7 +56,7 @@ class ReposManager: NSObject {
 			let data = try encoder.encode(repolist)
 			try data.write(to: repolistFile)
 		} catch {
-			NSLog("Error saving Profile: \(error)")
+			NSLog("Error saving repository list: \(error)")
 			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 		}
 	}
@@ -77,6 +77,7 @@ class ReposManager: NSObject {
 		let name: String = repo.name ?? repo.path
 		repolist.removeValue(forKey: name)
 		RepoMenu.removeItem(withTitle: name)
+		save()
 	}
 	
 	func get(name: String) -> Repo? {
