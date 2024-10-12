@@ -9,11 +9,11 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	private var viewCon: ViewController!
+	@IBOutlet weak var resticController: ResticController!
 	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
 		// Insert code here to initialize your application
-		
 	}
 	
 	func viewFinishedLoading(vc: ViewController) {
