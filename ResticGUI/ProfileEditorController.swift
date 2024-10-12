@@ -213,7 +213,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 
 final class NumbersTextField: NumberFormatter {
 	override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
-		if let _ = UInt64(partialString) {
+		if UInt64(partialString) != nil {
 			return true
 		}
 		return partialString.count == 0
