@@ -144,17 +144,18 @@
                                                         <action selector="displaySILMessage:" target="sRf-u7-kqE" id="pXG-9n-wYW"/>
                                                     </connections>
                                                 </button>
-                                                <pathControl toolTip="The selected Restic binary path." verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iDg-5o-EbR">
+                                                <pathControl toolTip="The selected Restic binary path." verticalHuggingPriority="750" horizontalCompressionResistancePriority="500" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iDg-5o-EbR">
                                                     <rect key="frame" x="0.0" y="0.0" width="83" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="PLo-zv-qwD"/>
                                                     </constraints>
-                                                    <pathCell key="cell" selectable="YES" editable="YES" alignment="left" placeholderString="checking..." id="2L0-6u-j8J">
+                                                    <pathCell key="cell" lineBreakMode="truncatingMiddle" selectable="YES" alignment="left" placeholderString="checking..." id="2L0-6u-j8J">
                                                         <font key="font" metaFont="system"/>
                                                     </pathCell>
                                                 </pathControl>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2bb-yV-Gcx" secondAttribute="trailing" id="3L3-Hk-JJk"/>
                                                 <constraint firstAttribute="width" constant="400" id="DN7-5b-wMb"/>
                                                 <constraint firstItem="2bb-yV-Gcx" firstAttribute="centerY" secondItem="iDg-5o-EbR" secondAttribute="centerY" id="JmS-jn-IMo"/>
                                                 <constraint firstItem="iDg-5o-EbR" firstAttribute="top" secondItem="li8-Pv-4Fz" secondAttribute="top" id="WGr-GQ-8sm"/>
