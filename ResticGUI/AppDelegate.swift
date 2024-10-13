@@ -47,7 +47,7 @@ func Alert(title: String, message: String, style: NSAlert.Style, buttons: [Strin
 	return alert.runModal()
 }
 
-func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canChooseFiles: Bool, allowsMultipleSelection: Bool, canCreateDirectories: Bool) -> ([URL], NSApplication.ModalResponse) {
+func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canChooseFiles: Bool, allowsMultipleSelection: Bool, canCreateDirectories: Bool) -> (NSOpenPanel, NSApplication.ModalResponse) {
 	let openPanel = NSOpenPanel()
 	openPanel.message = message
 	openPanel.prompt = prompt
@@ -55,5 +55,5 @@ func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canC
 	openPanel.canChooseFiles = canChooseFiles
 	openPanel.allowsMultipleSelection = allowsMultipleSelection
 	openPanel.canCreateDirectories = canCreateDirectories
-	return (openPanel.urls, openPanel.runModal())
+	return (openPanel, openPanel.runModal())
 }

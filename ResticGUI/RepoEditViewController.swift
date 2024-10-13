@@ -51,20 +51,20 @@ class RepoEditViewController: NSViewController {
 	
 	
 	@IBAction func choosePath(_ sender: NSButton) {
-		let (urls, response) = openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
+		let (panel, response) = openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
 		if response == NSApplication.ModalResponse.OK {
-			if urls.count == 1 {
-				pathField.stringValue = urls[0].path
+			if panel.urls.count == 1 {
+				pathField.stringValue = panel.urls[0].path
 			}
 		}
 	}
 	
 	@IBAction func chooseCacheDir(_ sender: NSButton) {
-		let (urls, response) = openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
+		let (panel, response) = openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
 		if response == NSApplication.ModalResponse.OK {
-			if urls.count == 1 {
-				cacheDirLabel.stringValue = urls[0].path
-				cacheDirLabel.toolTip = urls[0].path
+			if panel.urls.count == 1 {
+				cacheDirLabel.stringValue = panel.urls[0].path
+				cacheDirLabel.toolTip = panel.urls[0].path
 			}
 		}
 	}

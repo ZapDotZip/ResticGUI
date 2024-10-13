@@ -108,9 +108,9 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	
 	// MARK: Profile Tab: paths
 	@IBAction func addPath(_ sender: NSButton) {
-		let (urls, response) = openPanel(message: "Select items you would like to back up.", prompt: "Add", canChooseDirectories: true, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false)
-		if response == NSApplication.ModalResponse.OK, urls.count != 0 {
-			for url in urls {
+		let (panel, response) = openPanel(message: "Select items you would like to back up.", prompt: "Add", canChooseDirectories: true, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false)
+		if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
+			for url in panel.urls {
 				selectedProfile?.addPath(url.path)
 			}
 			reload()
