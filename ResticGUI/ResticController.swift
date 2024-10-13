@@ -8,9 +8,9 @@ import Foundation
 
 class ResticController: NSObject {
 	#if arch(x86_64)
-	static let supportedRV = resticVersion.init(version: "0.17.1", go_arch: "amd64")
+	static let supportedRV = ResticVersion.init(version: "0.17.1", go_arch: "amd64")
 	#elseif arch(arm64)
-	static let supportedRV = resticVersion.init(version: "0.17.1", go_arch: "arm64")
+	static let supportedRV = ResticVersion.init(version: "0.17.1", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
 		URL(fileURLWithPath: "/opt/local/bin/restic"),
@@ -21,7 +21,7 @@ class ResticController: NSObject {
 	/// The DispatchQueue that all Restic operations must be run from.
 	var dq: DispatchQueue
 	var resticLocation: URL?
-	var versionInfo: resticVersion?
+	var versionInfo: ResticVersion?
 
 	override init() {
 		dq = DispatchQueue.init(label: "ResticController", qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: nil)
@@ -30,14 +30,14 @@ class ResticController: NSObject {
 	
 	/// Configures ResticController based off of the user's preferences. Throws an error if Restic couldn't be found/run.
 	func setupFromDefaults() throws {
-		if let userSel = UserDefaults.standard.string(forKey: PreferencesViewController.resticPathPrefName) {
+		if let userSel = UserDefaults.standard.string(forKey: PrefTabGeneral.resticPathPrefName) {
 			NSLog("User configured default \(userSel)")
 			if userSel == "MacPorts" {
 				return try testVersion(ResticController.autoURLs[0])
 			} else if userSel == "Homebrew" {
 				return try homebrew()
 			} else if userSel != "Automatic" {
-				return try testVersion(URL(fileURLWithPath: userSel))
+				return try testVersion(URL(fileURLWithPath: (userSel as NSString).expandingTildeInPath))
 			}
 		}
 		return try automatic()
@@ -47,7 +47,7 @@ class ResticController: NSObject {
 	/// - Parameter path: The path to restic to set for the object.
 	func testVersion(_ path: URL) throws {
 		resticLocation = path
-		let vers = try run(args: ["--json", "version"], returning: resticVersion.self)
+		let vers = try run(args: ["--json", "version"], returning: ResticVersion.self)
 		versionInfo = vers
 		NSLog("ResticController: Successfully initialized \(path) with version \(versionInfo!)")
 	}
@@ -64,13 +64,20 @@ class ResticController: NSObject {
 	}
 		
 	func homebrew() throws {
-		for u in ResticController.autoURLs[1...ResticController.autoURLs.count] {
+		for u in ResticController.autoURLs[1...ResticController.autoURLs.count-1] {
 			resticLocation = u
 			if let rv = try? testVersion(u) {
 				return rv
 			}
 		}
 		throw ResticError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic from Homebrew.")
+	}
+	
+	func getVersionInfo() throws -> ResticVersion {
+		if versionInfo == nil {
+			try setupFromDefaults()
+		}
+		return versionInfo!
 	}
 	
 	
@@ -123,7 +130,7 @@ class ResticController: NSObject {
 	
 }
 
-struct resticVersion: Decodable, Equatable {
+struct ResticVersion: Decodable, Equatable {
 	let version: String
 	let go_arch: String
 }
