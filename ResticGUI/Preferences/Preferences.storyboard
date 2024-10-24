@@ -36,6 +36,7 @@
                         <tabViewItem identifier="" id="P3Y-Pu-6xt"/>
                         <tabViewItem identifier="" image="NSAdvanced" id="c7F-bv-pli"/>
                     </tabViewItems>
+                    <viewControllerTransitionOptions key="transitionOptions" allowUserInteraction="YES"/>
                     <tabView key="tabView" type="noTabsNoBorder" id="Isa-0H-4hM">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="299"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -188,13 +189,138 @@
         <!--Exclusions-->
         <scene sceneID="Kqq-JN-SMe">
             <objects>
-                <viewController title="Exclusions" showSeguePresentationStyle="single" id="YTT-cd-nyU" sceneMemberID="viewController">
+                <viewController title="Exclusions" showSeguePresentationStyle="single" id="YTT-cd-nyU" customClass="PrefTabExclusions" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="eKA-wS-see">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="272"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KYS-oO-4Vh">
+                                <rect key="frame" x="18" y="236" width="105" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Exclude Pattens:" id="jDG-US-x06">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sgd-Yt-9cR">
+                                <rect key="frame" x="127" y="230" width="25" height="25"/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="YSI-Tt-Re1">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <scrollView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="Vv7-if-v0c">
+                                <rect key="frame" x="20" y="85" width="410" height="140"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="wTg-7h-Htj">
+                                    <rect key="frame" x="1" y="1" width="408" height="138"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" spellingCorrection="YES" id="ORI-YH-Kow">
+                                            <rect key="frame" x="0.0" y="0.0" width="408" height="138"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="408" height="138"/>
+                                            <size key="maxSize" width="490" height="10000000"/>
+                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <binding destination="OTQ-gz-Ufp" name="value" keyPath="values.GlobalExclusions" id="D6t-zQ-9n0"/>
+                                            </connections>
+                                        </textView>
+                                    </subviews>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="H9c-3H-KJi"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Tcd-RZ-Ea7">
+                                    <rect key="frame" x="1" y="123" width="408" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="TTf-jP-sot">
+                                    <rect key="frame" x="393" y="1" width="16" height="138"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YKy-Lt-SBq">
+                                <rect key="frame" x="321" y="235" width="111" height="18"/>
+                                <buttonCell key="cell" type="check" title="Case Sensitive" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jtW-6D-gJq">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="OTQ-gz-Ufp" name="value" keyPath="values.GlobalExclusionsCaseSensitive" id="g39-XP-2qu"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Select one or more files to source exclude patterns from." horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="eJZ-ah-Sef">
+                                <rect key="frame" x="14" y="37" width="160" height="32"/>
+                                <buttonCell key="cell" type="push" title="Exclude Pattern File" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="h7Y-5L-yc2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="excludePatternFile:" target="YTT-cd-nyU" id="jUJ-oz-ray"/>
+                                </connections>
+                            </button>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gYo-yg-r3U">
+                                <rect key="frame" x="174" y="46" width="111" height="18"/>
+                                <buttonCell key="cell" type="check" title="Case Sensitive" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="sq4-MU-PqH">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="OTQ-gz-Ufp" name="value" keyPath="values.GlobalExcludeFileCaseSensitive" id="0RK-7Z-czj"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="100" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vut-HS-6r8">
+                                <rect key="frame" x="18" y="20" width="400" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="No Exclude Pattern File Selected" id="Lz4-C8-egk">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CfG-ao-1Ng">
+                                <rect key="frame" x="424" y="21" width="14" height="14"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="ehu-AO-jaV">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="excludePatternFileClear:" target="YTT-cd-nyU" id="Sbj-Oc-0SH"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Sgd-Yt-9cR" firstAttribute="centerY" secondItem="KYS-oO-4Vh" secondAttribute="centerY" id="2gL-1C-jLT"/>
+                            <constraint firstItem="eJZ-ah-Sef" firstAttribute="top" secondItem="Vv7-if-v0c" secondAttribute="bottom" constant="20" symbolic="YES" id="5pt-19-WXp"/>
+                            <constraint firstItem="YKy-Lt-SBq" firstAttribute="firstBaseline" secondItem="KYS-oO-4Vh" secondAttribute="firstBaseline" id="7hs-Yl-zOj"/>
+                            <constraint firstItem="CfG-ao-1Ng" firstAttribute="leading" secondItem="Vut-HS-6r8" secondAttribute="trailing" constant="8" symbolic="YES" id="AU6-jI-t1N"/>
+                            <constraint firstAttribute="trailing" secondItem="CfG-ao-1Ng" secondAttribute="trailing" constant="12" id="Ayy-eR-wOJ"/>
+                            <constraint firstAttribute="trailing" secondItem="YKy-Lt-SBq" secondAttribute="trailing" constant="20" symbolic="YES" id="CWD-Oj-G08"/>
+                            <constraint firstItem="Vut-HS-6r8" firstAttribute="leading" secondItem="eJZ-ah-Sef" secondAttribute="leading" id="GJv-Ld-mvd"/>
+                            <constraint firstAttribute="trailing" secondItem="Vv7-if-v0c" secondAttribute="trailing" constant="20" symbolic="YES" id="PFx-Ki-ziA"/>
+                            <constraint firstItem="eJZ-ah-Sef" firstAttribute="leading" secondItem="eKA-wS-see" secondAttribute="leading" constant="20" symbolic="YES" id="QAF-Yk-tso"/>
+                            <constraint firstItem="ORI-YH-Kow" firstAttribute="top" secondItem="KYS-oO-4Vh" secondAttribute="bottom" constant="12" id="TCd-YV-IlE"/>
+                            <constraint firstItem="gYo-yg-r3U" firstAttribute="firstBaseline" secondItem="eJZ-ah-Sef" secondAttribute="firstBaseline" id="Vk7-qx-u3j"/>
+                            <constraint firstItem="KYS-oO-4Vh" firstAttribute="top" secondItem="eKA-wS-see" secondAttribute="top" constant="20" symbolic="YES" id="X0p-fU-4EX"/>
+                            <constraint firstItem="KYS-oO-4Vh" firstAttribute="leading" secondItem="eKA-wS-see" secondAttribute="leading" constant="20" symbolic="YES" id="YSn-Bg-WZh"/>
+                            <constraint firstItem="Sgd-Yt-9cR" firstAttribute="leading" secondItem="KYS-oO-4Vh" secondAttribute="trailing" constant="8" symbolic="YES" id="a8G-kj-j2Q"/>
+                            <constraint firstItem="CfG-ao-1Ng" firstAttribute="centerY" secondItem="Vut-HS-6r8" secondAttribute="centerY" id="baM-8F-NUe"/>
+                            <constraint firstItem="Vv7-if-v0c" firstAttribute="leading" secondItem="eKA-wS-see" secondAttribute="leading" constant="20" symbolic="YES" id="eAi-1O-2Lc"/>
+                            <constraint firstItem="Vut-HS-6r8" firstAttribute="top" secondItem="eJZ-ah-Sef" secondAttribute="bottom" constant="8" symbolic="YES" id="odn-e5-kaI"/>
+                            <constraint firstItem="gYo-yg-r3U" firstAttribute="leading" secondItem="eJZ-ah-Sef" secondAttribute="trailing" constant="8" symbolic="YES" id="r0O-4s-wEb"/>
+                            <constraint firstAttribute="bottom" secondItem="Vut-HS-6r8" secondAttribute="bottom" constant="20" symbolic="YES" id="ySB-JB-mkL"/>
+                            <constraint firstItem="Vv7-if-v0c" firstAttribute="top" secondItem="KYS-oO-4Vh" secondAttribute="bottom" constant="11" id="yf3-eb-7ug"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="ExcludeFileClearButton" destination="CfG-ao-1Ng" id="BhX-Dl-vJ3"/>
+                        <outlet property="ExcludeFileLabel" destination="Vut-HS-6r8" id="Ona-Gd-2Ka"/>
+                        <outlet property="ExcludeTextView" destination="ORI-YH-Kow" id="KCI-hk-9kk"/>
+                    </connections>
                 </viewController>
                 <customObject id="4z6-kl-dU3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="OTQ-gz-Ufp"/>
             </objects>
             <point key="canvasLocation" x="-1272" y="626"/>
         </scene>
@@ -216,5 +342,6 @@
         <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="NSStatusNone" width="16" height="16"/>
+        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
     </resources>
 </document>
