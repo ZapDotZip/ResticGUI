@@ -47,7 +47,7 @@ class ResticController: NSObject {
 	/// - Parameter path: The path to restic to set for the object.
 	func testVersion(_ path: URL) throws {
 		resticLocation = path
-		let vers = try run(args: ["--json", "version"], returning: ResticVersion.self)
+		let vers = try run(args: ["--json", "version"], env: nil, returning: ResticVersion.self)
 		versionInfo = vers
 		NSLog("ResticController: Successfully initialized \(path) with version \(versionInfo!)")
 	}
@@ -83,7 +83,7 @@ class ResticController: NSObject {
 	
 	/// Runs restic with the provided arguments and returns the output as raw data.
 	/// - Parameter args: The list of arguments to use.
-	func run(args: [String]) throws -> Data {
+	func run(args: [String], env: [String : String]?) throws -> Data {
 		if resticLocation == nil {
 			do {
 				try setupFromDefaults()
@@ -100,8 +100,15 @@ class ResticController: NSObject {
 		proc.standardOutput = stdout
 		proc.standardError = stderr
 		proc.arguments = args
+		if env != nil {
+			proc.environment = env
+		}
+		NSLog("Running restic with args: \(args)")
 		
 		try proc.run()
+		if let err = String(data: stderr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) {
+			print(err)
+		}
 		//NSLog("ResticController: Restic stderr: \(stderr.fileHandleForReading.readDataToEndOfFile())")
 		return stdout.fileHandleForReading.readDataToEndOfFile()
 	}
@@ -110,16 +117,22 @@ class ResticController: NSObject {
 	/// - Parameters:
 	///   - args: The list of arguments to use.
 	///   - returning: The object to return.
-	func run<T: Decodable>(args: [String], returning: T.Type) throws -> T {
-		let data: Data = try run(args: args)
-		let obj = try JSONDecoder().decode(T.self, from: data)
-		return obj
+	func run<T: Decodable>(args: [String], env: [String : String]?, returning: T.Type) throws -> T {
+		let data: Data = try run(args: args, env: env)
+		do {
+			let obj = try JSONDecoder().decode(T.self, from: data)
+			return obj
+		} catch {
+			NSLog("Raw string output from JSON decoding error: \(String.init(data: data, encoding: .utf8)!)")
+			throw error
+		}
 	}
 	
 	/// Runs restic with the provided arguments and returns the output as a string.
 	/// - Parameter args: The list of arguments to use.
-	func run(args: [String]) throws -> String {
-		let data: Data = try run(args: args)
+	func run(args: [String], env: [String : String]?) throws -> String {
+		NSLog("Running restic with args: \(args)")
+		let data: Data = try run(args: args, env: env)
 		if let output = String.init(data: data, encoding: .utf8) {
 			return output
 		} else {
