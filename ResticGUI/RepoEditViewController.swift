@@ -13,6 +13,8 @@ class RepoEditViewController: NSViewController {
 	
 	var repoManager: ReposManager!
 	var selectedRepo: Repo?
+	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
+	lazy var resticController = appDel.resticController!
 		
 	@IBOutlet var pathField: NSTextField!
 	private var pathFilled = false
@@ -50,11 +52,12 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	
-	@IBAction func choosePath(_ sender: NSButton) {
+	@IBAction func selectFolder(_ sender: NSButton) {
 		let (panel, response) = openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
 		if response == NSApplication.ModalResponse.OK {
 			if panel.urls.count == 1 {
 				pathField.stringValue = panel.urls[0].path
+				
 			}
 		}
 	}
@@ -75,7 +78,40 @@ class RepoEditViewController: NSViewController {
 	
 	
 	@IBAction func createRepo(_ sender: NSButton) {
-		
+		if selectedRepo == nil {
+			selectedRepo = .init(path: pathField.stringValue, password: passwordField.stringValue)
+		} else {
+			selectedRepo!.path = pathField.stringValue
+			selectedRepo!.password = passwordField.stringValue
+		}
+		if nameField.stringValue.count != 0 {
+			selectedRepo!.name = nameField.stringValue
+		} else if selectedRepo?.name?.count != 0 {
+			selectedRepo?.name = nil
+		}
+		if cacheDirLabel.stringValue.count != 0 {
+			selectedRepo!.cacheDir = cacheDirLabel.stringValue
+		}
+		// TODO: Add env
+		do {
+			let (res, _) = try RepoInitController.repoInit(repo: selectedRepo!, rc: resticController)
+			NSLog("Created repository response: \(res)")
+			Alert(title: "Successfully created repository.", message: "The repository at \(res.repository) has been created.", style: .informational, buttons: ["Ok"])
+		} catch let error as ResticError {
+			let errMsg: String = {
+			switch error {
+				case .couldNotDecodeJSON( _, let stderr):
+					return String.init(data: stderr, encoding: .utf8) ?? "Could not decode Restic error output."
+				default:
+					return error.localizedDescription
+			}
+			}()
+			NSLog("Couldn't create repository: \(error)")
+			Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(errMsg)", style: .critical, buttons: ["Ok"])
+		} catch {
+			NSLog("Couldn't create repository: \(error)")
+			Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(error)", style: .critical, buttons: ["Ok"])
+		}
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {

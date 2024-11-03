@@ -992,7 +992,7 @@
                                                                         <nil key="backgroundColor"/>
                                                                     </clipView>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="302" id="KrY-iR-lMT"/>
+                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="KrY-iR-lMT"/>
                                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="gwb-aA-wMy"/>
                                                                     </constraints>
                                                                     <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="fRk-UD-bRr">
@@ -1710,7 +1710,7 @@ Gw
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="choosePath:" target="E8d-iE-4P2" id="ghz-K6-b3l"/>
+                                    <action selector="selectFolder:" target="E8d-iE-4P2" id="ghz-K6-b3l"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2HD-9w-1dT">
@@ -2011,7 +2011,7 @@ Gw
                 </viewController>
                 <customObject id="pw2-aY-Pac" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-262" y="1525"/>
+            <point key="canvasLocation" x="-262" y="1524.5"/>
         </scene>
     </scenes>
     <resources>

@@ -6,7 +6,7 @@
 import Foundation
 
 
-class ResticController: NSObject {
+final class ResticController: NSObject {
 	#if arch(x86_64)
 	static let supportedRV = ResticVersion.init(version: "0.17.1", go_arch: "amd64")
 	#elseif arch(arm64)
@@ -19,12 +19,14 @@ class ResticController: NSObject {
 	]
 	
 	/// The DispatchQueue that all Restic operations must be run from.
-	var dq: DispatchQueue
+	let dq: DispatchQueue
+	let logger: ResticLogger
 	var resticLocation: URL?
 	var versionInfo: ResticVersion?
 
 	override init() {
 		dq = DispatchQueue.init(label: "ResticController", qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+		logger = ResticLogger.init()
 		super.init()
 	}
 	
@@ -48,7 +50,7 @@ class ResticController: NSObject {
 	func testVersion(_ path: URL) throws {
 		resticLocation = path
 		let vers = try run(args: ["--json", "version"], env: nil, returning: ResticVersion.self)
-		versionInfo = vers
+		(versionInfo, _) = vers
 		NSLog("ResticController: Successfully initialized \(path) with version \(versionInfo!)")
 	}
 	
@@ -81,9 +83,9 @@ class ResticController: NSObject {
 	}
 	
 	
-	/// Runs restic with the provided arguments and returns the output as raw data.
+	/// Runs restic with the provided arguments and returns the output and stderr as raw data.
 	/// - Parameter args: The list of arguments to use.
-	func run(args: [String], env: [String : String]?) throws -> Data {
+	func run(args: [String], env: [String : String]?) throws -> (Data, Data) {
 		if resticLocation == nil {
 			do {
 				try setupFromDefaults()
@@ -103,38 +105,42 @@ class ResticController: NSObject {
 		if env != nil {
 			proc.environment = env
 		}
-		NSLog("Running restic with args: \(args)")
+		logger.runCmd(path: resticLocation!, args: args)
 		
 		try proc.run()
-		if let err = String(data: stderr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) {
-			print(err)
-		}
 		//NSLog("ResticController: Restic stderr: \(stderr.fileHandleForReading.readDataToEndOfFile())")
-		return stdout.fileHandleForReading.readDataToEndOfFile()
+		return (stdout.fileHandleForReading.readDataToEndOfFile(), stderr.fileHandleForReading.readDataToEndOfFile())
 	}
 	
 	/// Runs restic with the provided arguments and returns the output as the provided Decodable class.
 	/// - Parameters:
 	///   - args: The list of arguments to use.
 	///   - returning: The object to return.
-	func run<T: Decodable>(args: [String], env: [String : String]?, returning: T.Type) throws -> T {
-		let data: Data = try run(args: args, env: env)
+	func run<T: Decodable>(args: [String], env: [String : String]?, returning: T.Type) throws -> (T, String?) {
+		let (data, stderr): (Data, Data) = try run(args: args, env: env)
 		do {
 			let obj = try JSONDecoder().decode(T.self, from: data)
-			return obj
+			return (obj, String.init(data: stderr, encoding: .utf8))
+		} catch let error as DecodingError {
+			let rawStr: String = String.init(data: data, encoding: .utf8) ?? "Could not convert data to a string."
+			logger.stdout(rawStr)
+			NSLog("Error: \(error)")
+			throw ResticError.couldNotDecodeJSON(rawStr, stderr)
 		} catch {
-			NSLog("Raw string output from JSON decoding error: \(String.init(data: data, encoding: .utf8)!)")
+			logger.stdout(String.init(data: data, encoding: .utf8) ?? "Could not convert data to a string.")
+			NSLog("Error: \(error)")
 			throw error
 		}
 	}
 	
 	/// Runs restic with the provided arguments and returns the output as a string.
 	/// - Parameter args: The list of arguments to use.
-	func run(args: [String], env: [String : String]?) throws -> String {
+	func run(args: [String], env: [String : String]?) throws -> (String, String?) {
 		NSLog("Running restic with args: \(args)")
-		let data: Data = try run(args: args, env: env)
+		let (data, stderr): (Data, Data) = try run(args: args, env: env)
+		logger.log(String.init(data: stderr, encoding: .utf8)!)
 		if let output = String.init(data: data, encoding: .utf8) {
-			return output
+			return (output, String.init(data: stderr, encoding: .utf8))
 		} else {
 			throw ResticError.couldNotDecodeStringOutput
 		}
@@ -151,6 +157,6 @@ struct ResticVersion: Decodable, Equatable {
 
 enum ResticError: Error {
 	case couldNotDecodeStringOutput
-	case couldNotDecodeJSON
+	case couldNotDecodeJSON(String, Data)
 	case noResticInstallationsFound(String)
 }

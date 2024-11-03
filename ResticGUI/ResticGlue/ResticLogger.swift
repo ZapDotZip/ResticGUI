@@ -45,11 +45,15 @@ final class ResticLogger {
 	
 	/// Logs the string by prepending the date before it.
 	/// - Parameter str: The string to write.
-	func log(_ str: String) { write("\(date()): \(str)\n") }
+	func log(_ str: String) {
+		if str.count != 0 {
+			write("\(date()): \(str)\n")
+		}
+	}
 	
 	/// Logs the string by prepending the date before it.
 	/// - Parameter str: The string to write.
-	func runCmd(path: URL, args: [String]) { write("\(date()): \(path.path) \(args)\n") }
+	func runCmd(path: URL, args: [String]) { write("\(date()): Running \(path.path) \(args)\n") }
 	
 	/// Logs Standard Error from restic.
 	/// - Parameter str: The string to write.
