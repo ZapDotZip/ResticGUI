@@ -101,7 +101,7 @@ class RepoEditViewController: NSViewController {
 			let errMsg: String = {
 			switch error {
 				case .couldNotDecodeJSON( _, let stderr):
-					return String.init(data: stderr, encoding: .utf8) ?? "Could not decode Restic error output."
+					return stderr
 				default:
 					return error.localizedDescription
 			}

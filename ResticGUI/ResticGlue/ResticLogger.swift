@@ -9,7 +9,7 @@ final class ResticLogger {
 	let logfile: FileHandle
 	let df: DateFormatter
 	let noData: Data
-		
+	
 	init() {
 		df = DateFormatter.init()
 		df.locale = .current
@@ -18,14 +18,14 @@ final class ResticLogger {
 		noData = "Error converting text to data".data(using: .utf8)!
 		
 		let loggingDir = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("Logs", isDirectory: true).appendingPathComponent("ResticGUI", isDirectory: true)
-		let loggingFile = loggingDir.appendingPathComponent("restic.log", isDirectory: false)
+		let logfilePath = loggingDir.appendingPathComponent("restic.log", isDirectory: false)
 		
 		do {
-			if !FileManager.default.fileExists(atPath: loggingFile.path) {
+			if !FileManager.default.fileExists(atPath: logfilePath.path) {
 				try FileManager.default.createDirectory(at: loggingDir, withIntermediateDirectories: true, attributes: nil)
-				FileManager.default.createFile(atPath: loggingFile.path, contents: nil, attributes: nil)
+				FileManager.default.createFile(atPath: logfilePath.path, contents: nil, attributes: nil)
 			}
-			logfile = try FileHandle.init(forUpdating: loggingFile)
+			logfile = try FileHandle.init(forUpdating: logfilePath)
 		} catch {
 			NSLog("Error creating log directory: \(error)")
 			Alert(title: "An error occured trying to create the log file.", message: "ResticGUI will still run, but error information will not be recorded.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
@@ -57,12 +57,20 @@ final class ResticLogger {
 	
 	/// Logs Standard Error from restic.
 	/// - Parameter str: The string to write.
-	func stderr(_ str: String) { write("\(date()): stderr: \(str)\n") }
+	func stderr(_ str: String?) {
+		if str != nil, str?.count != 0 {
+			write("\(date()): stderr: \(str!)\n")
+		}
+	}
 	
 	/// Logs Standard Output when it's not JSON.
 	/// - Parameter str: The string to write.
-	func stdout(_ str: String) { write("\(date()): stdout: \(str)\n") }
-
+	func stdout(_ str: String) {
+		if str.count != 0 {
+			write("\(date()): stdout: \(str)\n")
+		}
+	}
+	
 	
 	deinit {
 		logfile.closeFile()
