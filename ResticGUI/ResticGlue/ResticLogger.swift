@@ -9,8 +9,9 @@ final class ResticLogger {
 	let logfile: FileHandle
 	let df: DateFormatter
 	let noData: Data
+	static let `default` = ResticLogger()
 	
-	init() {
+	private init() {
 		df = DateFormatter.init()
 		df.locale = .current
 		df.dateFormat = "YYYY-MM-dd hh:mm:ss a"
