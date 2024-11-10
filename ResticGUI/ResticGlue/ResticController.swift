@@ -17,15 +17,18 @@ final class ResticController: NSObject {
 		URL(fileURLWithPath: "/opt/homebrew/bin/restic"),
 		URL(fileURLWithPath: "/usr/local/bin/restic")
 	]
-	
+// MARK: Setup
 	/// The DispatchQueue that all Restic operations must be run from.
 	let dq: DispatchQueue
-	lazy var logger: ResticLogger = ResticLogger.init()
+	let jsonDecoder = JSONDecoder()
+	lazy var logger: ResticLogger = ResticLogger.default
 	var resticLocation: URL?
 	var versionInfo: ResticVersion?
 
 	override init() {
 		dq = DispatchQueue.init(label: "ResticController", qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+		newLine = "\n".data(using: .ascii)![0]
+		partial = Data()
 		super.init()
 	}
 	
@@ -81,7 +84,7 @@ final class ResticController: NSObject {
 		return versionInfo!
 	}
 	
-	
+// MARK: Run
 	/// Runs restic with the provided arguments and returns the output  as raw data and stderr as a String, if any.
 	/// - Parameter args: The list of arguments to use.
 	func run(args: [String], env: [String : String]?) throws -> (Data, String?) {
@@ -119,7 +122,7 @@ final class ResticController: NSObject {
 	func run<T: Decodable>(args: [String], env: [String : String]?, returning: T.Type) throws -> (T, String?) {
 		let (data, stderr): (Data, String?) = try run(args: args, env: env)
 		do {
-			let obj = try JSONDecoder().decode(T.self, from: data)
+			let obj = try jsonDecoder.decode(T.self, from: data)
 			return (obj, stderr)
 		} catch let error as DecodingError {
 			let rawStr: String = String.init(data: data, encoding: .utf8) ?? "Could not convert data to a string."
@@ -143,6 +146,93 @@ final class ResticController: NSObject {
 		} else {
 			throw ResticError.couldNotDecodeStringOutput
 		}
+	}
+	
+// MARK: launch
+	typealias pipedDataHandler = (Data) -> Void
+	typealias terminationHandler = ((Int32) -> Void)
+	
+	let newLine: UInt8
+	var partial: Data
+	var readHandler: pipedDataHandler!
+	var errHandler: pipedDataHandler!
+	var termHandler: terminationHandler!
+	
+	func read(_ data: Data) {
+		partial.append(data)
+		var splits = partial.split(separator: newLine)
+		let last: Data? = splits.popLast()
+		for i in splits {
+			readHandler(i)
+		}
+		if last != nil {
+			if JSONSerialization.isValidJSONObject(last as Any) {
+				readHandler(last!)
+				partial = Data()
+			} else {
+				partial = last!
+				partial.append(newLine)
+			}
+		}
+	}
+	
+	func exit(_ p: Process) {
+		readHandler(partial)
+		logger.log("Finished with exit code: \(p.terminationStatus)")
+		termHandler(p.terminationStatus)
+	}
+	
+	
+	/// Launches restic for monitoring.
+	/// - Parameter args: The list of arguments to use.
+	/// - Parameter env: The enviorment dictionary.
+	/// - Parameter stdoutHandler: Repeatedly called when new data is present in stdout.
+	/// - Parameter stderrHandler: Repeatedly called when new data is present in stderr.
+	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler) throws {
+		if resticLocation == nil {
+			do {
+				try setupFromDefaults()
+			} catch {
+				resticLocation = nil
+				throw error
+			}
+		}
+		readHandler = stdoutHandler
+		errHandler = stderrHandler
+		termHandler = terminationHandler
+		
+		let proc = Process()
+		let stdout = Pipe()
+		let stderr = Pipe()
+		proc.executableURL = resticLocation
+		proc.standardOutput = stdout
+		proc.standardError = stderr
+		proc.arguments = args
+		if env != nil {
+			proc.environment = env
+		}
+		logger.runCmd(path: resticLocation!, args: args)
+		
+		NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: stdout.fileHandleForReading, queue: nil) { (notif) in
+			let handle = notif.object as! FileHandle
+			self.read(handle.availableData)
+			handle.waitForDataInBackgroundAndNotify()
+		}
+		
+		NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: stderr.fileHandleForReading, queue: nil) { (notif) in
+			let handle = notif.object as! FileHandle
+			let data = handle.availableData
+			self.logger.stderr(String(data: data, encoding: .utf8)!)
+			stderrHandler(data)
+			handle.waitForDataInBackgroundAndNotify()
+		}
+		
+		proc.terminationHandler = exit(_:)
+
+		try proc.run()
+		stdout.fileHandleForReading.waitForDataInBackgroundAndNotify()
+		stderr.fileHandleForReading.waitForDataInBackgroundAndNotify()
+		proc.waitUntilExit()
 	}
 
 	

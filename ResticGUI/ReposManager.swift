@@ -7,7 +7,7 @@ import Foundation
 import AppKit
 
 class ReposManager: NSObject {
-	private var repolist = Dictionary<String, Repo>()
+	private var repos = Dictionary<String, Repo>()
 	
 	@IBOutlet weak var RepoMenu: NSPopUpButton!
 	@IBOutlet weak var repoEditControl: NSSegmentedControl!
@@ -25,7 +25,7 @@ class ReposManager: NSObject {
 		if FileManager.default.fileExists(atPath: repolistFile.path) {
 			
 			do {
-				repolist = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: repolistFile))
+				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
 				Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
@@ -34,25 +34,25 @@ class ReposManager: NSObject {
 	}
 	
 	func initUIView() {
-		guard repolist.count != 0 else {
+		guard repos.count != 0 else {
 			repoEditControl.setEnabled(false, forSegment: 1)
 			repoEditControl.setEnabled(false, forSegment: 2)
 			return
 		}
 		fillMenu()
-		if UserDefaults.standard.bool(forKey: "Global Repo Selection"), let selected = UserDefaults.standard.string(forKey: "Selected Repo"), repolist[selected] != nil {
+		if UserDefaults.standard.bool(forKey: "Global Repo Selection"), let selected = UserDefaults.standard.string(forKey: "Selected Repo"), repos[selected] != nil {
 			RepoMenu.selectItem(withTitle: selected)
 		}
 	}
 	
 	func fillMenu() {
-		RepoMenu.addItems(withTitles: repolist.keys.sorted())
+		RepoMenu.addItems(withTitles: repos.keys.sorted())
 	}
 	
 	/// Saves the repository list.
 	func save() {
 		do {
-			let data = try encoder.encode(repolist)
+			let data = try encoder.encode(repos)
 			try data.write(to: repolistFile)
 		} catch {
 			NSLog("Error saving repository list: \(error)")
@@ -64,7 +64,7 @@ class ReposManager: NSObject {
 	/// - Parameter repo: The repo to add to the list.
 	func add(_ repo: Repo) {
 		let name: String = repo.name ?? repo.path
-		repolist[name] = repo
+		repos[name] = repo
 		fillMenu()
 		setSelectedRepo(title: name)
 		save()
@@ -76,9 +76,9 @@ class ReposManager: NSObject {
 	/// - Parameter repo: The repo to remove.
 	func remove(_ repo: Repo) {
 		let name: String = repo.name ?? repo.path
-		repolist.removeValue(forKey: name)
+		repos.removeValue(forKey: name)
 		RepoMenu.removeItem(withTitle: name)
-		if repolist.count == 0 {
+		if repos.count == 0 {
 			repoEditControl.setEnabled(false, forSegment: 1)
 			repoEditControl.setEnabled(false, forSegment: 2)
 		}
@@ -86,15 +86,15 @@ class ReposManager: NSObject {
 	}
 	
 	func get(name: String) -> Repo? {
-		return repolist[name]
+		return repos[name]
 	}
 	
 	func getSelectedRepo() -> Repo? {
-		return repolist[RepoMenu.titleOfSelectedItem ?? ""]
+		return repos[RepoMenu.titleOfSelectedItem ?? ""]
 	}
 	
 	func setSelectedRepo(title: String) {
-		if repolist[title] != nil {
+		if repos[title] != nil {
 			RepoMenu.selectItem(withTitle: title)
 		}
 	}

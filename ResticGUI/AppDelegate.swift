@@ -10,6 +10,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	private var viewCon: ViewController!
 	@IBOutlet weak var resticController: ResticController!
+	var backupController: BackupController!
 	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
@@ -18,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func viewFinishedLoading(vc: ViewController) {
 		viewCon = vc
+		backupController = BackupController.init(resticController: resticController, viewController: vc)
 	}
 	
 	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -26,6 +28,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 		viewCon.saveQuit()
+		if backupController.backupInProgress {
+			let res = Alert(title: "Are you sure you want to quit?", message: "A backup is in progress.", style: .informational, buttons: ["Quit", "Cancel"])
+			if res == .alertSecondButtonReturn {
+				return .terminateCancel
+			}
+		}
 		return .terminateNow
 	}
 	
