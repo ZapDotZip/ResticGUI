@@ -10,6 +10,7 @@ final class Profile: Codable, Equatable {
 	var name: String
 	var selectedRepo: String?
 	var paths: [String] = []
+	var tags: [String] = []
 	var exclusions: String?
 	var exclusionsCS: Bool = true
 	var excludeCacheDirs: Bool = false
@@ -41,7 +42,8 @@ final class Profile: Codable, Equatable {
 			lhs.excludesTMUser == rhs.excludesTMUser &&
 			lhs.compression == rhs.compression &&
 			lhs.readConcurrency == rhs.readConcurrency &&
-			lhs.packSize == rhs.packSize
+			lhs.packSize == rhs.packSize &&
+			lhs.tags == rhs.tags
 	}
 	
 	func addPath(_ path: String) {

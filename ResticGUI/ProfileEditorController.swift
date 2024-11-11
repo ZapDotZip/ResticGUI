@@ -72,6 +72,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 			repoManager.setSelectedRepo(title: selectedRepo)
 		}
 		
+		TagField.objectValue = profile.tags
 		
 	}
 	
@@ -99,7 +100,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	@IBOutlet var Compression: NSPopUpButton!
 	@IBOutlet var ReadConcurrency: NSTextField!
 	@IBOutlet var PackSize: NSTextField!
-	
+	@IBOutlet var TagField: NSTokenField!
 	
 	@IBAction func ExcludeCaseSensitiveChanged(_ sender: NSButton) {
 		if sender.state == .on {
@@ -199,7 +200,9 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 		viewCon.selectedProfile?.exclusions = ExcludeTextView.string
 	}
 
-	
+	@IBAction func tagFieldDidChange(_ sender: NSTextField) {
+		viewCon.selectedProfile!.tags = TagField.objectValue as! [String]
+	}
 	
 
     
