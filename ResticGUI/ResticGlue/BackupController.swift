@@ -24,7 +24,11 @@ class BackupController {
 		backupInProgress = true
 		rc.dq.async {
 			// setup
-			var args: [String] = ["--json", "-r", repo.path, "backup"]
+			var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
+			for i in profile.tags {
+				args.append(contentsOf: ["--tag", i])
+			}
+			
 			args.append(contentsOf: profile.paths)
 			var env = repo.env ?? [String : String]()
 			env["HOME"] = ProcessInfo.processInfo.environment["HOME"]
