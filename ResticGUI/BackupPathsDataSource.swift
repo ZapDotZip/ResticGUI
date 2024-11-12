@@ -125,11 +125,35 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
-		
+		let (panel, response) = openPanel(message: "Select a text file containing paths to back up.", prompt: "Add", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false)
+		if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
+			for url in panel.urls {
+				do {
+					let txt = try String.init(contentsOf: url)
+					for line in txt.split(separator: "\n") {
+						selectedProfile?.addPath(String(line))
+					}
+				} catch {
+					NSLog("Failed to load user-selected paths file: \(error)")
+					Alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
+				}
+			}
+			reload()
+		}
 	}
 	
 	@IBAction func importPathsFromClipboard(_ sender: NSButton) {
-		
+		for i in NSPasteboard.general.pasteboardItems ?? [] {
+			if let str = i.string(forType: .fileURL), let url = URL.init(string: str)?.path {
+				selectedProfile?.addPath(url)
+			} else if let str = i.string(forType: .string) {
+				print(str)
+				for line in str.split(separator: "\n") {
+					selectedProfile?.addPath(String(line))
+				}
+			}
+		}
+		reload()
 	}
 
 	
