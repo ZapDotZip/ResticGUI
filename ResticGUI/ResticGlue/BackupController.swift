@@ -30,9 +30,6 @@ class BackupController {
 			}
 			
 			args.append(contentsOf: profile.paths)
-			var env = repo.env ?? [String : String]()
-			env["HOME"] = ProcessInfo.processInfo.environment["HOME"]
-			env["RESTIC_PASSWORD"] = repo.password
 			let globalExlcusions = UserDefaults.standard.string(forKey: "GlobalExclusions")
 			do {
 				if let exclusions = profile.exclusions {
@@ -66,7 +63,7 @@ class BackupController {
 			
 			// run
 			do {
-				try self.rc.launch(args: args, env: env, stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:))
+				try self.rc.launch(args: args, env: repo.getEnv(), stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:))
 			} catch {
 				NSLog(error.localizedDescription)
 			}
@@ -144,7 +141,7 @@ struct backupErrorMessage: Decodable {
 	let message: String?
 }
 
-struct backupSummary: Decodable {
+struct backupSummary: Codable {
 	let message_type: String
 	let files_new: Int
 	let files_changed: Int

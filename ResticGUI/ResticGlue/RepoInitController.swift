@@ -8,9 +8,8 @@ import Foundation
 final class RepoInitController {
 	static func repoInit(repo: Repo, rc: ResticController) throws -> (RepoInitResponse, String?) {
 		let args: [String] = ["--json", "-r", repo.path, "init"]
-		var env = repo.env ?? [String : String]()
 		env["RESTIC_PASSWORD"] = repo.password
-		let (res, stderr) = try rc.run(args: args, env: env, returning: RepoInitResponse.self)
+		let (res, stderr) = try rc.run(args: args, env: repo.getEnv(), returning: RepoInitResponse.self)
 		return (res, stderr)
 	}
 	

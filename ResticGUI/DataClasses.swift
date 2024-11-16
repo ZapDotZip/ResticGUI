@@ -67,4 +67,29 @@ final class Repo: Codable {
 		self.path = path
 		self.password = password
 	}
+	
+	/// Returns an env dictionary with password.
+	func getEnv() -> [String : String] {
+		var newEnv = env ?? [String : String]()
+		newEnv["HOME"] = ProcessInfo.processInfo.environment["HOME"]
+		newEnv["RESTIC_PASSWORD"] = password
+		return newEnv
+	}
+
+}
+
+final class Snapshot: Codable {
+	let time: Date
+	let parent: String
+	let tree: String
+	let paths: [String]
+	let hostname: String
+	let username: String
+	let uid: Int
+	let gid: Int
+	let tags: [String]
+	let program_version: String
+	let summary: backupSummary
+	let id: String
+	let short_id: String
 }
