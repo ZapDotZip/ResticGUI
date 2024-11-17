@@ -9,9 +9,9 @@ ResticGUI is a macOS front-end for [restic](https://restic.net/). It's currently
 - [x] Text-defined exclusions
 - [x] Start backup and see progress
 
-- [ ] Add tags
+- [x] Add tags
 - [ ] Ability to disable Scan Ahead
-- [ ] Import backup paths from text/clipboard
+- [x] Import backup paths from text/clipboard
 - [ ] Exclude cache directories
 - [ ] Exclude files over size
 - [ ] Import Time Machine exclusions
