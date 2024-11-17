@@ -2,9 +2,6 @@
 //  ResticGUIUITests.swift
 //  ResticGUIUITests
 //
-//  Created by Cole on 7/13/24.
-//  Copyright © 2024 zap.zip. All rights reserved.
-//
 
 import XCTest
 
