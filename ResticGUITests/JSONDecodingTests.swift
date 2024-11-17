@@ -25,7 +25,7 @@ class JSONDecodingTests: XCTestCase {
 		do {
 			let obj = try jsonDecoder.decode([Snapshot].self, from: testData)
 			print(obj)
-			XCTAssertNotEqual(obj.first!.getDate(), Date.init(timeIntervalSince1970: 0))
+			XCTAssertNotEqual(obj.first!.date, Date.init(timeIntervalSince1970: 0))
 			
 		} catch {
 			XCTFail("\(error)")

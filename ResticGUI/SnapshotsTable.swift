@@ -47,7 +47,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 				}
 				reload()
 			}
-		}		
+		}
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -55,7 +55,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 			return nil
 		}
 		if tableColumn!.identifier.rawValue == "Date & Time" {
-			cell.textField!.stringValue = df.string(from: snapshots[row].getDate())
+			cell.textField!.stringValue = df.string(from: snapshots[row].date)
 		} else if tableColumn!.identifier.rawValue == "Tags" {
 			cell.textField!.stringValue = snapshots[row].tags.joined(separator: ", ")
 		} else if tableColumn!.identifier.rawValue == "Size" {

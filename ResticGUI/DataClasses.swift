@@ -93,16 +93,10 @@ final class Snapshot: Codable {
 	let id: String
 	let short_id: String
 	
-	private var date: Date?
-	func getDate() -> Date {
-		if let d = date {
-			return d
-		} else {
-			let df = DateFormatter()
-			df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-			date = df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
-			return date!
-		}
+	var date: Date {
+		let df = DateFormatter()
+		df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+		return df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
 	}
 }
 
