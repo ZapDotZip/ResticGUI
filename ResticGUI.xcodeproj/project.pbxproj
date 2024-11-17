@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
 		ED2756572C44BCA0005C38C5 /* RepoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2756562C44BCA0005C38C5 /* RepoEditViewController.swift */; };
 		ED4B70B12C88F7C90058D717 /* ReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4B70B02C88F7C80058D717 /* ReposManager.swift */; };
 		ED5D14CA2CC9F7FF00366435 /* PrefTabExclusions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5D14C92CC9F7FF00366435 /* PrefTabExclusions.swift */; };
@@ -26,6 +27,7 @@
 		EDB269092CCAE4CE0044EEC7 /* RepoInitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB269082CCAE4CE0044EEC7 /* RepoInitController.swift */; };
 		EDB655402C8515EA00BBBFD5 /* ProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB6553F2C8515EA00BBBFD5 /* ProfileEditorController.swift */; };
 		EDB655422C853AC100BBBFD5 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB655412C853AC100BBBFD5 /* DataClasses.swift */; };
+		EDD3F4E12CE971C300F3665B /* SnapshotsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD3F4E02CE971C300F3665B /* SnapshotsTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
 		ED2756562C44BCA0005C38C5 /* RepoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoEditViewController.swift; sourceTree = "<group>"; };
 		ED4B70B02C88F7C80058D717 /* ReposManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposManager.swift; sourceTree = "<group>"; };
 		ED5D14C92CC9F7FF00366435 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 		EDB269082CCAE4CE0044EEC7 /* RepoInitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoInitController.swift; sourceTree = "<group>"; };
 		EDB6553F2C8515EA00BBBFD5 /* ProfileEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorController.swift; sourceTree = "<group>"; };
 		EDB655412C853AC100BBBFD5 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
+		EDD3F4E02CE971C300F3665B /* SnapshotsTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotsTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +156,7 @@
 				ED4B70B02C88F7C80058D717 /* ReposManager.swift */,
 				ED2756562C44BCA0005C38C5 /* RepoEditViewController.swift */,
 				ED75B9572C4387CC00EB9E39 /* BackupPathsDataSource.swift */,
+				EDD3F4E02CE971C300F3665B /* SnapshotsTable.swift */,
 				ED5D14CB2CCAD1D300366435 /* ResticGlue */,
 				ED75B92B2C43212600EB9E39 /* Assets.xcassets */,
 				ED5D14C82CC9F7C600366435 /* Preferences */,
@@ -165,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */,
+				ED228D222CE963EA00502614 /* JSONDecodingTests.swift */,
 				ED75B93C2C43212700EB9E39 /* Info.plist */,
 			);
 			path = ResticGUITests;
@@ -310,6 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD3F4E12CE971C300F3665B /* SnapshotsTable.swift in Sources */,
 				ED75B9582C4387CC00EB9E39 /* BackupPathsDataSource.swift in Sources */,
 				ED7DD17B2CCEE45A0066CD71 /* ResticLogger.swift in Sources */,
 				ED4B70B12C88F7C90058D717 /* ReposManager.swift in Sources */,
@@ -331,6 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */,
 				ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,7 +504,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -517,7 +525,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
