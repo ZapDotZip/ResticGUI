@@ -79,7 +79,7 @@ final class Repo: Codable {
 }
 
 final class Snapshot: Codable {
-	let time: Date
+	let time: String
 	let parent: String?
 	let tree: String
 	let paths: [String]
@@ -92,6 +92,18 @@ final class Snapshot: Codable {
 	let summary: backupSummary
 	let id: String
 	let short_id: String
+	
+	private var date: Date?
+	func getDate() -> Date {
+		if let d = date {
+			return d
+		} else {
+			let df = DateFormatter()
+			df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+			date = df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
+			return date!
+		}
+	}
 }
 
 struct backupProgress: Decodable {
