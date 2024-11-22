@@ -24,7 +24,6 @@ class ReposManager: NSObject {
 	override init() {
 		super.init()
 		if FileManager.default.fileExists(atPath: repolistFile.path) {
-			
 			do {
 				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: repolistFile))
 			} catch {
@@ -33,6 +32,7 @@ class ReposManager: NSObject {
 			}
 		}
 		ReposManager.default = self
+		encoder.outputFormat = .xml
 	}
 	
 	

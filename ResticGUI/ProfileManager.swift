@@ -69,6 +69,7 @@ struct ProfileManager {
 	/// Saves the provided profile, overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
 	static func save(_ profile: Profile) {
+		ProfileManager.encoder.outputFormat = .xml
 		if !FileManager.default.fileExists(atPath: profileDir.path) {
 			do {
 				try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
