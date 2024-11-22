@@ -115,7 +115,21 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {
-		
+		var env = [String : String]()
+		env["HOME"] = ProcessInfo.processInfo.environment["HOME"]
+		env["RESTIC_PASSWORD"] = passwordField.stringValue
+		if cacheDirLabel.stringValue != "" {
+			env["RESTIC_CACHE_DIR"] = cacheDirLabel.stringValue
+		}
+		do {
+			let (_, _) = try ResticController.default.run(args: ["--json", "-r", pathField.stringValue, "cat", "config"], env: env, returning: repoConfig.self)
+		} catch ResticError.couldNotDecodeJSON(let error) {
+			NSLog("Error testing repository: \(error)")
+			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error.1)", style: .warning, buttons: ["Ok"])
+		} catch {
+			NSLog("Error testing repository: \(error)")
+			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
+		}
 	}
 	
 	@IBAction func saveRepo(_ sender: NSButton) {
