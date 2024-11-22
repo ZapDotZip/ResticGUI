@@ -17,10 +17,20 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	let df: DateFormatter = DateFormatter()
 	let byteFmt = ByteCountFormatter()
 	
+	private let encoder = PropertyListEncoder.init()
+	private let decoder = PropertyListDecoder.init()
+	
+	let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Snapshots", isDirectory: true)
+	
 	required init?(coder: NSCoder) {
 		df.locale = .current
+		encoder.outputFormat = .binary
 		super.init(coder: coder)
 		UserDefaults.standard.addObserver(self, forKeyPath: "SnapshotDateFormat", options: .new, context: nil)
+	}
+	
+	func viewDidLoad() {
+		loadIfCached()
 	}
 	
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -56,6 +66,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 					Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
 				}
 				reload()
+				saveToCache()
 			}
 		}
 	}
@@ -108,5 +119,37 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 	}
 	
+	
+	
+	func loadIfCached() {
+		if let repoID = repoManager.getSelectedRepo()?.id {
+			let snapshotCacheURL: URL = cacheDirectory.appendingPathComponent(repoID, isDirectory: false)
+			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
+				do {
+					let data = try Data.init(contentsOf: snapshotCacheURL)
+					let snaps = try decoder.decode([Snapshot].self, from: data)
+					snapshots = snaps
+					reload()
+				} catch {
+					NSLog("Couldn't load snapshot cache: \(error)")
+				}
+			}
+		}
+	}
+	
+	func saveToCache() {
+		if let repoID = repoManager.getSelectedRepo()?.loadID() {
+			let snapshotCacheURL: URL = cacheDirectory.appendingPathComponent(repoID, isDirectory: false)
+			if let data = try? encoder.encode(snapshots) {
+				do {
+					try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+					try data.write(to: snapshotCacheURL)
+					NSLog("Saved snapshot cache to \(snapshotCacheURL)")
+				} catch {
+					NSLog("Couldn't save cache \(error)")
+				}
+			}
+		}
+	}
 	
 }

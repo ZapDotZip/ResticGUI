@@ -73,7 +73,22 @@ final class Repo: Codable {
 		var newEnv = env ?? [String : String]()
 		newEnv["HOME"] = ProcessInfo.processInfo.environment["HOME"]
 		newEnv["RESTIC_PASSWORD"] = password
+		if let cd = cacheDir {
+			newEnv["RESTIC_CACHE_DIR"] = cd
+		}
 		return newEnv
+	}
+	
+	var id: String?
+	/// Sets & returns the repository's ID, if it can.
+	func loadID() -> String? {
+		if id == nil {
+			id = try? ResticController.default.run(args: ["--json", "-r", path, "cat", "config"], env: getEnv(), returning: repoConfig.self).0.id
+			if id != nil {
+				ReposManager.default.save()
+			}
+		}
+		return id
 	}
 
 }
@@ -139,4 +154,10 @@ struct backupSummary: Codable {
 	let total_bytes_processed: Int
 	let total_duration: Double?
 	let snapshot_id: String?
+}
+
+struct repoConfig: Codable {
+	let version: Int
+	let id: String
+	let chunker_polynomial: String
 }

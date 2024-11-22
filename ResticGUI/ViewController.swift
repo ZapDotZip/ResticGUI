@@ -11,6 +11,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet var profileEditor: ProfileEditorController!
 	@IBOutlet var repoManager: ReposManager!
 	@IBOutlet var repoEditButton: NSSegmentedControl!
+	@IBOutlet weak var snapshotsTable: SnapshotsTable!
 	
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
 	lazy var backupController: BackupController = appDel.backupController
@@ -46,6 +47,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		if profileSidebarList.count == 1 {
 			performSegue(withIdentifier: "NewProfile", sender: self)
 		}
+		snapshotsTable.viewDidLoad()
 	}
 	
 	func indexOfProfile(_ name: String) -> Int? {

@@ -1067,7 +1067,7 @@
                                                                     <rect key="frame" x="16" y="202" width="482" height="153"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="480" height="151"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="480" height="151"/>
@@ -1765,6 +1765,7 @@
                         <outlet property="repoEditButton" destination="6Ls-TL-A39" id="rGC-KL-JGe"/>
                         <outlet property="repoManager" destination="S7I-Xn-HVk" id="YTJ-Wo-JYe"/>
                         <outlet property="runBackupButton" destination="0HO-Va-zu4" id="VUf-iI-lDR"/>
+                        <outlet property="snapshotsTable" destination="1ba-4P-Vqk" id="13v-qg-fgi"/>
                         <segue destination="E8d-iE-4P2" kind="sheet" identifier="RepoEdit" id="IuM-6R-rqv"/>
                     </connections>
                 </viewController>
