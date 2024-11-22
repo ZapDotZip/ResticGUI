@@ -7,7 +7,6 @@ import Cocoa
 
 class PreferencesTabController: NSTabViewController {
 	
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tabViewItems[1].image = NSImage.init(byReferencingFile: "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/ToolbarDeleteIcon.icns")
@@ -145,5 +144,5 @@ class PrefTabGeneral: NSViewController {
 			binPathSIL.image = NSImage(named: status!)
 		}
 	}
-
+	
 }

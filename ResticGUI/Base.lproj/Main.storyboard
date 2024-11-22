@@ -1740,6 +1740,7 @@
                                             <outlet property="ReadConcurrency" destination="JqB-3y-K0L" id="keE-8r-B0m"/>
                                             <outlet property="TabView" destination="O0D-t8-hRL" id="lrN-h7-T7h"/>
                                             <outlet property="TagField" destination="IDv-Ku-NdT" id="tUY-fR-HT8"/>
+                                            <outlet property="snapshotsTable" destination="1ba-4P-Vqk" id="0p9-c5-4vX"/>
                                         </connections>
                                     </customView>
                                 </subviews>

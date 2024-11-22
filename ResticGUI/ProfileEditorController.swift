@@ -9,6 +9,7 @@ import Cocoa
 class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	
 	@IBOutlet var TabView: NSTabView!
+	@IBOutlet var snapshotsTable: SnapshotsTable!
 	var viewCon: ViewController!
 	var repoManager: ReposManager!
 	
@@ -73,11 +74,13 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 		}
 		
 		TagField.objectValue = profile.tags
+		snapshotsTable.loadIfCached()
 		
 	}
 	
 	func setSelectedRepo(_ repo: String) {
 		viewCon.selectedProfile?.selectedRepo = repo
+		snapshotsTable.loadIfCached()
 	}
 	
 	

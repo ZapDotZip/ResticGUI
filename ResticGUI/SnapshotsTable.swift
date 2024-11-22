@@ -29,10 +29,6 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		UserDefaults.standard.addObserver(self, forKeyPath: "SnapshotDateFormat", options: .new, context: nil)
 	}
 	
-	func viewDidLoad() {
-		loadIfCached()
-	}
-	
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if keyPath == "SnapshotDateFormat" {
 			reload()
@@ -60,7 +56,9 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		if let selectedRepo = repoManager.getSelectedRepo() {
 			if let selectedProfile = viewCon.selectedProfile {
 				do {
-					try (snapshots, _) = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--tag", selectedProfile.name, "--json"], env: selectedRepo.getEnv(), returning: [Snapshot].self)
+					try snapshots = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: selectedRepo.getEnv(), returning: [Snapshot].self).0.filter({ (snap) -> Bool in
+						return snap.tags.contains(selectedProfile.name)
+					})
 				} catch {
 					NSLog("\(error)")
 					Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
@@ -127,14 +125,18 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
 				do {
 					let data = try Data.init(contentsOf: snapshotCacheURL)
-					let snaps = try decoder.decode([Snapshot].self, from: data)
-					snapshots = snaps
+					snapshots = try decoder.decode([Snapshot].self, from: data).filter({ (snap) -> Bool in
+						return snap.tags.contains(viewCon!.selectedProfile?.name ?? "")
+					})
 					reload()
+					return
 				} catch {
 					NSLog("Couldn't load snapshot cache: \(error)")
 				}
 			}
 		}
+		snapshots = []
+		reload()
 	}
 	
 	func saveToCache() {

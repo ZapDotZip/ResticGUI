@@ -47,7 +47,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		if profileSidebarList.count == 1 {
 			performSegue(withIdentifier: "NewProfile", sender: self)
 		}
-		snapshotsTable.viewDidLoad()
 	}
 	
 	func indexOfProfile(_ name: String) -> Int? {
