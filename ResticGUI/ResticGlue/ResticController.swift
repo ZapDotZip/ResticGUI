@@ -25,11 +25,11 @@ final class ResticController: NSObject {
 	var resticLocation: URL?
 	var versionInfo: ResticVersion?
 
+	static var `default`: ResticController!
 	override init() {
 		dq = DispatchQueue.init(label: "ResticController", qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: nil)
-		newLine = "\n".data(using: .ascii)![0]
-		partial = Data()
 		super.init()
+		ResticController.default = self
 	}
 	
 	/// Configures ResticController based off of the user's preferences. Throws an error if Restic couldn't be found/run.
@@ -152,8 +152,8 @@ final class ResticController: NSObject {
 	typealias pipedDataHandler = (Data) -> Void
 	typealias terminationHandler = ((Int32) -> Void)
 	
-	let newLine: UInt8
-	var partial: Data
+	let newLine: UInt8 = "\n".data(using: .ascii)![0]
+	var partial: Data = Data()
 	var readHandler: pipedDataHandler!
 	var errHandler: pipedDataHandler!
 	var termHandler: terminationHandler!

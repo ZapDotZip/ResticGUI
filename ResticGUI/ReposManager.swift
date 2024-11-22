@@ -20,6 +20,7 @@ class ReposManager: NSObject {
 	private let encoder = PropertyListEncoder.init()
 	private let decoder = PropertyListDecoder.init()
 	
+	static var `default`: ReposManager!
 	override init() {
 		super.init()
 		if FileManager.default.fileExists(atPath: repolistFile.path) {
@@ -31,7 +32,9 @@ class ReposManager: NSObject {
 				Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 			}
 		}
+		ReposManager.default = self
 	}
+	
 	
 	func initUIView() {
 		guard repos.count != 0 else {
