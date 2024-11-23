@@ -57,10 +57,10 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 			if let selectedProfile = viewCon.selectedProfile {
 				do {
 					try snapshots = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: selectedRepo.getEnv(), returning: [Snapshot].self).0.filter({ (snap) -> Bool in
-						return snap.tags.contains(selectedProfile.name)
+						return snap.tags?.contains(selectedProfile.name) ?? false
 					})
 				} catch {
-					NSLog("\(error)")
+					NSLog("Couldn't load snapshots: \(error)")
 					Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
 				}
 				reload()
@@ -76,7 +76,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		if tableColumn!.identifier.rawValue == "Date & Time" {
 			cell.textField!.stringValue = df.string(from: snapshots[row].date)
 		} else if tableColumn!.identifier.rawValue == "Tags" {
-			cell.textField!.stringValue = snapshots[row].tags.joined(separator: ", ")
+			cell.textField!.stringValue = snapshots[row].tags?.joined(separator: ", ") ?? ""
 		} else if tableColumn!.identifier.rawValue == "Size" {
 			cell.textField!.stringValue = byteFmt.string(fromByteCount: Int64(snapshots[row].summary.data_added_packed))
 		} else {
@@ -126,7 +126,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 				do {
 					let data = try Data.init(contentsOf: snapshotCacheURL)
 					snapshots = try decoder.decode([Snapshot].self, from: data).filter({ (snap) -> Bool in
-						return snap.tags.contains(viewCon!.selectedProfile?.name ?? "")
+						return snap.tags?.contains(viewCon!.selectedProfile?.name ?? "") ?? false
 					})
 					reload()
 					return

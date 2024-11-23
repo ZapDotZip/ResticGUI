@@ -102,7 +102,7 @@ final class Snapshot: Codable {
 	let username: String
 	let uid: Int
 	let gid: Int
-	let tags: [String]
+	let tags: [String]?
 	let program_version: String
 	let summary: backupSummary
 	let id: String
