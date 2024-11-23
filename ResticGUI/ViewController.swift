@@ -16,6 +16,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
 	lazy var backupController: BackupController = appDel.backupController
 	
+	var bf = ByteCountFormatter.init()
+	
 	
 // MARK: ViewController functionality
 	override func viewDidLoad() {
@@ -283,28 +285,41 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		runBackupButton.isEnabled = true
 	}
 	
-	var completedBackupPopover = NSPopover()
+	var completedBackupPopover: NSPopover? = nil
 	
 	func completedBackup(_ summary: backupSummary?) {
 		progressBar.doubleValue = progressBar.maxValue
 		progressBar.isIndeterminate = false
 		if let sum = summary {
 			progressLabel.stringValue = "Backup finished."
-			let completedBackupPopover = NSPopover()
-			var str = ""
-			dump(sum, to: &str)
-			let label = NSTextField(wrappingLabelWithString: str)
+			completedBackupPopover = NSPopover()
+			let text = """
+			Files Processed: \(sum.total_files_processed)
+			- Files Added: \(sum.files_new)
+			- Files Changed: \(sum.files_changed)
+			- Files Unmodified: \(sum.files_unmodified)
+			- Directories Added: \(sum.dirs_new)
+			- Directories Changed: \(sum.dirs_changed)
+			- Directories Unmodified: \(sum.dirs_unmodified)
+			Data Processed: \(bf.string(fromByteCount: Int64(sum.total_bytes_processed)))
+			- Uncompressed Size: \(bf.string(fromByteCount: Int64(sum.data_added)))
+			- Compressed Added: \(bf.string(fromByteCount: Int64(sum.data_added_packed)))
+			- Blobs Added: \(sum.data_blobs), Tree Blobs Added: \(sum.tree_blobs)
+			Total Duration: \(sum.total_duration ?? 0.0) seconds
+			"""
+			let label = NSTextField(wrappingLabelWithString: text)
 			label.alignment = .left
 			label.sizeToFit()
 			let contentViewController = NSViewController()
 			contentViewController.view = NSView(frame: label.frame)
 			contentViewController.view.wantsLayer = true
 			contentViewController.view.addSubview(label)
-			completedBackupPopover.contentViewController = contentViewController
-			completedBackupPopover.behavior = .transient
-			completedBackupPopover.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
+			completedBackupPopover!.contentViewController = contentViewController
+			completedBackupPopover!.behavior = .transient
+			completedBackupPopover!.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
 		} else {
 			progressLabel.stringValue = "Summary details are unavailable for the last backup."
+			completedBackupPopover = nil
 		}
 	}
 	
@@ -355,4 +370,14 @@ class NewProfileVC: NSViewController {
 	}
 	
 	
+}
+
+
+class ResponsiveProgressBar: NSProgressIndicator {
+	@IBOutlet var viewCon: ViewController!
+	override func mouseUp(with event: NSEvent) {
+		if let popover = viewCon.completedBackupPopover {
+			popover.show(relativeTo: self.bounds, of: self, preferredEdge: .maxY)
+		}
+	}
 }
