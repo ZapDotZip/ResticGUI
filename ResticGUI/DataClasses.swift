@@ -32,6 +32,28 @@ final class Profile: Codable, Equatable {
 		self.profileVersion = 1
 	}
 	
+	init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		name = try container.decode(String.self, forKey: .name)
+		selectedRepo = try container.decodeIfPresent(String.self, forKey: .selectedRepo)
+		paths = try container.decode([String].self, forKey: .paths)
+		tags = try container.decode([String].self, forKey: .tags)
+		exclusions = try container.decodeIfPresent(String.self, forKey: .exclusions)
+		exclusionsCS = try container.decode(Bool.self, forKey: .exclusionsCS)
+		excludeCacheDirs = try container.decode(Bool.self, forKey: .excludeCacheDirs)
+		excludeMaxFilesize = try container.decodeIfPresent(String.self, forKey: .excludeMaxFilesize)
+		excludePatternFile = try container.decodeIfPresent(String.self, forKey: .excludePatternFile)
+		excludePatternFileCS = try container.decode(Bool.self, forKey: .excludePatternFileCS)
+		excludesTMDefault = try container.decode(Bool.self, forKey: .excludesTMDefault)
+		excludesTMUser = try container.decode(Bool.self, forKey: .excludesTMUser)
+		compression = try container.decodeIfPresent(String.self, forKey: .compression)
+		readConcurrency = try container.decodeIfPresent(Int.self, forKey: .readConcurrency)
+		packSize = try container.decodeIfPresent(Int.self, forKey: .packSize)
+		
+		uuid = try container.decodeIfPresent(UUID.self, forKey: .uuid) ?? UUID()
+		profileVersion = try container.decodeIfPresent(Int.self, forKey: .profileVersion) ?? 1
+	}
+	
 	static func == (lhs: Profile, rhs: Profile) -> Bool {
 		return lhs.uuid == rhs.uuid &&
 			lhs.name == rhs.name &&
