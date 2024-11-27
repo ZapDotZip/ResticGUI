@@ -23,12 +23,18 @@ final class Profile: Codable, Equatable {
 	var readConcurrency: Int?
 	var packSize: Int?
 	
+	var uuid: UUID
+	var profileVersion: Int
+	
 	init(name: String) {
 		self.name = name
+		self.uuid = UUID()
+		self.profileVersion = 1
 	}
 	
 	static func == (lhs: Profile, rhs: Profile) -> Bool {
-		return lhs.name == rhs.name &&
+		return lhs.uuid == rhs.uuid &&
+			lhs.name == rhs.name &&
 			lhs.name == rhs.name &&
 			lhs.selectedRepo == rhs.selectedRepo &&
 			lhs.paths == rhs.paths &&
