@@ -42,6 +42,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(p.name) ?? 1), byExtendingSelection: false)
 			}
 		}
+		scanAhead.state = UserDefaults.standard.bool(forKey: "Scan Ahead") ? .on : .off
 		resetProgress()
 	}
 	
@@ -262,13 +263,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet weak var progressLabel: NSTextField!
 	@IBOutlet weak var progressBar: NSProgressIndicator!
 	@IBOutlet weak var runBackupButton: NSButton!
+	@IBOutlet weak var scanAhead: NSButton!
+	
 	
 	@IBAction func runBackup(_ sender: NSButton) {
 		if let profile = selectedProfile {
 			if let repo = repoManager.getSelectedRepo() {
 				resetProgress()
 				runBackupButton.isEnabled = false
-				backupController.backup(profile: profile, repo: repo)
+				progressBar.isIndeterminate = scanAhead.state == .off
+				backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
 			} else {
 				Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational, buttons: ["Ok"])
 			}

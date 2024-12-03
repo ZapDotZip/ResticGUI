@@ -12,8 +12,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@IBOutlet weak var resticController: ResticController!
 	var backupController: BackupController!
 	
+	override init() {
+		super.init()
+		#if DEBUG
+			UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
+		#endif
+		UserDefaults.standard.register(defaults: [
+			"Scan Ahead" : true,
+		])
+	}
+	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
-		UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
 		// Insert code here to initialize your application
 	}
 	

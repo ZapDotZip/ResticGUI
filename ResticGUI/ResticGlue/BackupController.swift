@@ -20,13 +20,16 @@ class BackupController {
 		errOut = Data()
 	}
 	
-	func backup(profile: Profile, repo: Repo) {
+	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) {
 		backupInProgress = true
 		rc.dq.async {
 			// setup
 			var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
 			for i in profile.tags {
 				args.append(contentsOf: ["--tag", i])
+			}
+			if !scanAhead {
+				args.append("--no-scan")
 			}
 			
 			args.append(contentsOf: profile.paths)
