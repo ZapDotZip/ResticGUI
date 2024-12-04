@@ -61,6 +61,13 @@ class BackupController {
 					}
 				}
 			}
+			if let epf = profile.excludePatternFile {
+				if profile.excludePatternFileCS {
+					args.append("--exclude-file=\(epf)")
+				} else {
+					args.append("--iexclude-file=\(epf)")
+				}
+			}
 			
 			
 			
