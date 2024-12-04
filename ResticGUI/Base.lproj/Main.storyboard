@@ -357,7 +357,8 @@
                                                             <action selector="orderFrontFontPanel:" target="YLy-65-1bz" id="WHr-nq-2xA"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27">
+                                                    <menuItem title="Bold" tag="2" id="GB9-OM-e27">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="addFontTrait:" target="YLy-65-1bz" id="hqk-hr-sYV"/>
                                                         </connections>
@@ -602,6 +603,28 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Backup" id="tLU-Zb-eh0">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Backup" id="k4V-Fe-yVC">
+                                    <items>
+                                        <menuItem title="Start Backup" keyEquivalent="b" id="l5K-aI-rMI">
+                                            <connections>
+                                                <action selector="menuItemStartBackup:" target="Ady-hI-5gd" id="K2S-SY-fI5"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stop Backup" keyEquivalent="B" id="oaP-NT-cKN">
+                                            <connections>
+                                                <action selector="menuItemStopBackup:" target="Ady-hI-5gd" id="xG2-lH-WOe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Pause Backup" keyEquivalent="R" id="xUv-il-DDZ">
+                                            <connections>
+                                                <action selector="menuItemPauseBackup:" target="Ady-hI-5gd" id="wTH-Hd-ysL"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

@@ -266,20 +266,26 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet weak var scanAhead: NSButton!
 	
 	
-	@IBAction func runBackup(_ sender: NSButton) {
-		if let profile = selectedProfile {
-			if let repo = repoManager.getSelectedRepo() {
-				resetProgress()
-				runBackupButton.isEnabled = false
-				progressBar.isIndeterminate = scanAhead.state == .off
-				backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
-			} else {
-				Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational, buttons: ["Ok"])
-			}
+	@IBAction func runBackup(_ sender: Any) {
+		if backupController.backupInProgress {
+			backupController.cancel()
+			runBackupButton.title = "Run Backup"
 		} else {
-			Alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational, buttons: ["Ok"])
+			if let profile = selectedProfile {
+				if let repo = repoManager.getSelectedRepo() {
+					resetProgress()
+					runBackupButton.isEnabled = false
+					progressBar.isIndeterminate = scanAhead.state == .off
+					backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
+					runBackupButton.title = "Cancel"
+					runBackupButton.isEnabled = true
+				} else {
+					Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational, buttons: ["Ok"])
+				}
+			} else {
+				Alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational, buttons: ["Ok"])
+			}
 		}
-		
 	}
 	
 	func resetProgress() {

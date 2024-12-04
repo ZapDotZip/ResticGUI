@@ -50,6 +50,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Insert code here to tear down your application
 	}
 	
+	
+	@IBAction func menuItemStartBackup(_ sender: NSMenuItem) {
+		viewCon.runBackup(sender)
+	}
+	
+	@IBAction func menuItemStopBackup(_ sender: NSMenuItem) {
+		viewCon.runBackup(sender)
+	}
+	
+	@IBAction func menuItemPauseBackup(_ sender: NSMenuItem) {
+		if !backupController.isSuspended {
+			if backupController.pause() {
+				sender.title = "Resume Backup"
+			}
+		} else {
+			if backupController.resume() {
+				sender.title = "Pause Backup"
+			}
+		}
+	}
 }
 
 @discardableResult

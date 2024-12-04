@@ -118,5 +118,23 @@ class BackupController {
 		backupInProgress = false
 	}
 	
+	func cancel() {
+		if let p = rc.currentlyRunningProcess {
+			p.interrupt()
+		}
+	}
 	
+	var isSuspended = false
+	func pause() -> Bool {
+		if !isSuspended, let p = rc.currentlyRunningProcess {
+			isSuspended = p.suspend()
+		}
+		return isSuspended
+	}
+	func resume() -> Bool {
+		if isSuspended, let p = rc.currentlyRunningProcess {
+			isSuspended = !p.resume()
+		}
+		return !isSuspended
+	}
 }

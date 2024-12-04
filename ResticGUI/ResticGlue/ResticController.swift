@@ -183,11 +183,13 @@ final class ResticController: NSObject {
 	}
 	
 	
+	var currentlyRunningProcess: Process?
 	/// Launches restic for monitoring.
 	/// - Parameter args: The list of arguments to use.
 	/// - Parameter env: The enviorment dictionary.
 	/// - Parameter stdoutHandler: Repeatedly called when new data is present in stdout.
 	/// - Parameter stderrHandler: Repeatedly called when new data is present in stderr.
+	/// - Parameter terminationHandler: Called when the process exits.
 	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler) throws {
 		if resticLocation == nil {
 			do {
@@ -228,11 +230,12 @@ final class ResticController: NSObject {
 		}
 		
 		proc.terminationHandler = exit(_:)
-
+		currentlyRunningProcess = proc
 		try proc.run()
 		stdout.fileHandleForReading.waitForDataInBackgroundAndNotify()
 		stderr.fileHandleForReading.waitForDataInBackgroundAndNotify()
 		proc.waitUntilExit()
+		currentlyRunningProcess = nil
 	}
 
 	
