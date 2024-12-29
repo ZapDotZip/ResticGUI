@@ -150,7 +150,7 @@ final class ResticController: NSObject {
 	
 // MARK: launch
 	typealias pipedDataHandler = (Data) -> Void
-	typealias terminationHandler = ((Int32) -> Void)
+	typealias terminationHandler = (Int32) -> Void
 	
 	let newLine: UInt8 = "\n".data(using: .ascii)![0]
 	var partial: Data = Data()

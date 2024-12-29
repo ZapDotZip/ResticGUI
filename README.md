@@ -13,11 +13,11 @@ ResticGUI is a macOS front-end for [restic](https://restic.net/). It's currently
 - [x] Snapshots view
 - [x] Ability to disable Scan Ahead
 - [x] Cancel, pause, and resume backups
+- [x] Custom compression, read concurrency, and pack size
+- [x] Exclude cache directories
+- [x] Exclude files over size
 
-- [ ] Exclude cache directories
-- [ ] Exclude files over size
 - [ ] Import Time Machine exclusions
-- [ ] Custom compression, read concurrency, and pack size
 - [ ] Custom environment variables
 
 ![ResticGUI Window](https://zapdotzip.github.io/apps/ResticGUI_screenshot.png)

@@ -33,7 +33,6 @@ class BackupController {
 			}
 			
 			args.append(contentsOf: profile.paths)
-			let globalExlcusions = UserDefaults.standard.string(forKey: "GlobalExclusions")
 			do {
 				if let exclusions = profile.exclusions {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-\(profile.name).txt")
@@ -44,7 +43,7 @@ class BackupController {
 						args.append("--iexclude-file=\(exclusionsFile.path)")
 					}
 				}
-				if let exclusions = globalExlcusions {
+				if let exclusions = UserDefaults.standard.string(forKey: "GlobalExclusions") {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-global.txt")
 					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
 					if UserDefaults.standard.bool(forKey: "GlobalExclusionsCaseSensitive") {
@@ -61,6 +60,7 @@ class BackupController {
 					}
 				}
 			}
+			
 			if let epf = profile.excludePatternFile {
 				if profile.excludePatternFileCS {
 					args.append("--exclude-file=\(epf)")
@@ -69,11 +69,25 @@ class BackupController {
 				}
 			}
 			
+			if profile.excludeCacheDirs {
+				args.append("--exclude-caches=true")
+			}
+			
+			if let compression = profile.compression {
+				args.append("--compression=\(compression)")
+			}
+			
+			if let readConcurrency = profile.readConcurrency {
+				args.append("--read-concurrency=\(readConcurrency)")
+			}
+			
 			if let packSize = profile.packSize {
 				args.append("--pack-size=\(packSize)")
 			}
 			
-			
+			if let excludeMaxFilesize = profile.excludeMaxFilesize {
+				args.append("--exclude-larger-than=\(excludeMaxFilesize)")
+			}
 			
 			// run
 			do {

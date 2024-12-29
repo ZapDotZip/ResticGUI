@@ -184,7 +184,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	}
 
 	@IBAction func ReadConcurrencyChanged(_ sender: NSTextField) {
-		if let val = Int(sender.stringValue) {
+		if let val = UInt(sender.stringValue) {
 			viewCon.selectedProfile?.readConcurrency = val
 		} else if sender.stringValue.count == 0 {
 			viewCon.selectedProfile?.readConcurrency = nil

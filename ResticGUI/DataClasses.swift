@@ -20,7 +20,7 @@ final class Profile: Codable, Equatable {
 	var excludesTMDefault: Bool = false
 	var excludesTMUser: Bool = false
 	var compression: String?
-	var readConcurrency: Int?
+	var readConcurrency: UInt?
 	var packSize: Int?
 	
 	var uuid: UUID
@@ -47,7 +47,7 @@ final class Profile: Codable, Equatable {
 		excludesTMDefault = try container.decode(Bool.self, forKey: .excludesTMDefault)
 		excludesTMUser = try container.decode(Bool.self, forKey: .excludesTMUser)
 		compression = try container.decodeIfPresent(String.self, forKey: .compression)
-		readConcurrency = try container.decodeIfPresent(Int.self, forKey: .readConcurrency)
+		readConcurrency = try container.decodeIfPresent(UInt.self, forKey: .readConcurrency)
 		packSize = try container.decodeIfPresent(Int.self, forKey: .packSize)
 		
 		uuid = try container.decodeIfPresent(UUID.self, forKey: .uuid) ?? UUID()
