@@ -69,6 +69,10 @@ class BackupController {
 				}
 			}
 			
+			if let packSize = profile.packSize {
+				args.append("--pack-size=\(packSize)")
+			}
+			
 			
 			
 			// run

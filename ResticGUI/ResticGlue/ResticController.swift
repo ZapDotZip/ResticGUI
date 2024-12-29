@@ -191,6 +191,7 @@ final class ResticController: NSObject {
 	/// - Parameter stderrHandler: Repeatedly called when new data is present in stderr.
 	/// - Parameter terminationHandler: Called when the process exits.
 	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler) throws {
+		partial = Data()
 		if resticLocation == nil {
 			do {
 				try setupFromDefaults()
