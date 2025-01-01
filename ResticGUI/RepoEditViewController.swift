@@ -123,9 +123,9 @@ class RepoEditViewController: NSViewController {
 		}
 		do {
 			let (_, _) = try ResticController.default.run(args: ["--json", "-r", pathField.stringValue, "cat", "config"], env: env, returning: repoConfig.self)
-		} catch ResticError.couldNotDecodeJSON(let error) {
-			NSLog("Error testing repository: \(error)")
-			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error.1)", style: .warning, buttons: ["Ok"])
+		} catch ResticError.couldNotDecodeJSON(let rawStr, let error) {
+			NSLog("Error testing repository: \(rawStr)\n\(error)")
+			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
 		} catch {
 			NSLog("Error testing repository: \(error)")
 			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])

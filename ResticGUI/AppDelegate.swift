@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		#endif
 		UserDefaults.standard.register(defaults: [
 			"Scan Ahead" : true,
+			"Global Repo Selection" : false,
 		])
 	}
 	
