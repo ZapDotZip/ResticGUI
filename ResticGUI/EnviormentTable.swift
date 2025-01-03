@@ -1,0 +1,105 @@
+//
+//  EnviormentTable.swift
+//  ResticGUI
+//
+
+import Cocoa
+
+class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
+	private static let columnIndexes = IndexSet(integersIn: 0..<2)
+	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
+	@IBOutlet var deleteButton: NSButton!
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.delegate = self
+		self.dataSource = self
+	}
+	
+	private var dict: [(String, String)] = []
+	func load(env: [String : String]?) {
+		if let env = env {
+			dict = env.map { (key: String, value: String) in
+				return (key, value)
+			}
+		} else {
+			dict = []
+		}
+		reloadData()
+	}
+	
+	func save() -> [String : String]? {
+		if dict.count == 0 {
+			return nil
+		} else {
+			var env: [String : String] = [:]
+			for i in dict {
+				env[i.0] = i.1
+			}
+			return env
+		}
+	}
+	
+	func numberOfRows(in tableView: NSTableView) -> Int {
+		return dict.count
+	}
+	
+	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+		guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else {
+			return nil
+		}
+		if tableColumn!.identifier.rawValue == "Enviorment Variable" {
+			cell.textField!.stringValue = row < dict.count ? dict[row].0 : ""
+		} else if tableColumn!.identifier.rawValue == "Value" {
+			cell.textField!.stringValue = row < dict.count ? dict[row].1 : ""
+		} else {
+			cell.textField!.stringValue = "Unknown Error"
+		}
+		return cell
+	}
+	
+	
+	
+	@IBAction func newItem(_ sender: NSButton) {
+		insertRows(at: [dict.count], withAnimation: .effectGap)
+		reloadData(forRowIndexes: [dict.count], columnIndexes: EnviormentTable.columnIndexes)
+		selectRowIndexes([dict.count], byExtendingSelection: false)
+	}
+	
+	func tableViewSelectionDidChange(_ notification: Notification) {
+		if selectedRowIndexes.count == 0 {
+			deleteButton.isEnabled = false
+		} else {
+			deleteButton.isEnabled = true
+		}
+	}
+	
+	@IBAction func deleteItem(_ sender: NSButton) {
+		for i in selectedRowIndexes.enumerated().reversed() {
+			dict.remove(at: i.element)
+		}
+		reloadData()
+		deleteButton.isEnabled = false
+	}
+	
+	@IBAction func textFinishedEditing(_ sender: NSTextField) {
+		let row = row(for: sender)
+		let col = column(for: sender)
+		if row >= dict.count {
+			if col == 0 {
+				dict.append((sender.stringValue, ""))
+			} else {
+				dict.append(("", sender.stringValue))
+			}
+		} else {
+			if col == 0 {
+				dict[row].0 = sender.stringValue
+			} else {
+				dict[row].1 = sender.stringValue
+			}
+		}
+		reloadData()
+	}
+}
+
+

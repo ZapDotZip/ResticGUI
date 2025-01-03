@@ -10,6 +10,7 @@
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
+		EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86BA72D260487004E8996 /* EnviormentTable.swift */; };
 		EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA632D10C1390081E223 /* Preferences.storyboard */; };
 		EDE0AA7E2D10C1390081E223 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA722D10C1390081E223 /* Main.storyboard */; };
 		EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA642D10C1390081E223 /* PreferencesController.swift */; };
@@ -55,6 +56,7 @@
 		ED75B9412C43212700EB9E39 /* ResticGUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUIUITests.swift; sourceTree = "<group>"; };
 		ED75B9472C43212700EB9E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDA86BA72D260487004E8996 /* EnviormentTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnviormentTable.swift; sourceTree = "<group>"; };
 		EDE0AA632D10C1390081E223 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		EDE0AA642D10C1390081E223 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */,
 				EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */,
 				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
+				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
 				EDE0AA6B2D10C1390081E223 /* ResticGlue */,
 				EDE0AA662D10C1390081E223 /* Preferences */,
 				EDE0AA702D10C1390081E223 /* Info.plist */,
@@ -327,6 +330,7 @@
 				EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */,
 				EDE0AA8C2D10C1390081E223 /* SnapshotsTable.swift in Sources */,
 				EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */,
+				EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
