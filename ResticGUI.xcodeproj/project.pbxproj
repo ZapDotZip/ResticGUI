@@ -28,6 +28,7 @@
 		EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA762D10C1390081E223 /* ReposManager.swift */; };
 		EDE0AA8C2D10C1390081E223 /* SnapshotsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */; };
 		EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA792D10C1390081E223 /* ViewController.swift */; };
+		EDF660AB2D53060800BD3998 /* DefaultTimeMachineExclusions.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDF660AA2D53060800BD3998 /* DefaultTimeMachineExclusions.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		EDE0AA772D10C1390081E223 /* ResticGUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ResticGUI.entitlements; sourceTree = "<group>"; };
 		EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotsTable.swift; sourceTree = "<group>"; };
 		EDE0AA792D10C1390081E223 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EDF660AA2D53060800BD3998 /* DefaultTimeMachineExclusions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = DefaultTimeMachineExclusions.plist; path = ResticGUI/Resources/DefaultTimeMachineExclusions.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				EDE0AA6B2D10C1390081E223 /* ResticGlue */,
 				EDE0AA662D10C1390081E223 /* Preferences */,
 				EDE0AA702D10C1390081E223 /* Info.plist */,
+				EDF660AA2D53060800BD3998 /* DefaultTimeMachineExclusions.plist */,
 				EDE0AA772D10C1390081E223 /* ResticGUI.entitlements */,
 			);
 			path = ResticGUI;
@@ -289,6 +292,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDF660AB2D53060800BD3998 /* DefaultTimeMachineExclusions.plist in Resources */,
 				EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */,
 				EDE0AA7E2D10C1390081E223 /* Main.storyboard in Resources */,
 			);

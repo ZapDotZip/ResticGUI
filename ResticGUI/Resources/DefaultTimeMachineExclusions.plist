@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>standardExclusionPaths</key>
+	<array>
+		<string>/.DocumentRevisions-V100</string>
+		<string>/.HFS+ Private Directory Data
+</string>
+		<string>/.MobileBackups</string>
+		<string>/.MobileBackups.trash</string>
+		<string>/.Spotlight-V100</string>
+		<string>/.TemporaryItems</string>
+		<string>/.Trashes</string>
+		<string>/.com.apple.backupd.mvlist.plist</string>
+		<string>/.fseventsd</string>
+		<string>/.hotfiles.btree</string>
+		<string>/.vol</string>
+		<string>/Backups.backupdb</string>
+		<string>/Desktop DB</string>
+		<string>/Desktop DF</string>
+		<string>/Library/Caches</string>
+		<string>/Library/Logs</string>
+		<string>/Library/Updates</string>
+		<string>/MobileBackups.trash</string>
+		<string>/Network</string>
+		<string>/System/Library/AssetsV2</string>
+		<string>/System/Library/Caches</string>
+		<string>/System/Library/Extensions/Caches</string>
+		<string>/Users/Guest</string>
+		<string>/Users/Shared/SC Info</string>
+		<string>/Volumes</string>
+		<string>/automount</string>
+		<string>/cores</string>
+		<string>/dev</string>
+		<string>/home</string>
+		<string>/net</string>
+		<string>/private/Network</string>
+		<string>/private/etc/kcpassword</string>
+		<string>/private/tftpboot</string>
+		<string>/private/tmp</string>
+		<string>/private/var/automount</string>
+		<string>/private/var/db/Spotlight</string>
+		<string>/private/var/db/Spotlight-V100</string>
+		<string>/private/var/db/com.apple.backupd.backupVerification</string>
+		<string>/private/var/db/dhcpclient</string>
+		<string>/private/var/db/dyld</string>
+		<string>/private/var/db/dyld/shared_region_roots</string>
+		<string>/private/var/db/efw_cache</string>
+		<string>/private/var/db/fseventsd</string>
+		<string>/private/var/db/systemstats</string>
+		<string>/private/var/folders</string>
+		<string>/private/var/lib/postfix/greylist.db</string>
+		<string>/private/var/log</string>
+		<string>/private/var/run</string>
+		<string>/private/var/spool/cups</string>
+		<string>/private/var/spool/fax</string>
+		<string>/private/var/spool/uucp</string>
+		<string>/private/var/tmp</string>
+		<string>/private/var/vm</string>
+	</array>
+</dict>
+</plist>

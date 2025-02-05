@@ -41,6 +41,9 @@ class BackupController {
 				if profile.excludesTMUser {
 					exclusions.append(self.getTMUserExclusions().joined(separator: "\n"))
 				}
+				if profile.excludesTMDefault {
+					exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
+				}
 				print(exclusions)
 				if exclusions.count != 0 {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-\(profile.name).txt")
@@ -185,4 +188,20 @@ class BackupController {
 		}
 		return []
 	}
+	
+	private struct TMDefault: Decodable {
+		let standardExclusionPaths: [String]
+	}
+	private func getTMDefaultTMExclusions() -> [String] {
+		do {
+			if let plist = Bundle.main.path(forResource: "DefaultTimeMachineExclusions", ofType: "plist") {
+				let tmexcl = try decoder.decode(TMDefault.self, from: Data.init(contentsOf: URL(fileURLWithPath: plist)))
+				return tmexcl.standardExclusionPaths
+			}
+		} catch {
+			NSLog("Error getting TM User Exclusions: \(error)")
+		}
+		return []
+	}
+	
 }
