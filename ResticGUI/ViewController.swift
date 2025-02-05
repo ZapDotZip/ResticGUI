@@ -269,7 +269,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func runBackup(_ sender: Any) {
 		if backupController.backupInProgress {
 			backupController.cancel()
-			runBackupButton.title = "Run Backup"
+			runBackupButton.title = "Start Backup"
 		} else {
 			if let profile = selectedProfile {
 				ProfileManager.save(profile)
@@ -289,19 +289,19 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	func resetProgress() {
+	func resetProgress(label: String = "") {
 		progressBar.doubleValue = 0.0
 		progressBar.maxValue = 1.0
-		progressLabel.stringValue = ""
+		progressLabel.stringValue = label
 		runBackupButton.isEnabled = true
 	}
 	
 	var completedBackupPopover: NSPopover? = nil
 	
 	func completedBackup(_ summary: backupSummary?) {
-		progressBar.doubleValue = progressBar.maxValue
 		progressBar.isIndeterminate = false
 		if let sum = summary {
+			progressBar.doubleValue = progressBar.maxValue
 			progressLabel.stringValue = "Backup finished."
 			completedBackupPopover = NSPopover()
 			let text = """
@@ -329,8 +329,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			completedBackupPopover!.behavior = .transient
 			completedBackupPopover!.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
 		} else {
-			progressLabel.stringValue = "Summary details are unavailable for the last backup."
+			resetProgress(label: "Summary details are unavailable for the last backup.")
 			completedBackupPopover = nil
+			runBackupButton.title = "Start Backup"
 		}
 	}
 	

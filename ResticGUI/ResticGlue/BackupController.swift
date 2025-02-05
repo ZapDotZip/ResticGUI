@@ -44,7 +44,6 @@ class BackupController {
 				if profile.excludesTMDefault {
 					exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
 				}
-				print(exclusions)
 				if exclusions.count != 0 {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-\(profile.name).txt")
 					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
