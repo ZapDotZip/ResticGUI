@@ -272,6 +272,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			runBackupButton.title = "Run Backup"
 		} else {
 			if let profile = selectedProfile {
+				ProfileManager.save(profile)
 				if let repo = repoManager.getSelectedRepo() {
 					resetProgress()
 					runBackupButton.isEnabled = false

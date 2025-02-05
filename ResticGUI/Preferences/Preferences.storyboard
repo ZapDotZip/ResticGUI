@@ -481,7 +481,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="132" id="PED-Q4-4ru"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="jkY-bF-EFl">
-                                    <rect key="frame" x="2" y="233" width="444" height="16"/>
+                                    <rect key="frame" x="1" y="228" width="446" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Paz-qV-EvD">

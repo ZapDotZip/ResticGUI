@@ -58,20 +58,18 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
 		return cell
 	}
 	
-	
-	
-	@IBAction func newItem(_ sender: NSButton) {
-		insertRows(at: [dict.count], withAnimation: .effectGap)
-		reloadData(forRowIndexes: [dict.count], columnIndexes: EnviormentTable.columnIndexes)
-		selectRowIndexes([dict.count], byExtendingSelection: false)
-	}
-	
 	func tableViewSelectionDidChange(_ notification: Notification) {
 		if selectedRowIndexes.count == 0 {
 			deleteButton.isEnabled = false
 		} else {
 			deleteButton.isEnabled = true
 		}
+	}
+	
+	@IBAction func newItem(_ sender: NSButton) {
+		insertRows(at: [dict.count], withAnimation: .effectGap)
+		reloadData(forRowIndexes: [dict.count], columnIndexes: EnviormentTable.columnIndexes)
+		selectRowIndexes([dict.count], byExtendingSelection: false)
 	}
 	
 	@IBAction func deleteItem(_ sender: NSButton) {
@@ -98,7 +96,7 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
 				dict[row].1 = sender.stringValue
 			}
 		}
-		reloadData()
+		reloadData(forRowIndexes: [row], columnIndexes: EnviormentTable.columnIndexes)
 	}
 }
 

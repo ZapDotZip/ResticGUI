@@ -34,7 +34,15 @@ class BackupController {
 			
 			args.append(contentsOf: profile.paths)
 			do {
-				if let exclusions = profile.exclusions {
+				var exclusions = ""
+				if let e = profile.exclusions {
+					exclusions.append(e)
+				}
+				if profile.excludesTMUser {
+					exclusions.append(self.getTMUserExclusions().joined(separator: "\n"))
+				}
+				print(exclusions)
+				if exclusions.count != 0 {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-\(profile.name).txt")
 					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
 					if profile.exclusionsCS {
@@ -43,9 +51,9 @@ class BackupController {
 						args.append("--iexclude-file=\(exclusionsFile.path)")
 					}
 				}
-				if let exclusions = UserDefaults.standard.string(forKey: "GlobalExclusions") {
+				if let globalExclusions = UserDefaults.standard.string(forKey: "GlobalExclusions") {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-global.txt")
-					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
+					try globalExclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
 					if UserDefaults.standard.bool(forKey: "GlobalExclusionsCaseSensitive") {
 						args.append("--exclude-file=\(exclusionsFile.path)")
 					} else {
@@ -161,5 +169,20 @@ class BackupController {
 			isSuspended = !p.resume()
 		}
 		return !isSuspended
+	}
+	
+	private struct TMPrefs: Decodable {
+		let ExcludeByPath: [String]
+		let SkipPaths: [String]
+	}
+	private let decoder = PropertyListDecoder.init()
+	private func getTMUserExclusions() -> [String] {
+		do {
+			let tmPrefs = try decoder.decode(TMPrefs.self, from: Data.init(contentsOf: URL(fileURLWithPath: "/Library/Preferences/com.apple.TimeMachine.plist")))
+			return tmPrefs.ExcludeByPath + tmPrefs.SkipPaths
+		} catch {
+			NSLog("Error getting TM User Exclusions: \(error)")
+		}
+		return []
 	}
 }
