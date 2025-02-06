@@ -55,9 +55,30 @@ class PrefTabGeneral: NSViewController {
 		resticController.dq.async {
 			do {
 				let vers = try self.resticController.getVersionInfo()
-				DispatchQueue.main.async {
-					self.createSILMessage("\(vers.version) (\(vers.go_arch))")
-					self.setBinPath(self.resticController.resticLocation!, NSImage.statusAvailableName)
+				if vers == ResticController.supportedRV {
+					DispatchQueue.main.async {
+						self.createSILMessage("\(vers.version) (\(vers.go_arch))")
+						self.setBinPath(self.resticController.resticLocation!, NSImage.statusAvailableName)
+					}
+				} else {
+					let archMsg = {
+						if vers.go_arch != ResticController.supportedRV.go_arch {
+							return "Restic is the wrong architecture (\(vers.go_arch)) for your system (\(ResticController.supportedRV.go_arch))."
+						} else {
+							return "(\(vers.go_arch))"
+						}
+					}()
+					let versMsg = {
+						if vers.version != ResticController.supportedRV.version {
+							return "This version of Restic (\(vers.version)) may not be fully compatible with ResticGUI (\(ResticController.supportedRV.version))."
+						} else {
+							return vers.version
+						}
+					}()
+					DispatchQueue.main.async {
+						self.createSILMessage("\(versMsg)\n \(archMsg)")
+						self.setBinPath(self.resticController.resticLocation!, NSImage.statusPartiallyAvailableName)
+					}
 				}
 			} catch {
 				DispatchQueue.main.async {
@@ -71,7 +92,6 @@ class PrefTabGeneral: NSViewController {
 				}
 			}
 		}
-
 	}
 	
 	@IBAction func resticLocationSelectorDidChange(_ sender: NSPopUpButton) {

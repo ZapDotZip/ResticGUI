@@ -8,9 +8,9 @@ import Foundation
 
 final class ResticController: NSObject {
 	#if arch(x86_64)
-	static let supportedRV = ResticVersion.init(version: "0.17.1", go_arch: "amd64")
+	static let supportedRV = ResticVersion.init(version: "0.17.3", go_arch: "amd64")
 	#elseif arch(arm64)
-	static let supportedRV = ResticVersion.init(version: "0.17.1", go_arch: "arm64")
+	static let supportedRV = ResticVersion.init(version: "0.17.3", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
 		URL(fileURLWithPath: "/opt/local/bin/restic"),

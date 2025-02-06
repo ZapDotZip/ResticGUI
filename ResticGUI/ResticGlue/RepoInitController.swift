@@ -5,6 +5,7 @@
 
 import Foundation
 
+/// Used to create new repositories.
 final class RepoInitController {
 	static func repoInit(repo: Repo, rc: ResticController) throws -> (RepoInitResponse, String?) {
 		let args: [String] = ["--json", "-r", repo.path, "init"]
@@ -12,10 +13,9 @@ final class RepoInitController {
 		return (res, stderr)
 	}
 	
-	//{"message_type":"initialized","id":"...","repository":"..."}
 	struct RepoInitResponse: Decodable {
-		var message_type: String
-		var id: String
-		var repository: String
+		let message_type: String
+		let id: String
+		let repository: String
 	}
 }
