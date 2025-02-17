@@ -87,7 +87,8 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
 			if col == 0 {
 				dict.append((sender.stringValue, ""))
 			} else {
-				dict.append(("", sender.stringValue))
+				let firstColText = (view(atColumn: 0, row: row, makeIfNecessary: true) as! NSTableCellView).textField?.stringValue ?? ""
+				dict.append((firstColText, sender.stringValue))
 			}
 		} else {
 			if col == 0 {
