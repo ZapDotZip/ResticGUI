@@ -5,6 +5,25 @@
 
 import Cocoa
 
+class EnviormentTableView: NSView {
+	@IBOutlet var mainView: NSView!
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		let nib = NSNib(nibNamed: "EnviormentTableView", bundle: Bundle(for: type(of: self)))
+		nib?.instantiate(withOwner: self, topLevelObjects: nil)
+		let previousConstraints = mainView.constraints
+		mainView.subviews.forEach({addSubview($0)})
+		for constraint in previousConstraints {
+			print(constraint)
+			let firstItem = (constraint.firstItem as? NSView == mainView) ? self : constraint.firstItem
+			let secondItem = (constraint.secondItem as? NSView == mainView) ? self : constraint.secondItem
+			addConstraint(NSLayoutConstraint(item: firstItem as Any, attribute: constraint.firstAttribute, relatedBy: constraint.relation, toItem: secondItem, attribute: constraint.secondAttribute, multiplier: constraint.multiplier, constant: constraint.constant))
+		}
+	}
+	
+}
+
 class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
 	private static let columnIndexes = IndexSet(integersIn: 0..<2)
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
@@ -99,6 +118,6 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 		reloadData(forRowIndexes: [row], columnIndexes: EnviormentTable.columnIndexes)
 	}
+	
 }
-
 
