@@ -26,6 +26,7 @@ class RepoEditViewController: NSViewController {
 	@IBOutlet var cacheDirLabel: NSTextField!
 	@IBOutlet var nameField: NSTextField!
 	
+	@IBOutlet weak var tableView: EnviormentTableView!
 	
 	override func viewDidLoad() {
 		if let customCache = UserDefaults.standard.string(forKey: "Cache Directory") {
@@ -40,6 +41,7 @@ class RepoEditViewController: NSViewController {
 			saveButton.isEnabled = true
 			createRepoButton.isEnabled = true
 			testRepoButton.isEnabled = true
+			tableView.table.load(r.env)
 		} else {
 			saveButton.isEnabled = false
 			createRepoButton.isEnabled = false
@@ -48,6 +50,7 @@ class RepoEditViewController: NSViewController {
 			passwordField.stringValue = ""
 			cacheDirLabel.stringValue = ""
 			cacheDirLabel.toolTip = ""
+			tableView.table.load(nil)
 		}
 	}
 	
@@ -115,9 +118,14 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {
-		var env = [String : String]()
-		env["HOME"] = ProcessInfo.processInfo.environment["HOME"]
-		env["RESTIC_PASSWORD"] = passwordField.stringValue
+		var env = {
+			if let r = selectedRepo {
+				return r.getEnv()
+			} else {
+				let newRepo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
+				return newRepo.getEnv()
+			}
+		}()
 		if cacheDirLabel.stringValue != "" {
 			env["RESTIC_CACHE_DIR"] = cacheDirLabel.stringValue
 		}
@@ -146,12 +154,18 @@ class RepoEditViewController: NSViewController {
 		} else {
 			selectedRepo!.name = nil
 		}
+		
 		if cacheDirLabel.stringValue.count != 0 {
 			selectedRepo!.cacheDir = cacheDirLabel.stringValue
 		} else {
 			selectedRepo!.cacheDir = nil
 		}
-		// TODO: add env table.
+		
+		if let env = tableView.table.save() {
+			selectedRepo!.env = env
+		} else {
+			selectedRepo!.env = nil
+		}
 		
 		repoManager.add(selectedRepo!)
 		selectedRepo = nil

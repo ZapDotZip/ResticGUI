@@ -96,7 +96,7 @@ final class Repo: Codable {
 		self.password = password
 	}
 	
-	/// Returns an env dictionary with password.
+	/// Returns a repo-configured env dictionary with password.
 	func getEnv() -> [String : String] {
 		var newEnv = env ?? [String : String]()
 		newEnv["HOME"] = ProcessInfo.processInfo.environment["HOME"]
