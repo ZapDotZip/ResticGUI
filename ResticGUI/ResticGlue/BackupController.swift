@@ -100,8 +100,20 @@ class BackupController {
 			}
 			
 			// run
+			let qos: QualityOfService = {
+				if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
+					if pref == "userInitiated" {
+						return .userInitiated
+					} else if pref == "utility" {
+						return .utility
+					} else if pref == "background" {
+						return .background
+					}
+				}
+				return .default
+			}()
 			do {
-				try self.rc.launch(args: args, env: repo.getEnv(), stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:))
+				try self.rc.launch(args: args, env: repo.getEnv(), stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:), qos: qos)
 			} catch {
 				NSLog(error.localizedDescription)
 			}

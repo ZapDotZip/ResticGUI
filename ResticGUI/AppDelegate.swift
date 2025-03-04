@@ -20,6 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		UserDefaults.standard.register(defaults: [
 			"Scan Ahead" : true,
 			"Global Repo Selection" : false,
+			"Backup QoS" : "default"
 		])
 	}
 	

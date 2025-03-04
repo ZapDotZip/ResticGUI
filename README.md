@@ -16,8 +16,9 @@ ResticGUI is a macOS front-end for [restic](https://restic.net/). It's currently
 - [x] Custom compression, read concurrency, and pack size
 - [x] Exclude cache directories
 - [x] Exclude files over size
+- [x] Import Time Machine exclusions
+- [x] Custom environment variables
+- [x] QoS (efficiency core) preferences
 
-- [ ] Import Time Machine exclusions
-- [ ] Custom environment variables
 
 ![ResticGUI Window](https://zapdotzip.github.io/apps/ResticGUI_screenshot.png)

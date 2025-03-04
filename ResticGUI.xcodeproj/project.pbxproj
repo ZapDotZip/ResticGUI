@@ -151,9 +151,9 @@
 		EDE0AA662D10C1390081E223 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				EDE0AA632D10C1390081E223 /* Preferences.storyboard */,
 				EDE0AA642D10C1390081E223 /* PreferencesController.swift */,
 				EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */,
+				EDE0AA632D10C1390081E223 /* Preferences.storyboard */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";

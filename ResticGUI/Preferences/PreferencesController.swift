@@ -25,6 +25,7 @@ class PrefTabGeneral: NSViewController {
 	@IBOutlet weak var binPath: NSPathControl!
 	@IBOutlet weak var binPathSIL: NSButton!
 	static let resticPathPrefName = "Restic Location"
+	@IBOutlet weak var backupQoS: NSPopUpButton!
 	
 	lazy var appDel = NSApplication.shared.delegate as! AppDelegate
 	lazy var resticController = appDel.resticController!
@@ -44,6 +45,15 @@ class PrefTabGeneral: NSViewController {
 		super.viewDidLoad()
 		setSelectorUserPref()
 		checkBinPath()
+		if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
+			if pref == "userInitiated" {
+				backupQoS.selectItem(at: 0)
+			} else if pref == "utility" {
+				backupQoS.selectItem(at: 2)
+			} else if pref == "background" {
+				backupQoS.selectItem(at: 3)
+			}
+		}
 	}
 	
 	override func viewDidAppear() {
@@ -163,6 +173,10 @@ class PrefTabGeneral: NSViewController {
 		if status != nil {
 			binPathSIL.image = NSImage(named: status!)
 		}
+	}
+	
+	@IBAction func backupQoSDidChange(_ sender: NSPopUpButton) {
+		UserDefaults.standard.set(sender.selectedItem?.identifier, forKey: "Backup QoS")
 	}
 	
 }

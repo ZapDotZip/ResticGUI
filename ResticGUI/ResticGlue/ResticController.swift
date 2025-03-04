@@ -190,7 +190,7 @@ final class ResticController: NSObject {
 	/// - Parameter stdoutHandler: Repeatedly called when new data is present in stdout.
 	/// - Parameter stderrHandler: Repeatedly called when new data is present in stderr.
 	/// - Parameter terminationHandler: Called when the process exits.
-	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler) throws {
+	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler, qos: QualityOfService) throws {
 		partial = Data()
 		if resticLocation == nil {
 			do {
@@ -215,6 +215,8 @@ final class ResticController: NSObject {
 			proc.environment = env
 		}
 		logger.runCmd(path: resticLocation!, args: args)
+		
+		proc.qualityOfService = qos
 		
 		NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: stdout.fileHandleForReading, queue: nil) { (notif) in
 			let handle = notif.object as! FileHandle
