@@ -80,7 +80,7 @@
                                 </columns>
                                 <gridCells>
                                     <gridCell row="Meu-g5-Alh" column="zuO-dL-6rU" xPlacement="trailing" id="lbf-nZ-J5V">
-                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lBx-iz-0aS">
+                                        <textField key="contentView" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lBx-iz-0aS">
                                             <rect key="frame" x="52" y="116" width="55" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="General:" id="6fJ-bX-GN9">
                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -102,7 +102,7 @@
                                         </button>
                                     </gridCell>
                                     <gridCell row="ltt-h6-gbF" column="zuO-dL-6rU" id="9pD-kN-KOV">
-                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6xP-6H-L1S">
+                                        <textField key="contentView" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6xP-6H-L1S">
                                             <rect key="frame" x="20" y="84" width="87" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Restic Binary:" id="WGL-XV-xYv">
                                                 <font key="font" metaFont="system"/>
@@ -169,7 +169,7 @@
                                         </customView>
                                     </gridCell>
                                     <gridCell row="r28-0S-GDb" column="zuO-dL-6rU" yPlacement="center" id="ych-HF-PIl">
-                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SKj-qd-hwn">
+                                        <textField key="contentView" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SKj-qd-hwn">
                                             <rect key="frame" x="3" y="26" width="104" height="22"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Snapshot Dates:" id="iJm-lh-vE1">
                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -182,7 +182,7 @@
                                         <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="dvY-fj-CFg">
                                             <rect key="frame" x="113" y="26" width="400" height="22"/>
                                             <subviews>
-                                                <textField toolTip="Customize the format for the date column in the Snapshots table. Uses the NSDateFormatter format." focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BPq-2Y-AbE">
+                                                <textField toolTip="Customize the format for the date column in the Snapshots table. Uses the NSDateFormatter format." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BPq-2Y-AbE">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="rx4-NG-xsz"/>
@@ -210,7 +210,7 @@
                                         </customView>
                                     </gridCell>
                                     <gridCell row="RQF-1n-3Op" column="zuO-dL-6rU" id="Oqj-lD-gYL">
-                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gN7-95-eUp">
+                                        <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gN7-95-eUp">
                                             <rect key="frame" x="24" y="2" width="83" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Backup QoS:" id="CU9-fj-G08">
                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -224,7 +224,7 @@
                                             <rect key="frame" x="110" y="-4" width="407" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1NZ-Qi-SbU" id="CkF-eL-7sk">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="menu"/>
+                                                <font key="font" metaFont="message"/>
                                                 <menu key="menu" id="jb6-Ij-rKu">
                                                     <items>
                                                         <menuItem title="High Priority" identifier="userInitiated" id="srv-ZV-uhf"/>
@@ -270,7 +270,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="272"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KYS-oO-4Vh">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KYS-oO-4Vh">
                                 <rect key="frame" x="18" y="236" width="147" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Global Exclude Pattens:" id="jDG-US-x06">
                                     <font key="font" metaFont="system"/>
@@ -347,7 +347,7 @@
                                     <binding destination="OTQ-gz-Ufp" name="value" keyPath="values.GlobalExcludeFileCaseSensitive" id="0RK-7Z-czj"/>
                                 </connections>
                             </button>
-                            <textField focusRingType="none" horizontalHuggingPriority="100" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vut-HS-6r8">
+                            <textField horizontalHuggingPriority="100" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vut-HS-6r8">
                                 <rect key="frame" x="18" y="20" width="399" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="No File Selected" id="Lz4-C8-egk">
                                     <font key="font" metaFont="system"/>
