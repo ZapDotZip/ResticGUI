@@ -31,6 +31,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		profileEditor.repoManager = repoManager
 		profileSidebarList.append(ProfileOrHeader.init(header: "Profiles"))
 		DeleteProfileButton.isEnabled = false
+		let profileListMenu = NSMenu()
+		profileListMenu.addItem(NSMenuItem(title: "Export Profile...", action: #selector(exportProfile(_:)), keyEquivalent: ""))
+		outline.menu = profileListMenu
 		
 		// view data setup
 		initSidebar(ProfileManager.load())
@@ -135,8 +138,18 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	func editProfileName(_ sender: NSTextField) {
-		if let selected = outline.item(atRow: outline.selectedRow) as? Profile {
+		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
 			selected.name = sender.stringValue
+		}
+	}
+	
+	@objc func exportProfile(_ sender: NSMenuItem) {
+		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
+			savePanel(for: self.view.window!, message: "Export Profile", nameFieldLabel: "Export As:", nameField: selected.name + ".plist", currentDirectory: nil, canCreateDirectories: true, canSelectHiddenExtension: true, isExtensionHidden: false, completionHandler: { res, url in
+				if res == .OK || res == .continue, let destination = url {
+					ProfileManager.save(selected, to: destination)
+				}
+			})
 		}
 	}
 	
