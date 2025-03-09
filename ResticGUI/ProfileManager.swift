@@ -66,30 +66,34 @@ struct ProfileManager {
 		}
 	}
 
-	/// Saves the provided profile, overwriting the existing profile if it exists.
+	/// Saves the provided profile to the Profiles directory, overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
 	static func save(_ profile: Profile) {
-		ProfileManager.encoder.outputFormat = .xml
-		if !FileManager.default.fileExists(atPath: profileDir.path) {
-			do {
-				try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
-			} catch {
-				NSLog("Error creating Profiles directory: \(error)")
-				Alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
-			}
-		}
-		
 		if profile != load(name: profile.name) {
-			let filePath = getProfilePath(profile.name)
-			do {
-				let data = try encoder.encode(profile)
-				try data.write(to: filePath)
-			} catch {
-				NSLog("Error saving Profile: \(error)")
-				Alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
+			if !FileManager.default.fileExists(atPath: profileDir.path) {
+				do {
+					try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
+				} catch {
+					NSLog("Error creating Profiles directory: \(error)")
+					Alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+				}
 			}
+			save(profile, to: getProfilePath(profile.name))
 		} else {
 			NSLog("Profile not saved because it was unmodified.")
+		}
+	}
+	
+	/// Saves the provided profile to the specified directory., overwriting the existing profile if it exists.
+	/// - Parameter profile: the profile to save
+	static func save(_ profile: Profile, to filePath: URL) {
+		encoder.outputFormat = .xml
+		do {
+			let data = try encoder.encode(profile)
+			try data.write(to: filePath)
+		} catch {
+			NSLog("Error saving Profile: \(error)")
+			Alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 		}
 	}
 	
