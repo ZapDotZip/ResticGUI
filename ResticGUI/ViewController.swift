@@ -143,13 +143,28 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	@objc func exportProfile(_ sender: NSMenuItem) {
+	@IBAction @objc func exportProfile(_ sender: NSMenuItem) {
 		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
 			savePanel(for: self.view.window!, message: "Export Profile", nameFieldLabel: "Export As:", nameField: selected.name + ".plist", currentDirectory: nil, canCreateDirectories: true, canSelectHiddenExtension: true, isExtensionHidden: false, completionHandler: { res, url in
 				if res == .OK || res == .continue, let destination = url {
 					ProfileManager.save(selected, to: destination)
 				}
 			})
+		}
+	}
+	
+	@IBAction func importProfile(_ sender: NSMenuItem) {
+		let (panel, res) = openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false, allowedFileTypes: ["plist"])
+		if res == .OK {
+			let newProfiles = panel.urls.compactMap { url in
+				if let profile = ProfileManager.load(url) {
+					ProfileManager.save(profile)
+					return profile
+				}
+				return nil
+			}
+			initSidebar(newProfiles)
+			outline.reloadData()
 		}
 	}
 	

@@ -65,14 +65,14 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New Profile" keyEquivalent="n" id="Was-JA-tGl">
+                                        <menuItem title="New Profile..." keyEquivalent="n" id="Was-JA-tGl">
                                             <connections>
                                                 <action selector="newProfile:" target="Ady-hI-5gd" id="6On-ZT-g57"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open…" enabled="NO" keyEquivalent="o" id="IAo-SY-fd9">
+                                        <menuItem title="Import Profile…" keyEquivalent="o" id="IAo-SY-fd9">
                                             <connections>
-                                                <action selector="openDocument:" target="Ady-hI-5gd" id="bVn-NM-KNZ"/>
+                                                <action selector="importProfile:" target="Ady-hI-5gd" id="Ugd-kp-ZSt"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Open Recent" id="tXI-mr-wws">
@@ -99,10 +99,10 @@
                                                 <action selector="saveProfile:" target="Ady-hI-5gd" id="muH-AR-kbM"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save As…" enabled="NO" keyEquivalent="s" id="Bw7-FT-i3A">
+                                        <menuItem title="Export Profile…" keyEquivalent="s" id="Bw7-FT-i3A">
                                             <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
-                                                <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="mDf-zr-I0C"/>
+                                                <action selector="exportProfile:" target="Ady-hI-5gd" id="O2c-cb-eSq"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Revert to Saved" keyEquivalent="r" id="KaW-ft-85H">
