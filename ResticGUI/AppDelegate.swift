@@ -90,7 +90,7 @@ func Alert(title: String, message: String, style: NSAlert.Style, buttons: [Strin
 /// Creates an Open/Save Dialogue panel for the user.
 /// - Parameters:
 /// - Returns: The panel itself, to get URLs from, and the response from the user.
-func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canChooseFiles: Bool, allowsMultipleSelection: Bool, canCreateDirectories: Bool) -> (NSOpenPanel, NSApplication.ModalResponse) {
+func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canChooseFiles: Bool, allowsMultipleSelection: Bool, canCreateDirectories: Bool, allowedFileTypes: [String]? = nil) -> (NSOpenPanel, NSApplication.ModalResponse) {
 	let openPanel = NSOpenPanel()
 	openPanel.message = message
 	openPanel.prompt = prompt
@@ -98,6 +98,9 @@ func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canC
 	openPanel.canChooseFiles = canChooseFiles
 	openPanel.allowsMultipleSelection = allowsMultipleSelection
 	openPanel.canCreateDirectories = canCreateDirectories
+	if allowedFileTypes != nil {
+		openPanel.allowedFileTypes = allowedFileTypes
+	}
 	return (openPanel, openPanel.runModal())
 }
 
