@@ -36,7 +36,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		outline.menu = profileListMenu
 		
 		// view data setup
-		initSidebar(ProfileManager.load())
+		initSidebar(ProfileManager.loadAllProfiles())
 		profileEditor.viewDidLoad()
 		repoManager.initUIView()
 		if let s = UserDefaults.standard.string(forKey: "LastSelectedProfile") {

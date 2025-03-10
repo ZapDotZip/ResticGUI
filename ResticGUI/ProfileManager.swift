@@ -19,28 +19,34 @@ struct ProfileManager {
 	
 	/// Loads all saved profiles and returns an array of Profiles.
 	/// - Returns: an array of profiles, empty if there are none.
-	static func load() -> [Profile] {
-		if !FileManager.default.fileExists(atPath: profileDir.path) {
+	static func loadAllProfiles() -> [Profile] {
+		guard FileManager.default.fileExists(atPath: profileDir.path) else {
 			return []
 		}
-		
-		var profiles: [Profile] = []
 		if let enumerator = try? FileManager.default.contentsOfDirectory(at: profileDir, includingPropertiesForKeys: [], options: .skipsHiddenFiles) {
-			for i in enumerator {
-				if i.pathExtension == PROFILE_EXT {
-					do {
-						let data = try Data.init(contentsOf: i)
-						let p = try decoder.decode(Profile.self, from: data)
-						profiles.append(p)
-					} catch {
-						NSLog("Error loading profile: \(error)")
-						Alert(title: "An error occured trying to load the saved profile \"\(i.lastPathComponent)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
-					}
+			return enumerator.compactMap { url in
+				if url.pathExtension == PROFILE_EXT {
+					return load(url)
+				} else {
+					return nil
 				}
-			}
+			}.sorted { $0.name < $1.name }
 		}
-		profiles.sort { $0.name < $1.name }
-		return profiles
+		return []
+	}
+	
+	/// Loads a profile from the specified URL.
+	/// - Returns: The profile, if it could be decoded.
+	static func load(_ url: URL) -> Profile? {
+		do {
+			let data = try Data.init(contentsOf: url)
+			let p = try decoder.decode(Profile.self, from: data)
+			return p
+		} catch {
+			NSLog("Error loading profile: \(error)")
+			Alert(title: "An error occured trying to load the profile \"\(url.lastPathComponent)\".", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
+		}
+		return nil
 	}
 	
 	private static func getProfilePath(_ name: String) -> URL {
