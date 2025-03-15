@@ -20,9 +20,32 @@ class BackupController {
 		errOut = Data()
 	}
 	
+	private func getQoS() -> QualityOfService {
+		var qos: QualityOfService = .default
+		if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
+			if pref == "userInitiated" {
+				qos = .userInitiated
+			} else if pref == "utility" {
+				qos = .utility
+			} else if pref == "background" {
+				qos = .background
+			}
+		}
+		if #available(macOS 12.0, *) {
+			if UserDefaults.standard.bool(forKey: "QoS Background on Low Power") && ProcessInfo.processInfo.isLowPowerModeEnabled {
+				qos = .background
+			}
+		}
+		if UserDefaults.standard.bool(forKey: "QoS Background on Battery") && isOnBattery() {
+			qos = .background
+		}
+		return qos
+	}
+	
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) {
 		backupInProgress = true
 		rc.dq.async {
+			let qos = self.getQoS()
 			// setup
 			var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
 			for i in profile.tags {
@@ -88,7 +111,11 @@ class BackupController {
 			}
 			
 			if let readConcurrency = profile.readConcurrency {
-				args.append("--read-concurrency=\(readConcurrency)")
+				if qos == .background && UserDefaults.standard.bool(forKey: "Limit Background Core Count"), let eCores = getDifferentialCoreCount()?.0, eCores < readConcurrency {
+					args.append("--read-concurrency=\(eCores)")
+				} else {
+					args.append("--read-concurrency=\(readConcurrency)")
+				}
 			}
 			
 			if let packSize = profile.packSize {
@@ -99,19 +126,6 @@ class BackupController {
 				args.append("--exclude-larger-than=\(excludeMaxFilesize)")
 			}
 			
-			// run
-			let qos: QualityOfService = {
-				if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
-					if pref == "userInitiated" {
-						return .userInitiated
-					} else if pref == "utility" {
-						return .utility
-					} else if pref == "background" {
-						return .background
-					}
-				}
-				return .default
-			}()
 			do {
 				try self.rc.launch(args: args, env: repo.getEnv(), stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:), qos: qos)
 			} catch {
