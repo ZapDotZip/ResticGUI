@@ -15,7 +15,6 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	var selectedProfile: Profile?
 	
 	func load(fromProfile profile: Profile) {
-		// TODO: load saved items
 		self.selectedProfile = profile
 		deleteButton.isEnabled = false
 		table.reloadData()
@@ -54,6 +53,26 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 		}
 	}
 	
+	@objc func copy(_ sender: AnyObject?) {
+		if let p = selectedProfile?.paths {
+			var copyPaths = [String]()
+			for i in table.selectedRowIndexes {
+				copyPaths.append(p[i])
+			}
+			NSPasteboard.general.clearContents()
+			if NSPasteboard.general.setData(copyPaths.joined(separator: "\n").data(using: .utf8), forType: .string) {
+				return
+			} else {
+				NSLog("Error writing to pasteboard.")
+			}
+		}
+	}
+	
+	@objc func cut(_ sender: AnyObject?) {
+		copy(sender)
+		selectedProfile?.paths = []
+		table.reloadData()
+	}
 	
 // MARK: dragging implementation
 	private var NormalBorderColor: CGColor?
@@ -142,12 +161,11 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 		}
 	}
 	
-	@IBAction func importPathsFromClipboard(_ sender: NSButton) {
+	@IBAction @objc func paste(_ sender: AnyObject?) {
 		for i in NSPasteboard.general.pasteboardItems ?? [] {
 			if let str = i.string(forType: .fileURL), let url = URL.init(string: str)?.path {
 				selectedProfile?.addPath(url)
 			} else if let str = i.string(forType: .string) {
-				print(str)
 				for line in str.split(separator: "\n") {
 					selectedProfile?.addPath(String(line))
 				}

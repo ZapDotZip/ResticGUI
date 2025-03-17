@@ -1047,7 +1047,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="importPathsFromClipboard:" target="Usp-Mm-JLV" id="dbr-f7-WcR"/>
+                                                                        <action selector="paste:" target="Usp-Mm-JLV" id="dbr-f7-WcR"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
