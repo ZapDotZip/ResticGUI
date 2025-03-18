@@ -75,8 +75,9 @@ final class Profile: Codable, Equatable {
 	}
 	
 	func addPath(_ path: String) {
-		// TODO: Check if path already exists.
-		paths.append(path)
+		if !paths.contains(path) {
+			paths.append(path)
+		}
 	}
 	
 }
