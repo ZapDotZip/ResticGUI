@@ -97,6 +97,12 @@ final class Repo: Codable {
 		self.password = password
 	}
 	
+	/// Gets the "nickname" or the path.
+	/// - Returns: The name to use in menus.
+	func getName() -> String {
+		return name ?? path
+	}
+	
 	/// Returns a repo-configured env dictionary with password.
 	func getEnv() -> [String : String] {
 		var newEnv = env ?? [String : String]()

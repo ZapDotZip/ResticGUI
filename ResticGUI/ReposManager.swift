@@ -66,7 +66,7 @@ class ReposManager: NSObject {
 	/// Adds or overwrites a repo to the repo list. Saves the repo aferwards.
 	/// - Parameter repo: The repo to add to the list.
 	func add(_ repo: Repo) {
-		let name: String = repo.name ?? repo.path
+		let name = repo.getName()
 		repos[name] = repo
 		fillMenu()
 		setSelectedRepo(title: name)

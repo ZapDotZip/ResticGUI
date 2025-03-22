@@ -276,7 +276,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
 			if let selectedRepo = repoManager.getSelectedRepo() {
-				let res = Alert(title: "Remove repository \"\(selectedRepo.name ?? selectedRepo.path)\"", message: "The repository will be removed from the list.", style: .informational, buttons: ["Delete", "Cancel"])
+				let res = Alert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, buttons: ["Delete", "Cancel"])
 				if res == .alertFirstButtonReturn {
 					repoManager.remove(selectedRepo)
 				}
