@@ -326,7 +326,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	var completedBackupPopover: NSPopover? = nil
 	
-	func completedBackup(_ summary: backupSummary?) {
+	func completedBackup(_ summary: ResticResponse.backupSummary?) {
 		progressBar.isIndeterminate = false
 		if let sum = summary {
 			progressBar.doubleValue = progressBar.maxValue

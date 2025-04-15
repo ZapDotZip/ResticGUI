@@ -12,7 +12,7 @@ class BackupController {
 	var errOut: Data
 	var didRecieveErrors = false
 	var backupInProgress = false
-	var lastBackupSummary: backupSummary?
+	var lastBackupSummary: ResticResponse.backupSummary?
 	
 	init(resticController: ResticController, viewController: ViewController) {
 		rc = resticController
@@ -135,14 +135,14 @@ class BackupController {
 	}
 	
 	func progressHandler(_ data: Data) {
-		if let progress = try? rc.jsonDecoder.decode(backupProgress.self, from: data) {
+		if let progress = try? rc.jsonDecoder.decode(ResticResponse.backupProgress.self, from: data) {
 			DispatchQueue.main.async {
 				self.vc.displayProgress(progress.current_files?.first, progress.percent_done)
 			}
-		} else if let error = try? rc.jsonDecoder.decode(backupError.self, from: data) {
+		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.backupError.self, from: data) {
 			print(error.message_type)
 			Alert(title: "An error occured while backing up.", message: "Restic:\n\n\(getStderr())", style: .critical, buttons: ["Ok"])
-		} else if let summary = try? rc.jsonDecoder.decode(backupSummary.self, from: data) {
+		} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: data) {
 			var sum: String = ""
 			dump(summary, to: &sum)
 			ResticLogger.default.log(sum)

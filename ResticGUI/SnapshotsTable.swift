@@ -13,7 +13,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	@IBOutlet var table: NSTableView!
 	
-	var snapshots: [Snapshot] = []
+	var snapshots: [ResticResponse.Snapshot] = []
 	let df: DateFormatter = DateFormatter()
 	let byteFmt = ByteCountFormatter()
 	
@@ -56,7 +56,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		if let selectedRepo = repoManager.getSelectedRepo() {
 			if let selectedProfile = viewCon.selectedProfile {
 				do {
-					try snapshots = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: selectedRepo.getEnv(), returning: [Snapshot].self).0.filter({ (snap) -> Bool in
+					try snapshots = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: selectedRepo.getEnv(), returning: [ResticResponse.Snapshot].self).0.filter({ (snap) -> Bool in
 						return snap.tags?.contains(selectedProfile.name) ?? false
 					})
 				} catch {

@@ -8,9 +8,9 @@ import Foundation
 
 final class ResticController: NSObject {
 	#if arch(x86_64)
-	static let supportedRV = ResticVersion.init(version: "0.17.3", go_arch: "amd64")
+	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.17.3", go_arch: "amd64")
 	#elseif arch(arm64)
-	static let supportedRV = ResticVersion.init(version: "0.17.3", go_arch: "arm64")
+	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.17.3", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
 		URL(fileURLWithPath: "/opt/local/bin/restic"),
@@ -23,7 +23,7 @@ final class ResticController: NSObject {
 	let jsonDecoder = JSONDecoder()
 	lazy var logger: ResticLogger = ResticLogger.default
 	var resticLocation: URL?
-	var versionInfo: ResticVersion?
+	var versionInfo: ResticResponse.ResticVersion?
 
 	static var `default`: ResticController!
 	override init() {
@@ -51,7 +51,7 @@ final class ResticController: NSObject {
 	/// - Parameter path: The path to restic to set for the object.
 	func testVersion(_ path: URL) throws {
 		resticLocation = path
-		let vers = try run(args: ["--json", "version"], env: nil, returning: ResticVersion.self)
+		let vers = try run(args: ["--json", "version"], env: nil, returning: ResticResponse.ResticVersion.self)
 		(versionInfo, _) = vers
 		NSLog("ResticController: Successfully initialized \(path) with version \(versionInfo!)")
 	}
@@ -77,7 +77,7 @@ final class ResticController: NSObject {
 		throw ResticError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic from Homebrew.")
 	}
 	
-	func getVersionInfo() throws -> ResticVersion {
+	func getVersionInfo() throws -> ResticResponse.ResticVersion {
 		if versionInfo == nil {
 			try setupFromDefaults()
 		}
@@ -240,15 +240,8 @@ final class ResticController: NSObject {
 		proc.waitUntilExit()
 		currentlyRunningProcess = nil
 	}
-
 	
 }
-
-struct ResticVersion: Decodable, Equatable {
-	let version: String
-	let go_arch: String
-}
-
 
 enum ResticError: Error {
 	case couldNotDecodeStringOutput
