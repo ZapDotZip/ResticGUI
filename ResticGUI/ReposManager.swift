@@ -53,39 +53,54 @@ class ReposManager: NSObject {
 	}
 	
 	/// Saves the repository list.
-	func save() {
-		do {
-			let data = try encoder.encode(repos)
-			try data.write(to: repolistFile)
-		} catch {
-			NSLog("Error saving repository list: \(error)")
-			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
-		}
+	func save() throws {
+		let data = try encoder.encode(repos)
+		try data.write(to: repolistFile)
 	}
 	
-	/// Adds or overwrites a repo to the repo list. Saves the repo aferwards.
+	/// Adds a new repo to the repo list. Does not save keychain passwords.
 	/// - Parameter repo: The repo to add to the list.
-	func add(_ repo: Repo) {
+	func add(_ repo: Repo) throws {
 		let name = repo.getName()
 		repos[name] = repo
-		fillMenu()
+		RepoMenu.addItem(withTitle: name)
 		setSelectedRepo(title: name)
-		save()
+		try save()
+		repoEditControl.setEnabled(true, forSegment: 1)
+		repoEditControl.setEnabled(true, forSegment: 2)
+	}
+	
+	/// Updates an existing repository.
+	/// - Parameters:
+	///   - oldRepoName: The repo name before the update.
+	///   - newRepo: the updated repository
+	func update(oldRepoName: String, updatedRepo: Repo) throws {
+		if updatedRepo.getName() != oldRepoName {
+			repos.removeValue(forKey: oldRepoName)
+			RepoMenu.removeItem(withTitle: oldRepoName)
+		} else {
+			repos[oldRepoName] = updatedRepo
+		}
+		try save()
 		repoEditControl.setEnabled(true, forSegment: 1)
 		repoEditControl.setEnabled(true, forSegment: 2)
 	}
 	
 	/// Removes the repo from the repo list. Does not delete the repo itself.
 	/// - Parameter repo: The repo to remove.
-	func remove(_ repo: Repo) {
-		let name: String = repo.name ?? repo.path
+	func remove(_ repo: Repo, removeFromKeychain: Bool = true) throws {
+		if removeFromKeychain {
+			try KeychainInterface.delete(path: repo.path)
+		}
+		
+		let name = repo.getName()
 		repos.removeValue(forKey: name)
 		RepoMenu.removeItem(withTitle: name)
 		if repos.count == 0 {
 			repoEditControl.setEnabled(false, forSegment: 1)
 			repoEditControl.setEnabled(false, forSegment: 2)
 		}
-		save()
+		try save()
 	}
 	
 	func get(name: String) -> Repo? {
@@ -105,7 +120,5 @@ class ReposManager: NSObject {
 	@IBAction func selectorDidChange(_ sender: NSPopUpButton) {
 		profileEditor.setSelectedRepo(sender.titleOfSelectedItem!)
 	}
-	
-	
 	
 }

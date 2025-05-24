@@ -897,7 +897,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="197" y="0.0" width="582" height="521"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -914,7 +914,7 @@
                                                     <action selector="runBackup:" target="XfG-lQ-9wD" id="su8-c2-H1k"/>
                                                 </connections>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="563" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
@@ -1074,11 +1074,11 @@
                                                     </tabViewItem>
                                                     <tabViewItem label="Exclusions &amp; More" identifier="" id="IoB-XO-Y8Z">
                                                         <view key="view" id="ZmO-L8-GnV">
-                                                            <rect key="frame" x="10" y="33" width="514" height="381"/>
+                                                            <rect key="frame" x="10" y="33" width="543" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fM8-GB-TgT">
-                                                                    <rect key="frame" x="14" y="360" width="105" height="16"/>
+                                                                    <rect key="frame" x="14" y="359" width="105" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Exclude Pattens:" id="2GF-d2-r6V">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1086,18 +1086,18 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <scrollView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="gAo-o1-7vr">
-                                                                    <rect key="frame" x="16" y="202" width="482" height="153"/>
+                                                                    <rect key="frame" x="16" y="204" width="511" height="149"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
-                                                                        <rect key="frame" x="1" y="1" width="480" height="151"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <rect key="frame" x="1" y="1" width="509" height="147"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="480" height="151"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="509" height="147"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                <size key="minSize" width="480" height="151"/>
-                                                                                <size key="maxSize" width="490" height="10000000"/>
+                                                                                <size key="minSize" width="509" height="147"/>
+                                                                                <size key="maxSize" width="509" height="10000000"/>
                                                                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                 <connections>
                                                                                     <outlet property="delegate" destination="c99-ze-Uce" id="VoF-af-UTs"/>
@@ -1110,16 +1110,16 @@
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="140" id="lB5-qm-x8n"/>
                                                                     </constraints>
                                                                     <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="czZ-Df-o9T">
-                                                                        <rect key="frame" x="1" y="136" width="480" height="16"/>
+                                                                        <rect key="frame" x="1" y="132" width="509" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
                                                                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="KLx-ZE-uBV">
-                                                                        <rect key="frame" x="465" y="1" width="16" height="151"/>
+                                                                        <rect key="frame" x="494" y="1" width="16" height="147"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
                                                                 </scrollView>
                                                                 <button toolTip="Select one or more files to source exclude patterns from." horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="KRr-0f-BPY">
-                                                                    <rect key="frame" x="10" y="120" width="160" height="32"/>
+                                                                    <rect key="frame" x="9" y="119" width="154" height="32"/>
                                                                     <buttonCell key="cell" type="push" title="Exclude Pattern File" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Uue-p2-tX7">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1129,7 +1129,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Excludes folders that have the file &quot;CACHEDIR.TAG&quot; in them." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="am1-jG-hoC">
-                                                                    <rect key="frame" x="14" y="178" width="182" height="18"/>
+                                                                    <rect key="frame" x="14" y="179" width="185" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="Exclude Cache Directories" bezelStyle="regularSquare" imagePosition="left" inset="2" id="mjw-df-Lu5">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1139,7 +1139,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Excludes files and folders that are normally excluded by Time Machine." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HUZ-xu-71e">
-                                                                    <rect key="frame" x="14" y="156" width="222" height="18"/>
+                                                                    <rect key="frame" x="14" y="155" width="225" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="Default Time Machine Exclusions" bezelStyle="regularSquare" imagePosition="left" inset="2" id="rs2-PB-kNQ">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1149,7 +1149,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Excludes files and folders that the user has excluded from Time Machine." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LLA-O8-ExL">
-                                                                    <rect key="frame" x="280" y="156" width="206" height="18"/>
+                                                                    <rect key="frame" x="303" y="155" width="210" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="User Time Machine Exclusions" bezelStyle="regularSquare" imagePosition="left" inset="2" id="QEi-xo-DPT">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1159,7 +1159,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NXo-8A-zYx">
-                                                                    <rect key="frame" x="123" y="354" width="25" height="24"/>
+                                                                    <rect key="frame" x="122" y="352" width="25" height="27"/>
                                                                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="i4N-14-H5H">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1169,10 +1169,10 @@
                                                                     </connections>
                                                                 </button>
                                                                 <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="1CY-0N-dcr">
-                                                                    <rect key="frame" x="0.0" y="92" width="514" height="5"/>
+                                                                    <rect key="frame" x="0.0" y="91" width="543" height="5"/>
                                                                 </box>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T6s-gH-n91">
-                                                                    <rect key="frame" x="389" y="359" width="111" height="18"/>
+                                                                    <rect key="frame" x="412" y="358" width="115" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="Case Sensitive" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="SA1-I1-hk9">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1182,7 +1182,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bh1-J4-fjG">
-                                                                    <rect key="frame" x="170" y="129" width="111" height="18"/>
+                                                                    <rect key="frame" x="162" y="128" width="115" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="Case Sensitive" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lUz-Eq-vuq">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1192,7 +1192,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button toolTip="Exclude any files over the specified size. Use k/K, m/M, g/G, t/T." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Msk-1X-0UL">
-                                                                    <rect key="frame" x="280" y="178" width="136" height="18"/>
+                                                                    <rect key="frame" x="303" y="179" width="140" height="18"/>
                                                                     <buttonCell key="cell" type="check" title="Exclude files over: " bezelStyle="regularSquare" imagePosition="left" inset="2" id="OFh-co-0OR">
                                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1202,7 +1202,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <textField toolTip="Exclude any files over the specified size. Use k/K, m/M, g/G, t/T." focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UbQ-zx-q0h">
-                                                                    <rect key="frame" x="416" y="177" width="82" height="21"/>
+                                                                    <rect key="frame" x="445" y="178" width="82" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="82" id="Ql7-bB-RMf"/>
                                                                         <constraint firstAttribute="height" constant="21" id="n7H-ab-ine"/>
@@ -1217,7 +1217,7 @@
                                                                     </connections>
                                                                 </textField>
                                                                 <textField focusRingType="none" horizontalHuggingPriority="100" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="LbG-3p-FKz">
-                                                                    <rect key="frame" x="14" y="103" width="480" height="16"/>
+                                                                    <rect key="frame" x="14" y="102" width="508" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="No Exclude Pattern File Selected" id="Ot7-XI-618">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1225,7 +1225,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5RH-Id-oa6">
-                                                                    <rect key="frame" x="496" y="104" width="14" height="14"/>
+                                                                    <rect key="frame" x="524" y="103" width="15" height="15"/>
                                                                     <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="hNJ-AQ-Faa">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1235,7 +1235,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <gridView xPlacement="leading" yPlacement="center" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="rQz-E8-Ai6">
-                                                                    <rect key="frame" x="17" y="11" width="183" height="75"/>
+                                                                    <rect key="frame" x="17" y="11" width="183" height="74"/>
                                                                     <rows>
                                                                         <gridRow id="hnP-Uw-dDi"/>
                                                                         <gridRow id="L9A-bT-ZVa"/>
@@ -1248,7 +1248,7 @@
                                                                     <gridCells>
                                                                         <gridCell row="hnP-Uw-dDi" column="n6y-lD-xWd" yPlacement="center" id="7hD-je-THq">
                                                                             <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wfa-U0-3TP">
-                                                                                <rect key="frame" x="30" y="57" width="88" height="16"/>
+                                                                                <rect key="frame" x="30" y="56" width="88" height="16"/>
                                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Compression:" id="zG2-xu-dkW">
                                                                                     <font key="font" metaFont="system"/>
                                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1258,7 +1258,7 @@
                                                                         </gridCell>
                                                                         <gridCell row="hnP-Uw-dDi" column="xhI-cZ-a3V" id="bFd-vz-Lz1">
                                                                             <popUpButton key="contentView" toolTip="Set the compression level for future backups on this profile." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tAt-oj-zgA">
-                                                                                <rect key="frame" x="120" y="51" width="65" height="25"/>
+                                                                                <rect key="frame" x="119" y="50" width="66" height="25"/>
                                                                                 <popUpButtonCell key="cell" type="push" title="auto" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="LwZ-kG-Omy" id="JV8-on-DFB">
                                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                     <font key="font" metaFont="message"/>
@@ -1290,7 +1290,7 @@
                                                                                 <rect key="frame" x="122" y="27" width="61" height="21"/>
                                                                                 <subviews>
                                                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DWF-GC-Wgb">
-                                                                                        <rect key="frame" x="45" y="-2" width="19" height="25"/>
+                                                                                        <rect key="frame" x="45" y="-4" width="19" height="29"/>
                                                                                         <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="hOA-LM-dbv"/>
                                                                                     </stepper>
                                                                                     <textField toolTip="Sets the number of files that will be read concurrently during the backup." focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JqB-3y-K0L">
@@ -1357,7 +1357,7 @@
                                                                                         </connections>
                                                                                     </textField>
                                                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ou3-Qe-taC">
-                                                                                        <rect key="frame" x="45" y="-4" width="19" height="27"/>
+                                                                                        <rect key="frame" x="45" y="-6" width="19" height="31"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="height" constant="23" id="8E4-28-eWA"/>
                                                                                             <constraint firstAttribute="width" constant="13" id="f4i-tp-Jqd"/>
@@ -1379,7 +1379,7 @@
                                                                     </gridCells>
                                                                 </gridView>
                                                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="okI-Fj-90n">
-                                                                    <rect key="frame" x="280" y="68" width="37" height="16"/>
+                                                                    <rect key="frame" x="303" y="67" width="37" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Tags:" id="6xL-4d-gJ8">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1387,7 +1387,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <tokenField toolTip="Add tags to the backup snapshots. The profile name is already used as a default tag." focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IDv-Ku-NdT">
-                                                                    <rect key="frame" x="323" y="65" width="175" height="21"/>
+                                                                    <rect key="frame" x="346" y="64" width="181" height="21"/>
                                                                     <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="iD0-s1-0fa">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1685,7 +1685,7 @@
                                                     </binding>
                                                 </connections>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="90" y="484" width="362" height="26"/>
                                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="JeJ-uv-bbN">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1699,8 +1699,8 @@
                                                     <action selector="selectorDidChange:" target="S7I-Xn-HVk" id="tTF-3C-xA8"/>
                                                 </connections>
                                             </popUpButton>
-                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
-                                                <rect key="frame" x="457" y="486" width="106" height="24"/>
+                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                                <rect key="frame" x="457" y="486" width="106" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>
                                                     <constraint firstAttribute="width" constant="100" id="uGl-o1-B0y"/>
@@ -1717,7 +1717,7 @@
                                                     <action selector="repoEditButton:" target="XfG-lQ-9wD" id="XEO-aZ-Wfj"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="491" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="bpD-Ed-yde"/>

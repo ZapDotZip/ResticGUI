@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED06377F2D63E971004E26BC /* EnviormentTableView.xib */; };
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
+		ED36C1B62DAC7971005829FB /* KeychainInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C1B52DAC7963005829FB /* KeychainInterface.swift */; };
+		ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
 		EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86BA72D260487004E8996 /* EnviormentTable.swift */; };
@@ -17,7 +19,7 @@
 		EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA642D10C1390081E223 /* PreferencesController.swift */; };
 		EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */; };
 		EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA672D10C1390081E223 /* BackupController.swift */; };
-		EDE0AA822D10C1390081E223 /* RepoInitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA682D10C1390081E223 /* RepoInitController.swift */; };
+		EDE0AA822D10C1390081E223 /* ResticInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA682D10C1390081E223 /* ResticInterface.swift */; };
 		EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA692D10C1390081E223 /* ResticController.swift */; };
 		EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */; };
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
@@ -53,6 +55,8 @@
 /* Begin PBXFileReference section */
 		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
 		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
+		ED36C1B52DAC7963005829FB /* KeychainInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainInterface.swift; sourceTree = "<group>"; };
+		ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticResponse.swift; sourceTree = "<group>"; };
 		ED75B9242C43212600EB9E39 /* ResticGUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResticGUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9362C43212700EB9E39 /* ResticGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUITests.swift; sourceTree = "<group>"; };
@@ -65,7 +69,7 @@
 		EDE0AA642D10C1390081E223 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
 		EDE0AA672D10C1390081E223 /* BackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupController.swift; sourceTree = "<group>"; };
-		EDE0AA682D10C1390081E223 /* RepoInitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoInitController.swift; sourceTree = "<group>"; };
+		EDE0AA682D10C1390081E223 /* ResticInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticInterface.swift; sourceTree = "<group>"; };
 		EDE0AA692D10C1390081E223 /* ResticController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticController.swift; sourceTree = "<group>"; };
 		EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticLogger.swift; sourceTree = "<group>"; };
 		EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -161,8 +165,9 @@
 		EDE0AA6B2D10C1390081E223 /* ResticGlue */ = {
 			isa = PBXGroup;
 			children = (
+				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
 				EDE0AA692D10C1390081E223 /* ResticController.swift */,
-				EDE0AA682D10C1390081E223 /* RepoInitController.swift */,
+				EDE0AA682D10C1390081E223 /* ResticInterface.swift */,
 				EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 			);
@@ -173,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */,
+				ED36C1B52DAC7963005829FB /* KeychainInterface.swift */,
 				EDE0AA6F2D10C1390081E223 /* DataClasses.swift */,
 				EDE0AA742D10C1390081E223 /* ProfileManager.swift */,
 				EDE0AA722D10C1390081E223 /* Main.storyboard */,
@@ -330,9 +336,10 @@
 				EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */,
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
-				EDE0AA822D10C1390081E223 /* RepoInitController.swift in Sources */,
+				EDE0AA822D10C1390081E223 /* ResticInterface.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */,
+				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,
 				EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */,
 				EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */,
@@ -341,6 +348,7 @@
 				EDE0AA8A2D10C1390081E223 /* RepoEditViewController.swift in Sources */,
 				EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */,
 				EDE0AA8C2D10C1390081E223 /* SnapshotsTable.swift in Sources */,
+				ED36C1B62DAC7971005829FB /* KeychainInterface.swift in Sources */,
 				EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */,
 				EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */,
 			);

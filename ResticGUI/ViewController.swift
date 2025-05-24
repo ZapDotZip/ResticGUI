@@ -76,7 +76,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			vc.viewCon = self
 		} else if segue.identifier == "RepoEdit" {
 			let vc = segue.destinationController as! RepoEditViewController
-			vc.repoManager = repoManager
 			if let selectedRepo = sender as? Repo {
 				vc.selectedRepo = selectedRepo
 			}
@@ -278,7 +277,18 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			if let selectedRepo = repoManager.getSelectedRepo() {
 				let res = Alert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, buttons: ["Delete", "Cancel"])
 				if res == .alertFirstButtonReturn {
-					repoManager.remove(selectedRepo)
+					do {
+						do {
+							try repoManager.remove(selectedRepo)
+						} catch let error as KeychainInterface.KeychainError {
+							let res = Alert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain. Delete the repository anyways?\n\n\(error)", style: .warning, buttons: ["Ok", "Cancel"])
+							if res == .alertFirstButtonReturn {
+								try repoManager.remove(selectedRepo, removeFromKeychain: false)
+							}
+						}
+					} catch {
+						Alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical, buttons: ["Ok"])
+					}
 				}
 			}
 		} else if sender.selectedSegment == 0 {

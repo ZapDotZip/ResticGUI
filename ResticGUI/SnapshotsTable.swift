@@ -125,7 +125,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
 				do {
 					let data = try Data.init(contentsOf: snapshotCacheURL)
-					snapshots = try decoder.decode([Snapshot].self, from: data).filter({ (snap) -> Bool in
+					snapshots = try decoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
 						return snap.tags?.contains(viewCon!.selectedProfile?.name ?? "") ?? false
 					})
 					reload()

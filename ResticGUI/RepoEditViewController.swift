@@ -11,11 +11,11 @@ import AppKit
 
 class RepoEditViewController: NSViewController {
 	
-	var repoManager: ReposManager!
+	let repoManager = ReposManager.default!
 	var selectedRepo: Repo?
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
 	lazy var resticController = appDel.resticController!
-		
+	
 	@IBOutlet var pathField: NSTextField!
 	private var pathFilled = false
 	@IBOutlet var passwordField: NSSecureTextField!
@@ -35,7 +35,7 @@ class RepoEditViewController: NSViewController {
 		if let r = selectedRepo {
 			nameField.stringValue = r.name ?? ""
 			pathField.stringValue = r.path
-			passwordField.stringValue = r.password
+			r.setPassword(passwordField.stringValue)
 			cacheDirLabel.stringValue = r.cacheDir ?? ""
 			cacheDirLabel.toolTip = r.cacheDir ?? ""
 			saveButton.isEnabled = true
@@ -81,33 +81,20 @@ class RepoEditViewController: NSViewController {
 	
 	
 	@IBAction func createRepo(_ sender: NSButton) {
-		if selectedRepo == nil {
-			selectedRepo = .init(path: pathField.stringValue, password: passwordField.stringValue)
-		} else {
-			selectedRepo!.path = pathField.stringValue
-			selectedRepo!.password = passwordField.stringValue
-		}
-		if nameField.stringValue.count != 0 {
-			selectedRepo!.name = nameField.stringValue
-		} else if selectedRepo?.name?.count != 0 {
-			selectedRepo?.name = nil
-		}
-		if cacheDirLabel.stringValue.count != 0 {
-			selectedRepo!.cacheDir = cacheDirLabel.stringValue
-		}
-		// TODO: Add env
+		let repo = repoFromUI()
 		do {
-			let (res, _) = try RepoInitController.repoInit(repo: selectedRepo!, rc: resticController)
+			let (res, _) = try ResticInterface.repoInit(repo: repo, rc: resticController)
 			NSLog("Created repository response: \(res)")
 			Alert(title: "Successfully created repository.", message: "The repository at \(res.repository) has been created.", style: .informational, buttons: ["Ok"])
+			saveRepo(sender)
 		} catch let error as ResticError {
 			let errMsg: String = {
-			switch error {
+				switch error {
 				case .couldNotDecodeJSON( _, let stderr):
 					return stderr
 				default:
 					return error.localizedDescription
-			}
+				}
 			}()
 			NSLog("Couldn't create repository: \(error)")
 			Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(errMsg)", style: .critical, buttons: ["Ok"])
@@ -118,56 +105,95 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {
-		var env = {
-			if let r = selectedRepo {
-				return r.getEnv()
-			} else {
-				let newRepo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
-				return newRepo.getEnv()
-			}
-		}()
-		if cacheDirLabel.stringValue != "" {
-			env["RESTIC_CACHE_DIR"] = cacheDirLabel.stringValue
-		}
+		let repo = repoFromUI()
 		do {
-			let (_, _) = try ResticController.default.run(args: ["--json", "-r", pathField.stringValue, "cat", "config"], env: env, returning: repoConfig.self)
+			let res = try ResticInterface.repoTest(repo: repo, rc: resticController)
+			if !res {
+				Alert(title: "The repository exists, but may not be the correct version.", message: "ResticGUI currently supports version 2 repositories.", style: .informational, buttons: ["Ok"])
+			}
 		} catch ResticError.couldNotDecodeJSON(let rawStr, let error) {
 			NSLog("Error testing repository: \(rawStr)\n\(error)")
-			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
+			Alert(title: "Failed to test repository", message: "Your version of Restic may not be supported, or there may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
 		} catch {
 			NSLog("Error testing repository: \(error)")
 			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
 		}
 	}
 	
-	@IBAction func saveRepo(_ sender: NSButton) {
-		if let r = selectedRepo {
-			repoManager.remove(r)
-			r.path = pathField.stringValue
-			r.password = passwordField.stringValue
-		} else {
-			selectedRepo = Repo.init(path: pathField.stringValue, password: passwordField.stringValue)
-		}
-		
+	func repoFromUI() -> Repo {
+		let repo = Repo(path: pathField.stringValue, noKeychain: passwordField.stringValue)
 		if nameField.stringValue.count != 0 {
-			selectedRepo!.name = nameField.stringValue
-		} else {
-			selectedRepo!.name = nil
+			repo.name = nameField.stringValue
 		}
-		
 		if cacheDirLabel.stringValue.count != 0 {
-			selectedRepo!.cacheDir = cacheDirLabel.stringValue
-		} else {
-			selectedRepo!.cacheDir = nil
+			repo.cacheDir = cacheDirLabel.stringValue
 		}
-		
 		if let env = tableView.table.save() {
-			selectedRepo!.env = env
-		} else {
-			selectedRepo!.env = nil
+			repo.env = env
 		}
-		
-		repoManager.add(selectedRepo!)
+		return repo
+	}
+	
+	func updateExistingRepo(existing: Repo) throws(KeychainInterface.KeychainError) {
+		if existing.path != pathField.stringValue {
+			try existing.updatePath(newPath: pathField.stringValue)
+		}
+		if existing.cachedPassword! != passwordField.stringValue {
+			try existing.updatePassword(newPass: passwordField.stringValue)
+		}
+		if nameField.stringValue.count != 0 {
+			existing.name = nameField.stringValue
+		} else {
+			existing.name = nil
+		}
+		if cacheDirLabel.stringValue.count != 0 {
+			existing.cacheDir = cacheDirLabel.stringValue
+		} else {
+			existing.cacheDir = nil
+		}
+		if let env = tableView.table.save() {
+			existing.env = env
+		} else {
+			existing.env = nil
+		}
+	}
+	
+	@IBAction func saveRepo(_ sender: NSButton) {
+		var existingPath: String = pathField.stringValue
+		do {
+			if let existing = selectedRepo {
+				try updateExistingRepo(existing: existing)
+			} else {
+				let newRepo = repoFromUI()
+				try repoManager.add(newRepo)
+				try newRepo.saveNewPassword(newPass: passwordField.stringValue)
+			}
+		} catch let error as KeychainInterface.KeychainError {
+			switch error {
+			case .itemNotFound:
+				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+			case .duplicateItem:
+				let res = Alert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, buttons: ["Ok", "Cancel"])
+				if res == .alertFirstButtonReturn {
+					do {
+						try KeychainInterface.delete(path: existingPath)
+						Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted. Please try saving again.", style: .informational, buttons: ["Ok"])
+					} catch {
+						Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+					}
+				} else {
+					return
+				}
+			default:
+				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+				return
+			}
+			
+		} catch {
+			NSLog("Error saving the repository list: \(error)")
+			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
+			return
+		}
 		selectedRepo = nil
 		dismiss(self)
 	}
