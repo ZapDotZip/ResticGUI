@@ -14,9 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	override init() {
 		super.init()
-		#if DEBUG
-			UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
-		#endif
+		if NSEvent.modifierFlags.contains(.shift) {
+			safeMode()
+		}
 		UserDefaults.standard.register(defaults: [
 			"Scan Ahead" : true,
 			"Global Repo Selection" : false,
@@ -25,6 +25,54 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			"QoS Background on Battery" : true,
 			"QoS Background on Low Power" : true,
 		])
+	}
+	
+	private func safeMode() {
+		let alert = NSAlert()
+		alert.messageText = "Safe Mode"
+		alert.informativeText = "Pressing the shift key while launching ResticGUI will enter reset mode.\n\nIf you choose to reset, all of your profiles and repositories will be put into your trash."
+		alert.alertStyle = .critical
+		alert.addButton(withTitle: "Continue Normally")
+		alert.addButton(withTitle: "Reset Profiles and Repository list")
+		alert.buttons[1].bezelColor = .red
+		alert.addButton(withTitle: "Quit")
+		
+		alert.showsSuppressionButton = true
+		alert.suppressionButton?.title = "Also reset app preferences"
+		
+		let res = alert.runModal()
+		switch res {
+			case .alertFirstButtonReturn: break
+			case .alertSecondButtonReturn:
+				if alert.suppressionButton?.state == .on {
+					resetAppData(deletePrefs: true)
+				} else {
+					resetAppData()
+				}
+			case .alertThirdButtonReturn:
+				NSApp.terminate(self)
+			default:
+				NSLog("unknown response to safe mode alert: \(res)")
+		}
+	}
+	
+	private func resetAppData(deletePrefs: Bool = false) {
+		do {
+			try FileManager.default.trashItem(at: ProfileManager.profileDir, resultingItemURL: nil)
+		} catch {
+			NSLog("error deleting app data: \(error)")
+			Alert(title: "An error occured.", message: "Could not trash the profiles directory: \(error.localizedDescription)The file is located at \(ProfileManager.profileDir.relativePath).", style: .warning, buttons: [])
+		}
+		do {
+			try FileManager.default.trashItem(at: ReposManager.repolistFile, resultingItemURL: nil)
+			Alert(title: "Repositories Reset", message: "The repository list has been put in your trash.\n\nIf you want to delete passwords as well, open up Keychain Access and delete application passwords with the name \(Bundle.main.bundleIdentifier ?? "").", style: .informational, buttons: ["Ok"])
+		} catch {
+			NSLog("error deleting app data: \(error)")
+			Alert(title: "An error occured.", message: "Could not trash the repository list: \(error.localizedDescription)\n\nThe file is located at \(ReposManager.repolistFile.relativePath).", style: .warning, buttons: [])
+		}
+		if deletePrefs {
+			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+		}
 	}
 	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {

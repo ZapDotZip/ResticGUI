@@ -10,7 +10,7 @@ struct ProfileManager {
 	private static let PROFILE_EXT = "plist"
 	private static let PROFILE_EXT_DOT = ".plist"
 	
-	private static let profileDir: URL = {
+	static let profileDir: URL = {
 		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Profiles", isDirectory: true)
 	}()
 	

@@ -13,7 +13,7 @@ class ReposManager: NSObject {
 	@IBOutlet weak var repoEditControl: NSSegmentedControl!
 	@IBOutlet weak var profileEditor: ProfileEditorController!
 	
-	let repolistFile: URL = {
+	static let repolistFile: URL = {
 		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Repositories.plist", isDirectory: false)
 	}()
 	
@@ -23,9 +23,9 @@ class ReposManager: NSObject {
 	static var `default`: ReposManager!
 	override init() {
 		super.init()
-		if FileManager.default.fileExists(atPath: repolistFile.path) {
+		if FileManager.default.fileExists(atPath: ReposManager.repolistFile.path) {
 			do {
-				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: repolistFile))
+				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: ReposManager.repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
 				Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
@@ -55,7 +55,7 @@ class ReposManager: NSObject {
 	/// Saves the repository list.
 	func save() throws {
 		let data = try encoder.encode(repos)
-		try data.write(to: repolistFile)
+		try data.write(to: ReposManager.repolistFile)
 	}
 	
 	/// Adds a new repo to the repo list. Does not save keychain passwords.
