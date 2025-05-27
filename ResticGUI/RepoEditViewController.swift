@@ -35,7 +35,14 @@ class RepoEditViewController: NSViewController {
 		if let r = selectedRepo {
 			nameField.stringValue = r.name ?? ""
 			pathField.stringValue = r.path
-			r.setPassword(passwordField.stringValue)
+			do {
+				passwordField.stringValue = try r.getPassword()
+			} catch {
+				passwordField.stringValue = ""
+				DispatchQueue.main.async {
+					Alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
+				}
+			}
 			cacheDirLabel.stringValue = r.cacheDir ?? ""
 			cacheDirLabel.toolTip = r.cacheDir ?? ""
 			saveButton.isEnabled = true
@@ -138,7 +145,7 @@ class RepoEditViewController: NSViewController {
 		if existing.path != pathField.stringValue {
 			try existing.updatePath(newPath: pathField.stringValue)
 		}
-		if existing.cachedPassword! != passwordField.stringValue {
+		if existing.cachedPassword != passwordField.stringValue {
 			try existing.updatePassword(newPass: passwordField.stringValue)
 		}
 		if nameField.stringValue.count != 0 {
@@ -168,16 +175,17 @@ class RepoEditViewController: NSViewController {
 				try repoManager.add(newRepo)
 				try newRepo.saveNewPassword(newPass: passwordField.stringValue)
 			}
+			selectedRepo = nil
+			dismiss(self)
 		} catch let error as KeychainInterface.KeychainError {
 			switch error {
 			case .itemNotFound:
-				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
 			case .duplicateItem:
-				let res = Alert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, buttons: ["Ok", "Cancel"])
-				if res == .alertFirstButtonReturn {
+				if DestructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
 						try KeychainInterface.delete(path: existingPath)
-						Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted. Please try saving again.", style: .informational, buttons: ["Ok"])
+						Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational, buttons: [])
 					} catch {
 						Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
 					}
@@ -194,8 +202,6 @@ class RepoEditViewController: NSViewController {
 			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
 			return
 		}
-		selectedRepo = nil
-		dismiss(self)
 	}
 	
 	@objc func controlTextDidChange(_ sender: NSTextField) {

@@ -112,7 +112,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			if index <= 0 {
 				index = 1
 			}
-			let deleteResponse = DeleteAlert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational)
+			let deleteResponse = DestructiveAlert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
 			if deleteResponse {
 				ProfileManager.delete(p)
 				profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
@@ -275,13 +275,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
 			if let selectedRepo = repoManager.getSelectedRepo() {
-				let res = DeleteAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational)
+				let res = DestructiveAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, destructiveButtonText: "Delete")
 				if res {
 					do {
 						do {
 							try repoManager.remove(selectedRepo)
 						} catch let error as KeychainInterface.KeychainError {
-							let res = DeleteAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning)
+							let res = DestructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
 							if res {
 								try repoManager.remove(selectedRepo, removeFromKeychain: false)
 							}
