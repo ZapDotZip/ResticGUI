@@ -125,6 +125,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 }
 
+/// Creates and runs an NSAlert
+/// - Parameters:
+///   - title: The title of the alert
+///   - message: The message of the alert
+///   - style: The alert style
+///   - buttons: The buttons to add
+/// - Returns: The alert response.
 @discardableResult
 func Alert(title: String, message: String, style: NSAlert.Style, buttons: [String]) -> NSApplication.ModalResponse {
 	let alert = NSAlert()
@@ -137,6 +144,26 @@ func Alert(title: String, message: String, style: NSAlert.Style, buttons: [Strin
 	return alert.runModal()
 }
 
+/// Creates and runs an alert for deletion
+/// - Parameters:
+///   - title: The title of the alert
+///   - message: The message of the alert
+///   - style: The alert style
+/// - Returns: Whether or not the user has agreed to deletion.
+@discardableResult
+func DeleteAlert(title: String, message: String, style: NSAlert.Style) -> Bool {
+	let alert = NSAlert()
+	alert.messageText = title
+	alert.informativeText = message
+	alert.alertStyle = .critical
+	alert.addButton(withTitle: "Delete")
+	alert.addButton(withTitle: "Cancel")
+	if #available(macOS 11.0, *) {
+		alert.buttons[0].hasDestructiveAction = true
+		alert.buttons[0].bezelColor = .red
+	}
+	return alert.runModal() == .alertFirstButtonReturn
+}
 
 /// Creates an Open/Save Dialogue panel for the user.
 /// - Parameters:
