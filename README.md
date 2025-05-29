@@ -18,7 +18,8 @@ ResticGUI is a macOS front-end for [restic](https://restic.net/). It's currently
 - [x] Exclude files over size
 - [x] Import Time Machine exclusions
 - [x] Custom environment variables
-- [x] QoS (efficiency core) preferences
+- [x] QoS (efficiency core) preferences, including low power mode and on-battery support
+- [x] Store repository passwords in the keychain
 
 
 ![ResticGUI Window](https://zapdotzip.github.io/apps/ResticGUI_screenshot.png)
