@@ -170,6 +170,7 @@ class RepoEditViewController: NSViewController {
 		do {
 			if let existing = selectedRepo {
 				try updateExistingRepo(existing: existing)
+				try repoManager.save()
 			} else {
 				let newRepo = repoFromUI()
 				try repoManager.add(newRepo)

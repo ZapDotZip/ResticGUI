@@ -15,6 +15,7 @@
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
 		EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86BA72D260487004E8996 /* EnviormentTable.swift */; };
 		EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */; };
+		EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */; };
 		EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA632D10C1390081E223 /* Preferences.storyboard */; };
 		EDE0AA7E2D10C1390081E223 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA722D10C1390081E223 /* Main.storyboard */; };
 		EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA642D10C1390081E223 /* PreferencesController.swift */; };
@@ -67,6 +68,7 @@
 		ED75B9472C43212700EB9E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDA86BA72D260487004E8996 /* EnviormentTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnviormentTable.swift; sourceTree = "<group>"; };
 		EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabGeneral.swift; sourceTree = "<group>"; };
+		EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabEnvVars.swift; sourceTree = "<group>"; };
 		EDE0AA632D10C1390081E223 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		EDE0AA642D10C1390081E223 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE0AA642D10C1390081E223 /* PreferencesController.swift */,
+				EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */,
 				EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */,
 				EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */,
 				EDE0AA632D10C1390081E223 /* Preferences.storyboard */,
@@ -344,6 +347,7 @@
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */,
 				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,
+				EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,
 				EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */,
 				EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */,

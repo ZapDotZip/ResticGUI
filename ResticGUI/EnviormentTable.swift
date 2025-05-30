@@ -36,10 +36,11 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate, 
 	}
 	
 	private var dict: [(String, String)] = []
-	private(set) var isModified = false
+	private func beenModified() {
+		NotificationQueue.default.enqueue(Notification.init(name: Notification.Name.EnvTableDidChange, object: self), postingStyle: .whenIdle, coalesceMask: .onSender, forModes: nil)
+	}
 
 	func load(_ env: [String : String]?) {
-		isModified = false
 		if let env = env {
 			dict = env.map { (key: String, value: String) in
 				return (key, value)
@@ -92,14 +93,14 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate, 
 		insertRows(at: [dict.count], withAnimation: .effectGap)
 		reloadData(forRowIndexes: [dict.count], columnIndexes: EnviormentTable.columnIndexes)
 		selectRowIndexes([dict.count], byExtendingSelection: false)
-		isModified = true
+		beenModified()
 	}
 	
 	@IBAction func deleteItem(_ sender: NSButton) {
 		for i in selectedRowIndexes.enumerated().reversed() {
 			dict.remove(at: i.element)
 		}
-		isModified = true
+		beenModified()
 		reloadData()
 		deleteButton.isEnabled = false
 	}
@@ -137,10 +138,13 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate, 
 				}
 			}
 			reloadData(forRowIndexes: [row], columnIndexes: EnviormentTable.columnIndexes)
-			isModified = true
+			beenModified()
 			lastEditedCell = nil
 		}
 	}
 	
 }
 
+extension Notification.Name {
+	static let EnvTableDidChange = Notification.Name("EnvTableDidChange")
+}
