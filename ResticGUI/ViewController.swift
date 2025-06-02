@@ -17,11 +17,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	lazy var backupController: BackupController = appDel.backupController
 	
 	var bf = ByteCountFormatter.init()
-	
-	
+		
 // MARK: ViewController functionality
 	override func viewDidLoad() {
-		// view itself setup
 		super.viewDidLoad()
 		self.view.window?.title = "ResticGUI"
 		
@@ -46,10 +44,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			}
 		}
 		scanAhead.state = UserDefaults.standard.bool(forKey: "Scan Ahead") ? .on : .off
-		resetProgress()
+		viewState = .noBackupInProgress
 	}
 	
 	override func viewDidAppear() {
+		super.viewDidAppear()
 		if profileSidebarList.count == 1 {
 			performSegue(withIdentifier: "NewProfile", sender: self)
 		}
@@ -63,14 +62,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 		return nil
 	}
-	
-	override var representedObject: Any? {
-		didSet {
-		// Update the view, if already loaded.
-		}
-	}
-	
+		
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
 		if segue.identifier == "NewProfile" {
 			let vc = segue.destinationController as! NewProfileVC
 			vc.viewCon = self
@@ -305,19 +299,19 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	@IBAction func runBackup(_ sender: Any) {
-		if backupController.backupInProgress {
+		if backupController.state == .suspended {
+			backupController.resume()
+		} else if backupController.state == .inProgress {
 			backupController.cancel()
-			runBackupButton.title = "Start Backup"
+			viewState = .noBackupInProgress
 		} else {
 			if let profile = selectedProfile {
 				ProfileManager.save(profile)
 				if let repo = repoManager.getSelectedRepo() {
-					resetProgress()
-					runBackupButton.isEnabled = false
+					viewState = .backupStarting
 					progressBar.isIndeterminate = scanAhead.state == .off
 					backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
-					runBackupButton.title = "Cancel"
-					runBackupButton.isEnabled = true
+					viewState = .backupInProgress
 				} else {
 					Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational, buttons: ["Ok"])
 				}
@@ -327,13 +321,41 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	func resetProgress(label: String = "") {
-		progressBar.doubleValue = 0.0
-		progressBar.maxValue = 1.0
-		progressLabel.stringValue = label
-		runBackupButton.isEnabled = true
+	enum ViewState {
+		case noBackupInProgress
+		case backupStarting
+		case backupInProgress
+		case backupPaused
+		case finishedBackup
 	}
 	
+	var viewState: ViewState = .noBackupInProgress {
+		didSet {
+			switch viewState {
+				case .noBackupInProgress:
+					progressBar.doubleValue = 0.0
+					progressBar.maxValue = 1.0
+					progressLabel.stringValue = ""
+					runBackupButton.isEnabled = true
+				case .backupStarting:
+					progressBar.doubleValue = 0.0
+					progressLabel.stringValue = ""
+					runBackupButton.isEnabled = false
+				case .backupInProgress:
+					runBackupButton.title = "Cancel"
+					runBackupButton.isEnabled = true
+				case .backupPaused:
+					runBackupButton.title = "Resume"
+					runBackupButton.isEnabled = true
+				case .finishedBackup:
+					progressBar.doubleValue = 1.0
+					progressLabel.stringValue = ""
+					runBackupButton.isEnabled = true
+			}
+		}
+	}
+	
+			
 	var completedBackupPopover: NSPopover? = nil
 	
 	func completedBackup(_ summary: ResticResponse.backupSummary?) {
@@ -367,10 +389,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			completedBackupPopover!.behavior = .transient
 			completedBackupPopover!.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
 		} else {
-			resetProgress(label: "Summary details are unavailable for the last backup.")
+			viewState = .noBackupInProgress
+			progressLabel.stringValue = "Summary details are unavailable for the last backup."
 			completedBackupPopover = nil
-			runBackupButton.title = "Start Backup"
 		}
+		runBackupButton.title = "Start Backup"
 	}
 	
 	

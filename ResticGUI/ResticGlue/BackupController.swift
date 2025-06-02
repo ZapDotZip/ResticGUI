@@ -7,11 +7,17 @@ import Foundation
 
 class BackupController {
 	
+	enum BackupState {
+		case idle
+		case inProgress
+		case suspended
+	}
+	
 	let rc: ResticController
 	let vc: ViewController
 	var errOut: Data
 	var didRecieveErrors = false
-	var backupInProgress = false
+	var state: BackupState = .idle
 	var lastBackupSummary: ResticResponse.backupSummary?
 	
 	init(resticController: ResticController, viewController: ViewController) {
@@ -43,7 +49,7 @@ class BackupController {
 	}
 	
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) {
-		backupInProgress = true
+		state = .inProgress
 		rc.dq.async {
 			let qos = self.getQoS()
 			// setup
@@ -173,10 +179,10 @@ class BackupController {
 	}
 	
 	func terminationHandler(_ exitCode: Int32) {
+		state = .idle
 		DispatchQueue.main.async {
 			self.vc.completedBackup(self.lastBackupSummary)
 		}
-		backupInProgress = false
 	}
 	
 	func cancel() {
@@ -185,18 +191,26 @@ class BackupController {
 		}
 	}
 	
-	var isSuspended = false
+	/// Pauses the running backup.
+	/// - Returns: True if the process is suspended.
 	func pause() -> Bool {
-		if !isSuspended, let p = rc.currentlyRunningProcess {
-			isSuspended = p.suspend()
+		if state != .suspended, let p = rc.currentlyRunningProcess {
+			if p.suspend() {
+				state = .suspended
+			}
 		}
-		return isSuspended
+		return state == .suspended
 	}
+	
+	/// Resumes the running backup.
+	/// - Returns: True if the process was resumed.
 	func resume() -> Bool {
-		if isSuspended, let p = rc.currentlyRunningProcess {
-			isSuspended = !p.resume()
+		if state == .suspended, let p = rc.currentlyRunningProcess {
+			if p.resume() {
+				state = .inProgress
+			}
 		}
-		return !isSuspended
+		return state == .inProgress
 	}
 	
 	private struct TMPrefs: Decodable {
