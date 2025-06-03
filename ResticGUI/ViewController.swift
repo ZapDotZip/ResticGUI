@@ -300,7 +300,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	@IBAction func runBackup(_ sender: Any) {
 		if backupController.state == .suspended {
-			backupController.resume()
+			if backupController.resume() {
+				viewState = .backupInProgress
+			}
 		} else if backupController.state == .inProgress {
 			backupController.cancel()
 			viewState = .noBackupInProgress
