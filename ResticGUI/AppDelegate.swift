@@ -269,3 +269,7 @@ func getDifferentialCoreCount() -> (Int, Int)? {
 	}
 	return nil
 }
+
+extension Notification.Name {
+	static let EnvTableDidChange = Notification.Name("EnvTableDidChange")
+}

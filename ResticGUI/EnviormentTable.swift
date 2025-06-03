@@ -144,7 +144,3 @@ class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate, 
 	}
 	
 }
-
-extension Notification.Name {
-	static let EnvTableDidChange = Notification.Name("EnvTableDidChange")
-}
