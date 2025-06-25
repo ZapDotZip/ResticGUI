@@ -9,7 +9,11 @@
 /* Begin PBXBuildFile section */
 		ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED06377F2D63E971004E26BC /* EnviormentTableView.xib */; };
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
+		ED2BCCE82E076F5100B99ECA /* Restore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED2BCCE72E076F5100B99ECA /* Restore.storyboard */; };
 		ED36C1B62DAC7971005829FB /* KeychainInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C1B52DAC7963005829FB /* KeychainInterface.swift */; };
+		ED581FF52E0A11A700F2BE6F /* SwiftToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; };
+		ED581FF62E0A11A700F2BE6F /* SwiftToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED581FF92E0A11C600F2BE6F /* RestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED581FF82E0A11C600F2BE6F /* RestoreViewController.swift */; };
 		ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
@@ -38,6 +42,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		ED581FEC2E0A116F00F2BE6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EDC82A712D87866E006BBCAB;
+			remoteInfo = SwiftToolbox;
+		};
+		ED581FEE2E0A116F00F2BE6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EDC82A7B2D87866E006BBCAB;
+			remoteInfo = SwiftToolboxTests;
+		};
 		ED75B9372C43212700EB9E39 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED75B91C2C43212600EB9E39 /* Project object */;
@@ -54,10 +72,27 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		ED581FF72E0A11A700F2BE6F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED581FF62E0A11A700F2BE6F /* SwiftToolbox.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
 		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
+		ED2BCCE72E076F5100B99ECA /* Restore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Restore.storyboard; sourceTree = "<group>"; };
 		ED36C1B52DAC7963005829FB /* KeychainInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainInterface.swift; sourceTree = "<group>"; };
+		ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftToolbox.xcodeproj; path = ../SwiftToolbox/SwiftToolbox.xcodeproj; sourceTree = "<group>"; };
+		ED581FF82E0A11C600F2BE6F /* RestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreViewController.swift; sourceTree = "<group>"; };
 		ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticResponse.swift; sourceTree = "<group>"; };
 		ED75B9242C43212600EB9E39 /* ResticGUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResticGUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9362C43212700EB9E39 /* ResticGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED581FF52E0A11A700F2BE6F /* SwiftToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,12 +153,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED581FE62E0A116F00F2BE6F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED581FE82E0A116F00F2BE6F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */,
+				ED581FEF2E0A116F00F2BE6F /* SwiftToolboxTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ED75B91B2C43212600EB9E39 = {
 			isa = PBXGroup;
 			children = (
 				EDE0AA7A2D10C1390081E223 /* ResticGUI */,
 				ED75B9392C43212700EB9E39 /* ResticGUITests */,
 				ED75B9442C43212700EB9E39 /* ResticGUIUITests */,
+				ED581FE62E0A116F00F2BE6F /* Frameworks */,
 				ED75B9252C43212600EB9E39 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -197,6 +251,8 @@
 				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
 				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
 				ED06377F2D63E971004E26BC /* EnviormentTableView.xib */,
+				ED581FF82E0A11C600F2BE6F /* RestoreViewController.swift */,
+				ED2BCCE72E076F5100B99ECA /* Restore.storyboard */,
 				EDE0AA6B2D10C1390081E223 /* ResticGlue */,
 				EDE0AA662D10C1390081E223 /* Preferences */,
 				EDE0AA702D10C1390081E223 /* Info.plist */,
@@ -216,6 +272,7 @@
 				ED75B9202C43212600EB9E39 /* Sources */,
 				ED75B9212C43212600EB9E39 /* Frameworks */,
 				ED75B9222C43212600EB9E39 /* Resources */,
+				ED581FF72E0A11A700F2BE6F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -296,6 +353,12 @@
 			mainGroup = ED75B91B2C43212600EB9E39;
 			productRefGroup = ED75B9252C43212600EB9E39 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = ED581FE82E0A116F00F2BE6F /* Products */;
+					ProjectRef = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				ED75B9232C43212600EB9E39 /* ResticGUI */,
@@ -305,12 +368,30 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftToolbox.framework;
+			remoteRef = ED581FEC2E0A116F00F2BE6F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ED581FEF2E0A116F00F2BE6F /* SwiftToolboxTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftToolboxTests.xctest;
+			remoteRef = ED581FEE2E0A116F00F2BE6F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		ED75B9222C43212600EB9E39 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EDF660AB2D53060800BD3998 /* DefaultTimeMachineExclusions.plist in Resources */,
+				ED2BCCE82E076F5100B99ECA /* Restore.storyboard in Resources */,
 				EDF660AD2D54323200BD3998 /* RepoEditView.storyboard in Resources */,
 				ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */,
 				EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */,
@@ -340,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */,
+				ED581FF92E0A11C600F2BE6F /* RestoreViewController.swift in Sources */,
 				EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */,
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,

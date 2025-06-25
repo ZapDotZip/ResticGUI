@@ -73,6 +73,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			if let selectedRepo = sender as? Repo {
 				vc.selectedRepo = selectedRepo
 			}
+		} else if segue.identifier == "Restore" {
+			let vc = segue.destinationController as! RestoreViewController
+			vc.snapshotToRestore = snapshotsTable.selectedSnapshot
 		} else {
 			NSLog("Error: segue \"\(segue.identifier ?? "nil")\" not properly set up!")
 		}
