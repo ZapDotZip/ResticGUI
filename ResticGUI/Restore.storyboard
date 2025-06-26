@@ -19,13 +19,19 @@
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="restoreDestinationType:" target="bU7-R8-ocO" id="ldR-Ma-rAJ"/>
+                                </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="75S-jy-Jdf">
+                            <button identifier="restoreDestinationTypeChosen" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="75S-jy-Jdf">
                                 <rect key="frame" x="18" y="87" width="180" height="18"/>
                                 <buttonCell key="cell" type="radio" title="Restore to new location..." bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="5EC-Nd-0d7">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="restoreDestinationType:" target="bU7-R8-ocO" id="yXd-eA-uQ7"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9pQ-iZ-2Sl">
                                 <rect key="frame" x="48" y="111" width="199" height="18"/>
@@ -49,7 +55,7 @@ Gw
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BgO-lt-jcn">
                                 <rect key="frame" x="356" y="13" width="81" height="32"/>
-                                <buttonCell key="cell" type="push" title="Restore" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rSo-3W-FOe">
+                                <buttonCell key="cell" type="push" title="Restore" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rSo-3W-FOe">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -57,19 +63,25 @@ Gw
                                     <action selector="restoreButtonPressed:" target="bU7-R8-ocO" id="46e-u6-LHA"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ga0-82-dfw">
+                            <button identifier="restoreEntireSnapshot" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ga0-82-dfw">
                                 <rect key="frame" x="18" y="268" width="171" height="18"/>
                                 <buttonCell key="cell" type="radio" title="Restore entire snapshot" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="L4k-6e-QvU">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="restoreSnapshotType:" target="bU7-R8-ocO" id="ZQI-c3-EKj"/>
+                                </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-LN-puf">
+                            <button identifier="restoreSelectedFiles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-LN-puf">
                                 <rect key="frame" x="18" y="246" width="232" height="18"/>
                                 <buttonCell key="cell" type="radio" title="Restore selected files and folders:" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="JND-ZD-7kH">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="restoreSnapshotType:" target="bU7-R8-ocO" id="Mi8-aH-h9L"/>
+                                </connections>
                             </button>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUk-dL-5jh">
                                 <rect key="frame" x="40" y="169" width="390" height="70"/>
@@ -173,7 +185,14 @@ Gw
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="restoreLocationView" destination="6Ae-eh-v73" id="OnU-x3-6Te"/>
+                        <outlet property="restoreButton" destination="BgO-lt-jcn" id="dkd-gt-2pb"/>
+                        <outlet property="restoreDestinationCustomPath" destination="6Ae-eh-v73" id="OnU-x3-6Te"/>
+                        <outlet property="restoreDestinationOriginalOverwrite" destination="9pQ-iZ-2Sl" id="ubc-lu-Mw9"/>
+                        <outlet property="restoreDestinationTypeChosen" destination="75S-jy-Jdf" id="dZ2-nP-z3B"/>
+                        <outlet property="restoreDestinationTypeOriginal" destination="q2k-C0-sD0" id="ThO-3o-JK7"/>
+                        <outlet property="restoreSnapshotTable" destination="sUk-dL-5jh" id="IpN-oW-bSd"/>
+                        <outlet property="restoreSourceTypeEntire" destination="ga0-82-dfw" id="Yg5-Rd-bti"/>
+                        <outlet property="restoreSourceTypePartial" destination="DDA-LN-puf" id="vTj-Sv-MnG"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
