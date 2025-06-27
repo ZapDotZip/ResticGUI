@@ -117,6 +117,12 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 	}
 	
+	public var selectedSnapshot: ResticResponse.Snapshot? {
+		get {
+			return snapshots[table.selectedRow]
+		}
+	}
+	
 	
 	
 	func loadIfCached() {

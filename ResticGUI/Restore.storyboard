@@ -146,9 +146,9 @@ Gw
                                 </scroller>
                             </scrollView>
                             <customView horizontalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="6Ae-eh-v73" customClass="PathSelectorLabelView" customModule="SwiftToolbox">
-                                <rect key="frame" x="50" y="60" width="380" height="20"/>
+                                <rect key="frame" x="50" y="60" width="380" height="24"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="xKY-bZ-ixT"/>
+                                    <constraint firstAttribute="height" constant="24" id="xKY-bZ-ixT"/>
                                 </constraints>
                             </customView>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="xjz-w1-dMQ">
@@ -161,11 +161,14 @@ Gw
                             <constraint firstItem="75S-jy-Jdf" firstAttribute="top" secondItem="9pQ-iZ-2Sl" secondAttribute="bottom" constant="8" symbolic="YES" id="67R-Mg-FqT"/>
                             <constraint firstItem="sUk-dL-5jh" firstAttribute="top" secondItem="DDA-LN-puf" secondAttribute="bottom" constant="8" symbolic="YES" id="6Fm-EC-17p"/>
                             <constraint firstAttribute="trailing" secondItem="sUk-dL-5jh" secondAttribute="trailing" constant="20" symbolic="YES" id="DXc-yI-rvn"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="75S-jy-Jdf" secondAttribute="trailing" constant="20" symbolic="YES" id="EUI-HK-sLK"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ga0-82-dfw" secondAttribute="trailing" constant="20" symbolic="YES" id="Ijq-Zp-h0P"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9pQ-iZ-2Sl" secondAttribute="trailing" constant="20" symbolic="YES" id="NuU-hx-LBA"/>
                             <constraint firstItem="BgO-lt-jcn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rCn-Ld-ZVF" secondAttribute="trailing" constant="12" symbolic="YES" id="PBH-zC-knM"/>
                             <constraint firstItem="xjz-w1-dMQ" firstAttribute="top" secondItem="sUk-dL-5jh" secondAttribute="bottom" constant="8" symbolic="YES" id="PS5-gA-VYc"/>
                             <constraint firstItem="xjz-w1-dMQ" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" id="PXY-3S-yxk"/>
                             <constraint firstItem="9pQ-iZ-2Sl" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="50" id="Plk-gb-8NJ"/>
-                            <constraint firstItem="6Ae-eh-v73" firstAttribute="top" secondItem="75S-jy-Jdf" secondAttribute="bottom" constant="8" symbolic="YES" id="RNc-Up-Ury"/>
+                            <constraint firstItem="6Ae-eh-v73" firstAttribute="top" secondItem="75S-jy-Jdf" secondAttribute="bottom" constant="4" id="RNc-Up-Ury"/>
                             <constraint firstAttribute="bottom" secondItem="rCn-Ld-ZVF" secondAttribute="bottom" constant="20" symbolic="YES" id="S6X-Oa-6yZ"/>
                             <constraint firstItem="rCn-Ld-ZVF" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="WNI-Fj-Acm"/>
                             <constraint firstAttribute="trailing" secondItem="xjz-w1-dMQ" secondAttribute="trailing" id="ZlU-gl-nNu"/>
@@ -173,9 +176,11 @@ Gw
                             <constraint firstItem="rCn-Ld-ZVF" firstAttribute="top" secondItem="6Ae-eh-v73" secondAttribute="bottom" constant="20" symbolic="YES" id="baz-bE-Xf3"/>
                             <constraint firstItem="q2k-C0-sD0" firstAttribute="top" secondItem="xjz-w1-dMQ" secondAttribute="bottom" constant="8" symbolic="YES" id="brx-k9-FH8"/>
                             <constraint firstItem="sUk-dL-5jh" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="40" id="bzm-CN-mq9"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="q2k-C0-sD0" secondAttribute="trailing" constant="20" symbolic="YES" id="c0z-Dj-UK3"/>
                             <constraint firstItem="6Ae-eh-v73" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="50" id="cYo-RN-kgn"/>
                             <constraint firstItem="DDA-LN-puf" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="eTb-MM-Do6"/>
                             <constraint firstItem="ga0-82-dfw" firstAttribute="top" secondItem="tOy-S4-hL0" secondAttribute="top" constant="20" symbolic="YES" id="hDF-b6-WiH"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="DDA-LN-puf" secondAttribute="trailing" constant="20" symbolic="YES" id="hXM-gT-uFY"/>
                             <constraint firstAttribute="bottom" secondItem="BgO-lt-jcn" secondAttribute="bottom" constant="20" symbolic="YES" id="hbE-hg-fNm"/>
                             <constraint firstAttribute="trailing" secondItem="6Ae-eh-v73" secondAttribute="trailing" constant="20" symbolic="YES" id="i4L-Sb-A49"/>
                             <constraint firstItem="ga0-82-dfw" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="pX4-y4-2eM"/>
@@ -185,14 +190,14 @@ Gw
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="destinationCustomPath" destination="6Ae-eh-v73" id="OnU-x3-6Te"/>
+                        <outlet property="destinationOriginalOverwrite" destination="9pQ-iZ-2Sl" id="ubc-lu-Mw9"/>
+                        <outlet property="destinationTypeChosen" destination="75S-jy-Jdf" id="dZ2-nP-z3B"/>
+                        <outlet property="destinationTypeOriginal" destination="q2k-C0-sD0" id="ThO-3o-JK7"/>
                         <outlet property="restoreButton" destination="BgO-lt-jcn" id="dkd-gt-2pb"/>
-                        <outlet property="restoreDestinationCustomPath" destination="6Ae-eh-v73" id="OnU-x3-6Te"/>
-                        <outlet property="restoreDestinationOriginalOverwrite" destination="9pQ-iZ-2Sl" id="ubc-lu-Mw9"/>
-                        <outlet property="restoreDestinationTypeChosen" destination="75S-jy-Jdf" id="dZ2-nP-z3B"/>
-                        <outlet property="restoreDestinationTypeOriginal" destination="q2k-C0-sD0" id="ThO-3o-JK7"/>
-                        <outlet property="restoreSnapshotTable" destination="sUk-dL-5jh" id="IpN-oW-bSd"/>
-                        <outlet property="restoreSourceTypeEntire" destination="ga0-82-dfw" id="Yg5-Rd-bti"/>
-                        <outlet property="restoreSourceTypePartial" destination="DDA-LN-puf" id="vTj-Sv-MnG"/>
+                        <outlet property="sourcePartialPathsTable" destination="moj-SF-JjG" id="fPL-wt-B2L"/>
+                        <outlet property="sourceTypeEntire" destination="ga0-82-dfw" id="Yg5-Rd-bti"/>
+                        <outlet property="sourceTypePartial" destination="DDA-LN-puf" id="vTj-Sv-MnG"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
