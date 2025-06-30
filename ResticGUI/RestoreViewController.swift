@@ -30,29 +30,41 @@ class RestoreViewController: NSViewController {
 		destinationCustomPath.controller.setup(path: nil, callback: self.pathDidChange(_:))
 	}
 	
+	private var destinationCustomPathIsSet = false
+	private func restoreButtonEnabled() {
+		let sourceIsValid = sourceTypeEntire.state == .on || (sourceTypePartial.state == .on && true)
+		
+		let destinationIsValid = destinationTypeOriginal.state == .on || (destinationCustomPathIsSet && destinationTypeChosen.state == .on)
+		
+		restoreButton.isEnabled = sourceIsValid && destinationIsValid
+	}
+	
 	func pathDidChange(_ path: URL?) -> Bool {
-		if path != nil && destinationTypeChosen.state == .on {
-			restoreButton.isEnabled = true
+		if path != nil {
+			destinationCustomPathIsSet = true
 		} else {
-			restoreButton.isEnabled = false
+			destinationCustomPathIsSet = false
 		}
+		restoreButtonEnabled()
 		return true
 	}
 	
 	@IBAction func restoreSnapshotType(_ sender: NSButton) {
-		
+		restoreButtonEnabled()
+		if sender.identifier?.rawValue == "restoreSnapshotTypePartial" {
+			sourcePartialPathsTable.isEnabled = true
+		} else {
+			sourcePartialPathsTable.isEnabled = false
+		}
 	}
 	
 	@IBAction func restoreDestinationType(_ sender: NSButton) {
-		if sender.identifier?.rawValue == "restoreDestinationTypeChosen" {
-//			if restoreDestinationCustomPath.controller.path != nil {
-//				restoreButton.isEnabled = true
-//			} else {
-//				restoreButton.isEnabled = false
-//			}
+		restoreButtonEnabled()
+//		if sender.identifier?.rawValue == "restoreDestinationTypeChosen" {
+//			destinationCustomPath.isEnabled = true
 //		} else {
-//			restoreButton.isEnabled = true
-		}
+//			destinationCustomPath.isEnabled = false
+//		}
 	}
 	
 	private func generatePlanFromUI() -> RestorePlan? {
