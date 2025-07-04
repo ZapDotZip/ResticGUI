@@ -35,6 +35,7 @@
 		EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA762D10C1390081E223 /* ReposManager.swift */; };
 		EDE0AA8C2D10C1390081E223 /* SnapshotsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */; };
 		EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA792D10C1390081E223 /* ViewController.swift */; };
+		EDF0A5F72E149DA8003B3FFC /* PathTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF0A5F62E149DA8003B3FFC /* PathTable.swift */; };
 		EDF660AB2D53060800BD3998 /* DefaultTimeMachineExclusions.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDF660AA2D53060800BD3998 /* DefaultTimeMachineExclusions.plist */; };
 		EDF660AD2D54323200BD3998 /* RepoEditView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */; };
 		EDFB37A22E12EDB60006CC2C /* Restore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDFB379F2E12EDB60006CC2C /* Restore.storyboard */; };
@@ -121,6 +122,7 @@
 		EDE0AA772D10C1390081E223 /* ResticGUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ResticGUI.entitlements; sourceTree = "<group>"; };
 		EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotsTable.swift; sourceTree = "<group>"; };
 		EDE0AA792D10C1390081E223 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EDF0A5F62E149DA8003B3FFC /* PathTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathTable.swift; sourceTree = "<group>"; };
 		EDF660AA2D53060800BD3998 /* DefaultTimeMachineExclusions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = DefaultTimeMachineExclusions.plist; path = ResticGUI/Resources/DefaultTimeMachineExclusions.plist; sourceTree = SOURCE_ROOT; };
 		EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RepoEditView.storyboard; sourceTree = "<group>"; };
 		EDFB379F2E12EDB60006CC2C /* Restore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Restore.storyboard; sourceTree = "<group>"; };
@@ -242,12 +244,12 @@
 				EDE0AA6F2D10C1390081E223 /* DataClasses.swift */,
 				EDE0AA742D10C1390081E223 /* ProfileManager.swift */,
 				EDE0AA722D10C1390081E223 /* Main.storyboard */,
+				EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */,
 				EDE0AA792D10C1390081E223 /* ViewController.swift */,
 				EDE0AA732D10C1390081E223 /* ProfileEditorController.swift */,
 				EDE0AA762D10C1390081E223 /* ReposManager.swift */,
 				EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */,
 				EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */,
-				EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */,
 				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
 				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
 				ED06377F2D63E971004E26BC /* EnviormentTableView.xib */,
@@ -266,6 +268,7 @@
 			children = (
 				EDFB379F2E12EDB60006CC2C /* Restore.storyboard */,
 				EDFB37A02E12EDB60006CC2C /* RestoreViewController.swift */,
+				EDF0A5F62E149DA8003B3FFC /* PathTable.swift */,
 			);
 			path = Restore;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */,
+				EDF0A5F72E149DA8003B3FFC /* PathTable.swift in Sources */,
 				EDFB37A32E12EDB60006CC2C /* RestoreViewController.swift in Sources */,
 				EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */,
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,

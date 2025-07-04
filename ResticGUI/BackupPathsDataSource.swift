@@ -14,6 +14,17 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 // MARK: data source/delegate implementation
 	var selectedProfile: Profile?
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		self.registerForDraggedTypes([.fileURL])
+		table.tableColumns.first!.width = self.frame.width - 16
+	}
+		
+	override func layout() {
+		super.layout()
+		table.tableColumns.first!.width = self.frame.width - 16
+	}
+	
 	func load(fromProfile profile: Profile) {
 		self.selectedProfile = profile
 		deleteButton.isEnabled = false
@@ -76,12 +87,6 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	
 // MARK: dragging implementation
 	private var NormalBorderColor: CGColor?
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		self.registerForDraggedTypes([.fileURL])
-	}
-	
 	
 	override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
 		if sender.draggingPasteboard.canReadObject(forClasses: [NSURL.self], options: nil) {
