@@ -11,7 +11,7 @@ class RestoreViewController: NSViewController {
 	@IBOutlet weak var sourceTypeEntire: NSButton!
 	@IBOutlet weak var sourceTypePartial: NSButton!
 	
-	@IBOutlet weak var sourcePartialPathsTable: NSTableView!
+	@IBOutlet weak var sourcePartialPathsTable: PathTable!
 	
 	@IBOutlet weak var destinationTypeOriginal: NSButton!
 	@IBOutlet weak var destinationTypeChosen: NSButton!
@@ -23,11 +23,32 @@ class RestoreViewController: NSViewController {
 	
 	var snapshotToRestore: ResticResponse.Snapshot!
 	
-	private var selectedFileList: [String] = []
-		
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		destinationCustomPath.controller.setup(path: nil, callback: self.pathDidChange(_:))
+		destinationCustomPath.controller.canChooseFiles = false
+	}
+	
+	private let restorableViewSizeKey = "RestoreViewSheet View Size"
+	override func viewWillAppear() {
+		super.viewWillAppear()
+		if !NSEvent.modifierFlags.contains(.shift) {
+			if let data = UserDefaults.standard.object(forKey: restorableViewSizeKey) as? Data {
+				if let size = try? PropertyListDecoder().decode(CGSize.self, from: data) {
+					view.window?.setContentSize(size)
+				} else {
+					UserDefaults.standard.removeObject(forKey: restorableViewSizeKey)
+				}
+			}
+		}
+	}
+	
+	override func viewWillDisappear() {
+		if let size = view.window?.frame.size, let data = try? PropertyListEncoder().encode(size) {
+			UserDefaults.standard.set(data, forKey: restorableViewSizeKey)
+		}
+		super.viewWillDisappear()
 	}
 	
 	private var destinationCustomPathIsSet = false
@@ -51,20 +72,10 @@ class RestoreViewController: NSViewController {
 	
 	@IBAction func restoreSnapshotType(_ sender: NSButton) {
 		restoreButtonEnabled()
-		if sender.identifier?.rawValue == "restoreSnapshotTypePartial" {
-			sourcePartialPathsTable.isEnabled = true
-		} else {
-			sourcePartialPathsTable.isEnabled = false
-		}
 	}
 	
 	@IBAction func restoreDestinationType(_ sender: NSButton) {
 		restoreButtonEnabled()
-//		if sender.identifier?.rawValue == "restoreDestinationTypeChosen" {
-//			destinationCustomPath.isEnabled = true
-//		} else {
-//			destinationCustomPath.isEnabled = false
-//		}
 	}
 	
 	private func generatePlanFromUI() -> RestorePlan? {
@@ -72,25 +83,25 @@ class RestoreViewController: NSViewController {
 			if sourceTypeEntire.state == .on {
 				return RestorePlan.restoreSourceType.entireSnapshot
 			} else {
-				if selectedFileList.count > 0 {
-					return RestorePlan.restoreSourceType.selectedFiles(files: selectedFileList)
+				if let paths = sourcePartialPathsTable.save() {
+					return RestorePlan.restoreSourceType.selectedFiles(files: paths)
 				} else {
 					Alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational, buttons: ["Ok"])
 					return nil
 				}
 			}
 		}()
+		
 		let dest: RestorePlan.restoreDestinationType? = {
 			if destinationTypeOriginal.state == .on {
 				return RestorePlan.restoreDestinationType.originalSource(overwrite: destinationOriginalOverwrite.state == .on)
 			} else {
-//				if let path = restoreDestinationCustomPath.controller.path {
-//					return RestorePlan.restoreDestinationType.newLocation(path: path)
-//				} else {
-//					Alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational, buttons: ["Ok"])
-//					return nil
-//				}
-				return nil
+				if let path = destinationCustomPath.controller.path {
+					return RestorePlan.restoreDestinationType.newLocation(path: path)
+				} else {
+					Alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational, buttons: ["Ok"])
+					return nil
+				}
 			}
 		}()
 		
@@ -104,7 +115,10 @@ class RestoreViewController: NSViewController {
 	
 	
 	@IBAction func restoreButtonPressed(_ sender: NSButton) {
-		
+		let plan = generatePlanFromUI()
+		if let plan {
+			print(plan)
+		}
 	}
 	
 	
