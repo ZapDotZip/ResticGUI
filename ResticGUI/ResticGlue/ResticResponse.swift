@@ -13,6 +13,11 @@ final class ResticResponse {
 	}
 	
 	final class Snapshot: Codable {
+		private static let df = {
+			let df = DateFormatter()
+			df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+			return df
+		}()
 		let time: String
 		let parent: String?
 		let tree: String
@@ -27,11 +32,7 @@ final class ResticResponse {
 		let id: String
 		let short_id: String
 		
-		var date: Date {
-			let df = DateFormatter()
-			df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-			return df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
-		}
+		lazy var date: Date = ResticResponse.Snapshot.df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
 	}
 	
 	struct backupProgress: Decodable {
