@@ -11,7 +11,7 @@
             <objects>
                 <viewController identifier="restoreView" id="bU7-R8-ocO" customClass="RestoreViewController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" translatesAutoresizingMaskIntoConstraints="NO" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="449" height="305"/>
+                        <rect key="frame" x="0.0" y="0.0" width="478" height="305"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q2k-C0-sD0">
                                 <rect key="frame" x="18" y="135" width="178" height="18"/>
@@ -54,7 +54,7 @@ Gw
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BgO-lt-jcn">
-                                <rect key="frame" x="355" y="13" width="81" height="32"/>
+                                <rect key="frame" x="384" y="13" width="81" height="32"/>
                                 <buttonCell key="cell" type="push" title="Restore" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rSo-3W-FOe">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -84,28 +84,28 @@ Gw
                                 </connections>
                             </button>
                             <customView horizontalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="6Ae-eh-v73" customClass="PathSelectorLabelView" customModule="SwiftToolbox">
-                                <rect key="frame" x="50" y="60" width="379" height="24"/>
+                                <rect key="frame" x="50" y="60" width="408" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="xKY-bZ-ixT"/>
                                 </constraints>
                             </customView>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="xjz-w1-dMQ">
-                                <rect key="frame" x="0.0" y="158" width="449" height="5"/>
+                                <rect key="frame" x="0.0" y="158" width="478" height="5"/>
                             </box>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFZ-Av-TV2" customClass="PathTable" customModule="ResticGUI" customModuleProvider="target">
-                                <rect key="frame" x="20" y="169" width="409" height="70"/>
+                                <rect key="frame" x="20" y="169" width="438" height="70"/>
                                 <clipView key="contentView" drawsBackground="NO" id="2fp-vh-eSo">
-                                    <rect key="frame" x="1" y="1" width="407" height="68"/>
+                                    <rect key="frame" x="1" y="1" width="436" height="68"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="aVY-rc-Yua">
-                                            <rect key="frame" x="0.0" y="0.0" width="407" height="68"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="436" height="68"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="pathCell" width="395" minWidth="40" maxWidth="1000" id="z4L-ss-jC6">
+                                                <tableColumn identifier="pathCell" width="366" minWidth="40" maxWidth="1000" id="z4L-ss-jC6">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -118,11 +118,11 @@ Gw
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="Q5r-Ca-Hqe">
-                                                            <rect key="frame" x="1" y="1" width="404" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="375" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-AA-4rY">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="404" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="17"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="17" id="7Mz-Ik-Im7"/>
                                                                     </constraints>

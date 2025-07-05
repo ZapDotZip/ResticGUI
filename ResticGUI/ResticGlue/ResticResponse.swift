@@ -48,14 +48,14 @@ final class ResticResponse {
 		let current_files: [String]?
 	}
 	
-	struct backupError: Decodable {
+	struct resticError: Decodable {
 		let message_type: String
-		let error: backupErrorMessage
+		let error: resticErrorMessage
 		let during: String?
 		let item: String?
 	}
 	
-	struct backupErrorMessage: Decodable {
+	struct resticErrorMessage: Decodable {
 		let message: String?
 	}
 	
@@ -87,6 +87,19 @@ final class ResticResponse {
 		let message_type: String
 		let id: String
 		let repository: String
+	}
+	
+	struct RestoreProgress: Decodable {
+		let message_type: String
+		let seconds_elapsed: Int
+		let percent_done: Double? // nil if backup complete
+		let total_files: Int
+		let files_restored: Int
+		let files_skipped: Int
+		let files_deleted: Int
+		let total_bytes: Int
+		let bytes_restored: Int
+		let bytes_skipped: Int
 	}
 	
 }

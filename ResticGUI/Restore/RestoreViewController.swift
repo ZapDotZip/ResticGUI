@@ -124,19 +124,3 @@ class RestoreViewController: NSViewController {
 	
 	
 }
-
-struct RestorePlan {
-	enum restoreSourceType {
-		case entireSnapshot
-		case selectedFiles(files: [String])
-	}
-	enum restoreDestinationType {
-		case originalSource(overwrite: Bool)
-		case newLocation(path: URL)
-	}
-	
-	let snapshot: ResticResponse.Snapshot
-	let restoreSource: restoreSourceType
-	let restoreDestination: restoreDestinationType
-	
-}

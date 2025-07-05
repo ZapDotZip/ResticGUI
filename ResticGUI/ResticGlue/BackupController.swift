@@ -145,7 +145,7 @@ class BackupController {
 			DispatchQueue.main.async {
 				self.vc.displayProgress(progress.current_files?.first, progress.percent_done)
 			}
-		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.backupError.self, from: data) {
+		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.resticError.self, from: data) {
 			print(error.message_type)
 			Alert(title: "An error occured while backing up.", message: "Restic:\n\n\(getStderr())", style: .critical, buttons: ["Ok"])
 		} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: data) {
