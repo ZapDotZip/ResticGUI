@@ -381,17 +381,25 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			- Uncompressed Size: \(bf.string(fromByteCount: Int64(sum.data_added)))
 			- Compressed Added: \(bf.string(fromByteCount: Int64(sum.data_added_packed)))
 			- Blobs Added: \(sum.data_blobs), Tree Blobs Added: \(sum.tree_blobs)
-			Total Duration: \(sum.total_duration ?? 0.0) seconds
+			Total Duration: \(String(format: "%.2f", sum.total_duration ?? 0.0)) seconds
 			"""
 			let label = NSTextField(wrappingLabelWithString: text)
 			label.alignment = .left
 			label.sizeToFit()
+			label.translatesAutoresizingMaskIntoConstraints = false
 			let contentViewController = NSViewController()
-			contentViewController.view = NSView(frame: label.frame)
+			let viewFrame = NSRect(x: 0, y: 0, width: label.frame.width + 16, height: label.frame.height + 16)
+			contentViewController.view = NSView(frame: viewFrame)
 			contentViewController.view.wantsLayer = true
 			contentViewController.view.addSubview(label)
 			completedBackupPopover!.contentViewController = contentViewController
 			completedBackupPopover!.behavior = .transient
+			NSLayoutConstraint.activate([
+				label.topAnchor.constraint(equalTo: contentViewController.view.topAnchor, constant: 8),
+				label.trailingAnchor.constraint(equalTo: contentViewController.view.trailingAnchor, constant: -8),
+				label.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor, constant: -8),
+				label.leadingAnchor.constraint(equalTo: contentViewController.view.leadingAnchor, constant: 8)
+			])
 			completedBackupPopover!.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
 		} else {
 			viewState = .noBackupInProgress
