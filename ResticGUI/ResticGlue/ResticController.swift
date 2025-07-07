@@ -4,13 +4,14 @@
 //
 
 import Foundation
+import SwiftProcessController
 
 
-final class ResticController: NSObject {
+final class ResticController {
 	#if arch(x86_64)
-	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.17.3", go_arch: "amd64")
+	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "amd64")
 	#elseif arch(arm64)
-	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.17.3", go_arch: "arm64")
+	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
 		URL(fileURLWithPath: "/opt/local/bin/restic"),
@@ -18,18 +19,17 @@ final class ResticController: NSObject {
 		URL(fileURLWithPath: "/usr/local/bin/restic")
 	]
 // MARK: Setup
-	/// The DispatchQueue that all Restic operations must be run from.
 	let dq: DispatchQueue
+	private let pr: ProcessRunner
 	let jsonDecoder = JSONDecoder()
-	lazy var logger: ResticLogger = ResticLogger.default
+	private let logger: ResticLogger = ResticLogger.default
 	var resticLocation: URL?
 	var versionInfo: ResticResponse.ResticVersion?
-
-	static var `default`: ResticController!
-	override init() {
-		dq = DispatchQueue.init(label: "ResticController", qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: nil)
-		super.init()
-		ResticController.default = self
+	
+	static var `default` = ResticController()
+	private init() {
+		dq = DispatchQueue.init(label: "ResticController", qos: .background, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+		pr = ProcessRunner.init(executableURL: ResticController.autoURLs[0])
 	}
 	
 	/// Configures ResticController based off of the user's preferences. Throws an error if Restic couldn't be found/run.
