@@ -14,7 +14,7 @@ class RepoEditViewController: NSViewController {
 	let repoManager = ReposManager.default!
 	var selectedRepo: Repo?
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
-	lazy var resticController = appDel.resticController!
+	lazy var resticController = ResticController.default
 	
 	@IBOutlet var pathField: NSTextField!
 	private var pathFilled = false

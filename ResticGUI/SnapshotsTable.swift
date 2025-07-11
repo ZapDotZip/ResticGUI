@@ -7,7 +7,7 @@ import Cocoa
 
 class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
-	lazy var resticController = appDel.resticController!
+	private lazy var resticController = ResticController.default
 	@IBOutlet var repoManager: ReposManager!
 	@IBOutlet var viewCon: ViewController!
 	

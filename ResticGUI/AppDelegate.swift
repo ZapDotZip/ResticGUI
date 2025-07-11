@@ -9,7 +9,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	private var viewCon: ViewController!
-	@IBOutlet weak var resticController: ResticController!
+	private lazy var resticController = ResticController.default
 	var backupController: BackupController!
 	
 	override init() {

@@ -705,13 +705,8 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ResticGUI" customModuleProvider="target">
-                    <connections>
-                        <outlet property="resticController" destination="pZb-U6-Z7h" id="NPt-Kw-6Fu"/>
-                    </connections>
-                </customObject>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ResticGUI" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
-                <customObject id="pZb-U6-Z7h" customClass="ResticController" customModule="ResticGUI" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-353" y="-38"/>
@@ -898,7 +893,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="197" y="0.0" width="582" height="521"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -915,7 +910,7 @@
                                                     <action selector="runBackup:" target="XfG-lQ-9wD" id="su8-c2-H1k"/>
                                                 </connections>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="563" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
@@ -1458,7 +1453,7 @@
                                                                     <rect key="frame" x="8" y="36" width="527" height="337"/>
                                                                     <clipView key="contentView" id="eUB-Qr-Dy3">
                                                                         <rect key="frame" x="1" y="1" width="525" height="335"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveName="SnapshotsTable" rowSizeStyle="automatic" headerView="Yme-Qu-Smp" viewBased="YES" id="3id-wy-VkW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="525" height="310"/>
@@ -1480,7 +1475,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="RVa-dl-s6H">
-                                                                                                <rect key="frame" x="1" y="1" width="146" height="17"/>
+                                                                                                <rect key="frame" x="11" y="1" width="146" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="piW-MG-fAa">
@@ -1512,7 +1507,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="4hN-gR-oTG">
-                                                                                                <rect key="frame" x="150" y="1" width="252" height="17"/>
+                                                                                                <rect key="frame" x="160" y="1" width="252" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n8q-qY-RTE">
@@ -1544,7 +1539,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="6b6-HS-9qW">
-                                                                                                <rect key="frame" x="405" y="1" width="89" height="17"/>
+                                                                                                <rect key="frame" x="415" y="1" width="89" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5H0-PV-DDQ">
@@ -1687,7 +1682,7 @@
                                                     </binding>
                                                 </connections>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="90" y="484" width="362" height="26"/>
                                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="JeJ-uv-bbN">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1701,7 +1696,7 @@
                                                     <action selector="selectorDidChange:" target="S7I-Xn-HVk" id="tTF-3C-xA8"/>
                                                 </connections>
                                             </popUpButton>
-                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="457" y="486" width="106" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>
@@ -1719,7 +1714,7 @@
                                                     <action selector="repoEditButton:" target="XfG-lQ-9wD" id="XEO-aZ-Wfj"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="491" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="bpD-Ed-yde"/>

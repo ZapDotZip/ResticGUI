@@ -13,7 +13,7 @@ class PrefTabGeneral: NSViewController {
 	@IBOutlet weak var backupQoS: NSPopUpButton!
 	
 	lazy var appDel = NSApplication.shared.delegate as! AppDelegate
-	lazy var resticController = appDel.resticController!
+	lazy var resticController = ResticController.default
 	
 	var popover: NSPopover?
 	
