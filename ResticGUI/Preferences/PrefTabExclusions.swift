@@ -15,7 +15,7 @@ class PrefTabExclusions: NSViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
         ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
-		if let path = UserDefaults.standard.string(forKey: "GlobalExcludeFile") {
+		if let path = UserDefaults.standard.string(forKey: DefaultsKeys.globalExcludePatternFile) {
 			ExcludeFileLabel.stringValue = path
 			ExcludeFileClearButton.isEnabled = true
 		}
@@ -23,14 +23,14 @@ class PrefTabExclusions: NSViewController {
 	@IBAction func excludePatternFile(_ sender: NSButton) {
 		let (panel, res) = openPanel(message: "Select an exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: false, canCreateDirectories: false)
 		if res == .OK && panel.urls.count != 0 {
-			UserDefaults.standard.set(panel.urls[0], forKey: "GlobalExcludeFile")
+			UserDefaults.standard.set(panel.urls[0], forKey: DefaultsKeys.globalExcludePatternFile)
 			ExcludeFileLabel.stringValue = panel.urls[0].path
 			ExcludeFileClearButton.isEnabled = true
 		}
 	}
 	
 	@IBAction func excludePatternFileClear(_ sender: NSButton) {
-		UserDefaults.standard.set(nil, forKey: "GlobalExcludeFile")
+		UserDefaults.standard.set(nil, forKey: DefaultsKeys.globalExcludePatternFile)
 		ExcludeFileLabel.stringValue = ""
 		ExcludeFileClearButton.isEnabled = true
 	}

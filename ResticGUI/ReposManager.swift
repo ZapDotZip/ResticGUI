@@ -43,7 +43,7 @@ class ReposManager: NSObject {
 			return
 		}
 		fillMenu()
-		if UserDefaults.standard.bool(forKey: "Global Repo Selection"), let selected = UserDefaults.standard.string(forKey: "Selected Repo"), repos[selected] != nil {
+		if UserDefaults.standard.bool(forKey: DefaultsKeys.globalRepoSelection), let selected = UserDefaults.standard.string(forKey: DefaultsKeys.selectedRepo), repos[selected] != nil {
 			RepoMenu.selectItem(withTitle: selected)
 		}
 	}

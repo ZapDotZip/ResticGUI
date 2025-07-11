@@ -29,7 +29,7 @@ class RepoEditViewController: NSViewController {
 	@IBOutlet weak var tableView: EnviormentTableView!
 	
 	override func viewDidLoad() {
-		if let customCache = UserDefaults.standard.string(forKey: "Cache Directory") {
+		if let customCache = UserDefaults.standard.string(forKey: DefaultsKeys.cacheDirectory) {
 			cacheDirLabel.stringValue = "App Default (\(customCache))"
 		}
 		if let r = selectedRepo {

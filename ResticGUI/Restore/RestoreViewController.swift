@@ -30,15 +30,14 @@ class RestoreViewController: NSViewController {
 		destinationCustomPath.controller.canChooseFiles = false
 	}
 	
-	private let restorableViewSizeKey = "RestoreViewSheet View Size"
 	override func viewWillAppear() {
 		super.viewWillAppear()
 		if !NSEvent.modifierFlags.contains(.shift) {
-			if let data = UserDefaults.standard.object(forKey: restorableViewSizeKey) as? Data {
+			if let data = UserDefaults.standard.object(forKey: DefaultsKeys.viewSizeRestoreView) as? Data {
 				if let size = try? PropertyListDecoder().decode(CGSize.self, from: data) {
 					view.window?.setContentSize(size)
 				} else {
-					UserDefaults.standard.removeObject(forKey: restorableViewSizeKey)
+					UserDefaults.standard.removeObject(forKey: DefaultsKeys.viewSizeRestoreView)
 				}
 			}
 		}
@@ -46,7 +45,7 @@ class RestoreViewController: NSViewController {
 	
 	override func viewWillDisappear() {
 		if let size = view.window?.frame.size, let data = try? PropertyListEncoder().encode(size) {
-			UserDefaults.standard.set(data, forKey: restorableViewSizeKey)
+			UserDefaults.standard.set(data, forKey: DefaultsKeys.viewSizeRestoreView)
 		}
 		super.viewWillDisappear()
 	}

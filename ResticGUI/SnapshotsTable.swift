@@ -26,11 +26,11 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		df.locale = .current
 		encoder.outputFormat = .binary
 		super.init(coder: coder)
-		UserDefaults.standard.addObserver(self, forKeyPath: "SnapshotDateFormat", options: .new, context: nil)
+		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.snapshotDateFormat, options: .new, context: nil)
 	}
 	
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		if keyPath == "SnapshotDateFormat" {
+		if keyPath == DefaultsKeys.snapshotDateFormat {
 			reload()
 		}
 	}
@@ -40,7 +40,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 	
 	func reload() {
-		if let userDF = UserDefaults.standard.string(forKey: "SnapshotDateFormat"), userDF != "" {
+		if let userDF = UserDefaults.standard.string(forKey: DefaultsKeys.snapshotDateFormat), userDF != "" {
 			df.dateFormat = userDF
 		} else {
 			df.dateFormat = "YYYY-MM-dd 'at' h:mm a"

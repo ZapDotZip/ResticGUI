@@ -28,7 +28,7 @@ class BackupController {
 	
 	private func getQoS() -> QualityOfService {
 		var qos: QualityOfService = .default
-		if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
+		if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
 			if pref == "userInitiated" {
 				qos = .userInitiated
 			} else if pref == "utility" {
@@ -38,11 +38,11 @@ class BackupController {
 			}
 		}
 		if #available(macOS 12.0, *) {
-			if UserDefaults.standard.bool(forKey: "QoS Background on Low Power") && ProcessInfo.processInfo.isLowPowerModeEnabled {
+			if UserDefaults.standard.bool(forKey: DefaultsKeys.lowPowerQoS) && ProcessInfo.processInfo.isLowPowerModeEnabled {
 				qos = .background
 			}
 		}
-		if UserDefaults.standard.bool(forKey: "QoS Background on Battery") && isOnBattery() {
+		if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && isOnBattery() {
 			qos = .background
 		}
 		return qos
@@ -82,10 +82,10 @@ class BackupController {
 						args.append("--iexclude-file=\(exclusionsFile.path)")
 					}
 				}
-				if let globalExclusions = UserDefaults.standard.string(forKey: "GlobalExclusions") {
+				if let globalExclusions = UserDefaults.standard.string(forKey: DefaultsKeys.globalExclusions) {
 					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-global.txt")
 					try globalExclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
-					if UserDefaults.standard.bool(forKey: "GlobalExclusionsCaseSensitive") {
+					if UserDefaults.standard.bool(forKey: DefaultsKeys.isGlobalExclusionsCaseSensitive) {
 						args.append("--exclude-file=\(exclusionsFile.path)")
 					} else {
 						args.append("--iexclude-file=\(exclusionsFile.path)")
@@ -117,7 +117,7 @@ class BackupController {
 			}
 			
 			if let readConcurrency = profile.readConcurrency {
-				if qos == .background && UserDefaults.standard.bool(forKey: "Limit Background Core Count"), let eCores = getDifferentialCoreCount()?.0, eCores < readConcurrency {
+				if qos == .background && UserDefaults.standard.bool(forKey: DefaultsKeys.limitBackgroundCoreCount), let eCores = getDifferentialCoreCount()?.0, eCores < readConcurrency {
 					args.append("--read-concurrency=\(eCores)")
 				} else {
 					args.append("--read-concurrency=\(readConcurrency)")

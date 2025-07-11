@@ -16,13 +16,13 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	func viewDidLoad() {
 		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
 		BackupPathsDS.viewCon = viewCon
-		TabView.selectTabViewItem(at: UserDefaults.standard.integer(forKey: "ProfileEditorTabIndex"))
+		TabView.selectTabViewItem(at: UserDefaults.standard.integer(forKey: DefaultsKeys.profileEditorTab))
 	}
 	
 	func tabView(_ tabView: NSTabView, didSelect tabViewItem: NSTabViewItem?) {
 		for (i, tvi) in TabView.tabViewItems.enumerated() {
 			if tvi == tabViewItem {
-				UserDefaults.standard.set(i, forKey: "ProfileEditorTabIndex")
+				UserDefaults.standard.set(i, forKey: DefaultsKeys.profileEditorTab)
 				break
 			}
 		}
@@ -69,7 +69,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 		} else {
 			PackSize.stringValue = ""
 		}
-		if let selectedRepo = profile.selectedRepo, !UserDefaults.standard.bool(forKey: "Global Repo Selection") {
+		if let selectedRepo = profile.selectedRepo, !UserDefaults.standard.bool(forKey: DefaultsKeys.globalRepoSelection) {
 			repoManager.setSelectedRepo(title: selectedRepo)
 		}
 		

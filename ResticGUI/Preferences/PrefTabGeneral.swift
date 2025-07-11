@@ -4,12 +4,12 @@
 //
 
 import AppKit
+import SwiftToolbox
 
 class PrefTabGeneral: NSViewController {
 	@IBOutlet weak var binLocationSelector: NSPopUpButton!
 	@IBOutlet weak var binPath: NSPathControl!
 	@IBOutlet weak var binPathSIL: NSButton!
-	static let resticPathPrefName = "Restic Location"
 	@IBOutlet weak var backupQoS: NSPopUpButton!
 	
 	lazy var appDel = NSApplication.shared.delegate as! AppDelegate
@@ -19,7 +19,7 @@ class PrefTabGeneral: NSViewController {
 	
 	/// Sets the Pop-Up selector to the user's preferences.
 	private func setSelectorUserPref() {
-		var userPref: String = UserDefaults.standard.string(forKey: PrefTabGeneral.resticPathPrefName) ?? "Automatic"
+		var userPref: String = UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "Automatic"
 		if userPref != "Automatic" && userPref != "MacPorts" && userPref != "Homebrew" {
 			userPref = "Custom..."
 		}
@@ -30,7 +30,7 @@ class PrefTabGeneral: NSViewController {
 		super.viewDidLoad()
 		setSelectorUserPref()
 		checkBinPath()
-		if let pref = UserDefaults.standard.string(forKey: "Backup QoS") {
+		if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
 			if pref == "userInitiated" {
 				backupQoS.selectItem(at: 0)
 			} else if pref == "utility" {
@@ -161,7 +161,7 @@ class PrefTabGeneral: NSViewController {
 	}
 	
 	@IBAction func backupQoSDidChange(_ sender: NSPopUpButton) {
-		UserDefaults.standard.set(sender.selectedItem?.identifier, forKey: "Backup QoS")
+		UserDefaults.standard.set(sender.selectedItem?.identifier, forKey: DefaultsKeys.backupQoS)
 	}
 	
 }

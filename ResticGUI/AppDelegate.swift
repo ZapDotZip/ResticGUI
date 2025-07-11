@@ -18,12 +18,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			safeMode()
 		}
 		UserDefaults.standard.register(defaults: [
-			"Scan Ahead" : true,
-			"Global Repo Selection" : false,
-			"Backup QoS" : "default",
-			"Limit Background Core Count" : true,
-			"QoS Background on Battery" : true,
-			"QoS Background on Low Power" : true,
+			DefaultsKeys.scanAhead : true,
+			DefaultsKeys.globalRepoSelection : false,
+			DefaultsKeys.backupQoS : "default",
+			DefaultsKeys.limitBackgroundCoreCount : true,
+			DefaultsKeys.batteryQoS : true,
+			DefaultsKeys.lowPowerQoS : true,
 		])
 	}
 	

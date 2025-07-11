@@ -37,13 +37,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		initSidebar(ProfileManager.loadAllProfiles())
 		profileEditor.viewDidLoad()
 		repoManager.initUIView()
-		if let s = UserDefaults.standard.string(forKey: "LastSelectedProfile") {
+		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile) {
 			selectedProfile = ProfileManager.load(name: s)
 			if let p = selectedProfile {
 				outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(p.name) ?? 1), byExtendingSelection: false)
 			}
 		}
-		scanAhead.state = UserDefaults.standard.bool(forKey: "Scan Ahead") ? .on : .off
+		scanAhead.state = UserDefaults.standard.bool(forKey: DefaultsKeys.scanAhead) ? .on : .off
 		viewState = .noBackupInProgress
 	}
 	
@@ -230,7 +230,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				DeleteProfileButton.isEnabled = true
 				profileEditor.setupMainEditorView(profile: p)
 				selectedProfile = p
-				UserDefaults.standard.set(p.name, forKey: "LastSelectedProfile")
+				UserDefaults.standard.set(p.name, forKey: DefaultsKeys.lastSelectedProfile)
 			} else {
 				DeleteProfileButton.isEnabled = false
 				self.view.window?.title = "ResticGUI"
@@ -393,7 +393,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			contentViewController.view.wantsLayer = true
 			contentViewController.view.addSubview(label)
 			completedBackupPopover!.contentViewController = contentViewController
-			completedBackupPopover!.behavior = .transient
+			completedBackupPopover!.behavior = .semitransient
 			NSLayoutConstraint.activate([
 				label.topAnchor.constraint(equalTo: contentViewController.view.topAnchor, constant: 8),
 				label.trailingAnchor.constraint(equalTo: contentViewController.view.trailingAnchor, constant: -8),
