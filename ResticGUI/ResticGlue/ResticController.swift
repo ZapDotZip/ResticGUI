@@ -7,7 +7,7 @@ import Foundation
 import SwiftProcessController
 
 
-final class ResticController {
+final class ResticController: NSObject {
 	#if arch(x86_64)
 	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "amd64")
 	#elseif arch(arm64)
@@ -20,21 +20,31 @@ final class ResticController {
 	]
 // MARK: Setup
 	let dq: DispatchQueue
-	private let pr: ProcessRunner
 	let jsonDecoder = JSONDecoder()
 	private let logger: ResticLogger = ResticLogger.default
 	var resticLocation: URL?
 	var versionInfo: ResticResponse.ResticVersion?
 	
 	static var `default` = ResticController()
-	private init() {
+	private override init() {
 		dq = DispatchQueue.init(label: "ResticController", qos: .background, attributes: [], autoreleaseFrequency: .inherit, target: nil)
-		pr = ProcessRunner.init(executableURL: ResticController.autoURLs[0])
+		super.init()
+		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.resticLocation, options: .new, context: nil)
+	}
+	
+	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		if keyPath == DefaultsKeys.resticLocation {
+			dq.async(qos: .background) {
+				try? self.setupFromDefaults()
+			}
+		}
 	}
 	
 	/// Configures ResticController based off of the user's preferences. Throws an error if Restic couldn't be found/run.
 	func setupFromDefaults() throws {
-		if let userSel = UserDefaults.standard.string(forKey: PrefTabGeneral.resticPathPrefName) {
+		resticLocation = nil
+		versionInfo = nil
+		if let userSel = UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) {
 			NSLog("User configured default \(userSel)")
 			if userSel == "MacPorts" {
 				return try testVersion(ResticController.autoURLs[0])
@@ -48,12 +58,11 @@ final class ResticController {
 	}
 	
 	/// Tests to see if the path points to a valid Restic binary by checking its version.
-	/// - Parameter path: The path to restic to set for the object.
+	/// - Parameter path: The path to restic, will be set if the command runs successfully.
 	func testVersion(_ path: URL) throws {
+		let vers = try ProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.ResticVersion.self)
 		resticLocation = path
-		let vers = try run(args: ["--json", "version"], env: nil, returning: ResticResponse.ResticVersion.self)
-		(versionInfo, _) = vers
-		NSLog("ResticController: Successfully initialized \(path) with version \(versionInfo!)")
+		versionInfo = vers.output
 	}
 	
 	/// Finds a restic install automatically. Prefers MacPorts over Homebrew and arm over x64.
@@ -68,7 +77,7 @@ final class ResticController {
 	}
 		
 	func homebrew() throws {
-		for u in ResticController.autoURLs[1...ResticController.autoURLs.count-1] {
+		for u in ResticController.autoURLs[1...] {
 			resticLocation = u
 			if let rv = try? testVersion(u) {
 				return rv

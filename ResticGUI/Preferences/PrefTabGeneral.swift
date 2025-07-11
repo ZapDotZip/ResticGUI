@@ -12,10 +12,11 @@ class PrefTabGeneral: NSViewController {
 	@IBOutlet weak var binPathSIL: NSButton!
 	@IBOutlet weak var backupQoS: NSPopUpButton!
 	
-	lazy var appDel = NSApplication.shared.delegate as! AppDelegate
-	lazy var resticController = ResticController.default
+	private lazy var appDel = NSApplication.shared.delegate as! AppDelegate
+	private lazy var resticController = ResticController.default
 	
-	var popover: NSPopover?
+	private var popover: NSPopover?
+	private var silMessage: String = "Unknown status."
 	
 	/// Sets the Pop-Up selector to the user's preferences.
 	private func setSelectorUserPref() {
@@ -52,8 +53,7 @@ class PrefTabGeneral: NSViewController {
 				let vers = try self.resticController.getVersionInfo()
 				if vers == ResticController.supportedRV {
 					DispatchQueue.main.async {
-						self.createSILMessage("\(vers.version) (\(vers.go_arch))")
-						self.setBinPath(self.resticController.resticLocation!, NSImage.statusAvailableName)
+						self.setRLUI(path: self.resticController.resticLocation!, status: NSImage.statusAvailableName, silText: "\(vers.version) (\(vers.go_arch))")
 					}
 				} else {
 					let archMsg = {
@@ -71,8 +71,7 @@ class PrefTabGeneral: NSViewController {
 						}
 					}()
 					DispatchQueue.main.async {
-						self.createSILMessage("\(versMsg)\n \(archMsg)")
-						self.setBinPath(self.resticController.resticLocation!, NSImage.statusPartiallyAvailableName)
+						self.setRLUI(path: self.resticController.resticLocation!, status: NSImage.statusPartiallyAvailableName, silText: "\(versMsg)\n \(archMsg)")
 					}
 				}
 			} catch {
@@ -82,8 +81,9 @@ class PrefTabGeneral: NSViewController {
 					if error is DecodingError {
 						errtext = "This version of Restic may be too old, or the binary is not Restic at all."
 					}
-					self.displaySILMessage(errtext, NSImage.statusUnavailableName)
-					self.setBinPath(self.resticController.resticLocation!, nil)
+					let path = URL(fileURLWithPath: ((UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "") as NSString).expandingTildeInPath)
+					self.setRLUI(path: path, status: NSImage.statusUnavailableName, silText: errtext)
+					self.displaySILMessage(self)
 				}
 			}
 		}
@@ -92,72 +92,36 @@ class PrefTabGeneral: NSViewController {
 	@IBAction func resticLocationSelectorDidChange(_ sender: NSPopUpButton) {
 		if let selection = sender.selectedItem?.title {
 			if selection != "Custom..." {
-				UserDefaults.standard.set(selection, forKey: PrefTabGeneral.resticPathPrefName)
-				resticController.dq.async {
-					self.resticController.resticLocation = nil
-					self.resticController.versionInfo = nil
-				}
+				UserDefaults.standard.set(selection, forKey: DefaultsKeys.resticLocation)
 			} else {
-				let (panel, response) = openPanel(message: "Select your Restic binary.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: false, canCreateDirectories: false)
-				if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
-					UserDefaults.standard.set(panel.urls[0], forKey: PrefTabGeneral.resticPathPrefName)
-					resticController.dq.async {
-						self.resticController.resticLocation = nil
-						self.resticController.versionInfo = nil
-					}
+				if let url = FileDialogues.openPanel(message: "Select your Restic binary.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
+					UserDefaults.standard.set(url, forKey: DefaultsKeys.resticLocation)
 				} else {
-					NSLog("Cancelled bin selection")
 					setSelectorUserPref()
 				}
 			}
 			checkBinPath()
 		}
 	}
-	
-	/// Displays a popover message along with changing the SIL.
-	/// - Parameters:
-	///   - text: The text for the popover.
-	///   - status: The status for the SIL.
-	func displaySILMessage(_ text: String, _ status: NSImage.Name?) {
-		if let status = status {
-			binPathSIL.image = NSImage(named: status)
+		
+	/// Displays the popover message.
+	@IBAction func displaySILMessage(_ sender: Any) {
+		if let popover {
+			popover.show(relativeTo: binPathSIL.bounds, of: binPathSIL, preferredEdge: .maxX)
+		} else {
+			popover = Alerts.PopoverTextAlert(text: silMessage, relativeTo: binPathSIL, preferredEdge: .maxX)
 		}
-		createSILMessage(text)
-		popover!.show(relativeTo: binPathSIL.bounds, of: binPathSIL, preferredEdge: .maxX)
-	}
-	
-	@IBAction func displaySILMessage(_ sender: NSButton) {
-		guard popover != nil else {
-			return
-		}
-		popover!.show(relativeTo: binPathSIL.bounds, of: binPathSIL, preferredEdge: .maxX)
-	}
-	
-	
-	/// Sets the SIL message popover for this class without showing the popover.
-	/// - Parameter text: The text for the popover.
-	func createSILMessage(_ text: String) {
-		popover = NSPopover()
-		let label = NSTextField(wrappingLabelWithString: text)
-		label.alignment = .center
-		label.sizeToFit()
-		let contentViewController = NSViewController()
-		contentViewController.view = NSView(frame: label.frame)
-		contentViewController.view.wantsLayer = true
-		contentViewController.view.addSubview(label)
-		popover!.contentViewController = contentViewController
-		popover!.behavior = .transient
 	}
 	
 	/// Sets the path control URL and sets the SIL status.
 	/// - Parameters:
 	///   - path: The URL for the path control.
 	///   - status: The status for the SIL.
-	func setBinPath(_ path: URL, _ status: NSImage.Name?) {
+	func setRLUI(path: URL, status: NSImage.Name, silText: String) {
 		binPath.url = path
-		if status != nil {
-			binPathSIL.image = NSImage(named: status!)
-		}
+		binPathSIL.image = NSImage(named: status)
+		silMessage = silText
+		popover = nil
 	}
 	
 	@IBAction func backupQoSDidChange(_ sender: NSPopUpButton) {
