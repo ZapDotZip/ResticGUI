@@ -118,7 +118,12 @@ class ReposManager: NSObject {
 	}
 	
 	@IBAction func selectorDidChange(_ sender: NSPopUpButton) {
-		profileEditor.setSelectedRepo(sender.titleOfSelectedItem!)
+		if let repoName = sender.titleOfSelectedItem {
+			profileEditor.setSelectedRepo(repoName)
+			if UserDefaults.standard.bool(forKey: DefaultsKeys.globalRepoSelection) {
+				UserDefaults.standard.set(repoName, forKey: DefaultsKeys.selectedRepo)
+			}
+		}
 	}
 	
 }
