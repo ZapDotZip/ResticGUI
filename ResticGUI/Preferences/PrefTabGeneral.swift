@@ -16,7 +16,11 @@ class PrefTabGeneral: NSViewController {
 	private lazy var resticController = ResticController.default
 	
 	private var popover: NSPopover?
-	private var silMessage: String = "Unknown status."
+	private var silMessage: String = "Unknown status." {
+		didSet {
+			popover = nil
+		}
+	}
 	
 	/// Sets the Pop-Up selector to the user's preferences.
 	private func setSelectorUserPref() {
@@ -77,10 +81,13 @@ class PrefTabGeneral: NSViewController {
 			} catch {
 				DispatchQueue.main.async {
 					NSLog("Error: \(error)")
-					var errtext = error.localizedDescription
-					if error is DecodingError {
-						errtext = "This version of Restic may be too old, or the binary is not Restic at all."
-					}
+					let errtext = {
+						if error is DecodingError {
+							return "This version of Restic may be too old, or the binary is not Restic at all."
+						} else {
+							return error.localizedDescription
+						}
+					}()
 					let path = URL(fileURLWithPath: ((UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "") as NSString).expandingTildeInPath)
 					self.setRLUI(path: path, status: NSImage.statusUnavailableName, silText: errtext)
 					self.displaySILMessage(self)
@@ -121,7 +128,6 @@ class PrefTabGeneral: NSViewController {
 		binPath.url = path
 		binPathSIL.image = NSImage(named: status)
 		silMessage = silText
-		popover = nil
 	}
 	
 	@IBAction func backupQoSDidChange(_ sender: NSPopUpButton) {
