@@ -63,21 +63,23 @@ class RepoEditViewController: NSViewController {
 	
 	
 	@IBAction func selectFolder(_ sender: NSButton) {
-		let (panel, response) = openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
-		if response == NSApplication.ModalResponse.OK {
-			if panel.urls.count == 1 {
-				pathField.stringValue = panel.urls[0].path
-				
+		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
+			if #available(macOS 13.0, *) {
+				pathField.stringValue = url.path()
+			} else {
+				pathField.stringValue = url.path
 			}
 		}
 	}
 	
 	@IBAction func chooseCacheDir(_ sender: NSButton) {
-		let (panel, response) = openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, allowsMultipleSelection: false, canCreateDirectories: true)
-		if response == NSApplication.ModalResponse.OK {
-			if panel.urls.count == 1 {
-				cacheDirLabel.stringValue = panel.urls[0].path
-				cacheDirLabel.toolTip = panel.urls[0].path
+		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
+			if #available(macOS 13.0, *) {
+				cacheDirLabel.stringValue = url.path()
+				cacheDirLabel.toolTip = url.path()
+			} else {
+				cacheDirLabel.stringValue = url.path
+				cacheDirLabel.toolTip = url.path
 			}
 		}
 	}
@@ -166,7 +168,6 @@ class RepoEditViewController: NSViewController {
 	}
 	
 	@IBAction func saveRepo(_ sender: NSButton) {
-		var existingPath: String = pathField.stringValue
 		do {
 			if let existing = selectedRepo {
 				try updateExistingRepo(existing: existing)
@@ -183,9 +184,9 @@ class RepoEditViewController: NSViewController {
 			case .itemNotFound:
 					Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
 			case .duplicateItem:
-				if DestructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
+				if Alerts.DestructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
-						try KeychainInterface.delete(path: existingPath)
+						try KeychainInterface.delete(path: pathField.stringValue)
 						Alerts.Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
 					} catch {
 						Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)

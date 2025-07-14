@@ -4,6 +4,7 @@
 //
 
 import Cocoa
+import SwiftToolbox
 
 /// Controls the editor panel in the UI.
 class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
@@ -155,10 +156,14 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	}
 	
 	@IBAction func setExcludeFile(_ sender: NSButton) {
-		let (panel, response) = openPanel(message: "Select your exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: false, canCreateDirectories: false)
-		if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
-			viewCon.selectedProfile?.excludePatternFile = panel.urls[0].path
-			ExcludePatternFile.stringValue = panel.urls[0].path
+		if let url = FileDialogues.openPanel(message: "Select your exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
+			if #available(macOS 13.0, *) {
+				viewCon.selectedProfile?.excludePatternFile = url.path()
+				ExcludePatternFile.stringValue = url.path()
+			} else {
+				viewCon.selectedProfile?.excludePatternFile = url.path
+				ExcludePatternFile.stringValue = url.path
+			}
 			ExcludePatternFileClearButton.isEnabled = true
 		}
 	}
@@ -211,7 +216,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
     
 }
 
-final class NumbersTextField: NumberFormatter {
+final class NumbersTextField: NumberFormatter, @unchecked Sendable {
 	override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
 		if UInt64(partialString) != nil {
 			return true

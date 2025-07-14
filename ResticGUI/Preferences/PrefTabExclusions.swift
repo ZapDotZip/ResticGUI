@@ -4,6 +4,8 @@
 //
 
 import Cocoa
+import SwiftToolbox
+
 
 class PrefTabExclusions: NSViewController {
 
@@ -21,10 +23,13 @@ class PrefTabExclusions: NSViewController {
 		}
     }
 	@IBAction func excludePatternFile(_ sender: NSButton) {
-		let (panel, res) = openPanel(message: "Select an exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: false, canCreateDirectories: false)
-		if res == .OK && panel.urls.count != 0 {
-			UserDefaults.standard.set(panel.urls[0], forKey: DefaultsKeys.globalExcludePatternFile)
-			ExcludeFileLabel.stringValue = panel.urls[0].path
+		if let url = FileDialogues.openPanel(message: "Select an exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
+			UserDefaults.standard.set(url, forKey: DefaultsKeys.globalExcludePatternFile)
+			if #available(macOS 13.0, *) {
+				ExcludeFileLabel.stringValue = url.path()
+			} else {
+				ExcludeFileLabel.stringValue = url.path
+			}
 			ExcludeFileClearButton.isEnabled = true
 		}
 	}

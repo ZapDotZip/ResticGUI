@@ -20,7 +20,7 @@ final class ResticInterface {
 	
 	static func repoTest(repo: Repo, rc: ResticController) throws -> Bool {
 		let args = ["--json", "-r", repo.path, "cat", "config"]
-		let (res, stderr) = try rc.run(args: args, env: repo.getEnv(), returning: ResticResponse.RepoConfig.self)
+		let res = try rc.run(args: args, env: repo.getEnv(), returning: ResticResponse.RepoConfig.self).0
 		return res.version == 2
 	}
 	

@@ -133,9 +133,8 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	
 	// MARK: Profile Tab: paths
 	@IBAction func addPath(_ sender: NSButton) {
-		let (panel, response) = openPanel(message: "Select items you would like to back up.", prompt: "Add", canChooseDirectories: true, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false)
-		if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
-			for url in panel.urls {
+		if let urls = FileDialogues.openPanel(message: "Select items you would like to back up.", prompt: "Add", canChooseDirectories: true, canChooseFiles: true, canSelectMultipleItems: true, canCreateDirectories: false) {
+			for url in urls {
 				selectedProfile?.addPath(url.path)
 			}
 			reload()
@@ -150,9 +149,8 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
-		let (panel, response) = openPanel(message: "Select a text file containing paths to back up.", prompt: "Add", canChooseDirectories: false, canChooseFiles: true, allowsMultipleSelection: true, canCreateDirectories: false)
-		if response == NSApplication.ModalResponse.OK, panel.urls.count != 0 {
-			for url in panel.urls {
+		if let urls = FileDialogues.openPanel(message: "Select a text file containing paths to back up.", prompt: "Add", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: true, canCreateDirectories: false) {
+			for url in urls {
 				do {
 					let txt = try String.init(contentsOf: url)
 					for line in txt.split(separator: "\n") {

@@ -92,7 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 		viewCon.saveQuit()
 		if backupController.state != .idle {
-			if !DestructiveAlert(title: "Are you sure you want to quit?", message: "A backup is in progress. If you choose to quit, the backup will be stopped.", style: .informational, destructiveButtonText: "Quit") {
+			if !Alerts.DestructiveAlert(title: "Are you sure you want to quit?", message: "A backup is in progress. If you choose to quit, the backup will be stopped.", style: .informational, destructiveButtonText: "Quit") {
 				return .terminateCancel
 			}
 		}
@@ -129,78 +129,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			}
 		}
 	}
-}
-
-
-/// Creates and runs an alert for a destructive action
-/// - Parameters:
-///   - title: The title of the alert
-///   - message: The message of the alert
-///   - style: The alert style
-/// - Returns: Whether or not the user has agreed to the destructive action.
-@discardableResult
-func DestructiveAlert(title: String, message: String, style: NSAlert.Style, destructiveButtonText: String) -> Bool {
-	let alert = NSAlert()
-	alert.messageText = title
-	alert.informativeText = message
-	alert.alertStyle = .critical
-	alert.addButton(withTitle: destructiveButtonText)
-	alert.addButton(withTitle: "Cancel")
-	if #available(macOS 11.0, *) {
-		alert.buttons[0].hasDestructiveAction = true
-		alert.buttons[0].bezelColor = .red
-	}
-	return alert.runModal() == .alertFirstButtonReturn
-}
-
-/// Creates an Open/Save Dialogue panel for the user.
-/// - Parameters:
-/// - Returns: The panel itself, to get URLs from, and the response from the user.
-func openPanel(message: String, prompt: String, canChooseDirectories: Bool, canChooseFiles: Bool, allowsMultipleSelection: Bool, canCreateDirectories: Bool, allowedFileTypes: [String]? = nil) -> (NSOpenPanel, NSApplication.ModalResponse) {
-	let openPanel = NSOpenPanel()
-	openPanel.message = message
-	openPanel.prompt = prompt
-	openPanel.canChooseDirectories = canChooseDirectories
-	openPanel.canChooseFiles = canChooseFiles
-	openPanel.allowsMultipleSelection = allowsMultipleSelection
-	openPanel.canCreateDirectories = canCreateDirectories
-	if allowedFileTypes != nil {
-		openPanel.allowedFileTypes = allowedFileTypes
-	}
-	return (openPanel, openPanel.runModal())
-}
-
-func savePanel(title: String, message: String, nameFieldLabel: String, nameField: String, currentDirectory: URL?, canCreateDirectories: Bool, canSelectHiddenExtension: Bool) -> (URL?, NSApplication.ModalResponse) {
-	let panel = NSSavePanel()
-	panel.title = title
-	panel.message = message
-	panel.nameFieldLabel = nameFieldLabel
-	panel.nameFieldStringValue = nameField
-	if currentDirectory != nil {
-		panel.directoryURL = currentDirectory
-	}
-	panel.canCreateDirectories = canCreateDirectories
-	panel.canSelectHiddenExtension = canSelectHiddenExtension
-	
-	let res = panel.runModal()
-	return (panel.url, res)
-}
-
-func savePanel(for window: NSWindow, message: String, nameFieldLabel: String, nameField: String, currentDirectory: URL?, canCreateDirectories: Bool, canSelectHiddenExtension: Bool, isExtensionHidden: Bool, completionHandler handler: @escaping (NSApplication.ModalResponse, URL?) -> Void) {
-	let panel = NSSavePanel()
-	panel.message = message
-	panel.nameFieldLabel = nameFieldLabel
-	panel.nameFieldStringValue = nameField
-	if currentDirectory != nil {
-		panel.directoryURL = currentDirectory
-	}
-	panel.canCreateDirectories = canCreateDirectories
-	panel.canSelectHiddenExtension = canSelectHiddenExtension
-	panel.isExtensionHidden = isExtensionHidden
-	
-	panel.beginSheetModal(for: window, completionHandler: { response in
-		handler(response, panel.url)
-	})
 }
 
 extension Notification.Name {
