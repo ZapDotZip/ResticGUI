@@ -96,11 +96,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet var DeleteProfileButton: NSButton!
 	var selectedProfile: Profile?
 	
-	func newProfile(name: String) {
+	func newProfile(name: String) -> Bool {
+		guard !profileSidebarList.contains(where: { $0.profile?.name == name }) else {
+			Alerts.Alert(title: "This profile name already exists.", message: "Choose a different profile name.", style: .informational)
+			return false
+		}
 		let new = Profile.init(name: name)
 		append(profile: new)
 		ProfileManager.save(new)
 		outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(new.name) ?? 1), byExtendingSelection: false)
+		return true
 	}
 	
 	@IBAction func deleteProfile(_ sender: NSButton) {
@@ -428,35 +433,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 }
 
-
-
-
-
-
-class NewProfileVC: NSViewController {
-	var viewCon: ViewController!
-	@IBOutlet var textField: NSTextField!
-	@IBOutlet var addButton: NSButton!
-	override func viewDidLoad() {
-		addButton.keyEquivalent = "\r"
-	}
-	@IBAction func textFieldDidChange(_ sender: NSTextField) {
-		if sender.stringValue.count == 0 {
-			addButton.isEnabled = false
-		} else {
-			addButton.isEnabled = true
-		}
-	}
-	
-	@IBAction func addButton(_ sender: NSButton) {
-		if textField.stringValue.count != 0 {
-			viewCon.newProfile(name: textField.stringValue)
-			dismiss(self)
-		}
-	}
-	
-	
-}
 
 
 class ResponsiveProgressBar: NSProgressIndicator {
