@@ -4,8 +4,8 @@
 //
 
 
-import Foundation
 import AppKit
+import SwiftToolbox
 
 
 
@@ -40,7 +40,7 @@ class RepoEditViewController: NSViewController {
 			} catch {
 				passwordField.stringValue = ""
 				DispatchQueue.main.async {
-					Alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
+					Alerts.Alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
 				}
 			}
 			cacheDirLabel.stringValue = r.cacheDir ?? ""
@@ -92,7 +92,7 @@ class RepoEditViewController: NSViewController {
 		do {
 			let (res, _) = try ResticInterface.repoInit(repo: repo, rc: resticController)
 			NSLog("Created repository response: \(res)")
-			Alert(title: "Successfully created repository.", message: "The repository at \(res.repository) has been created.", style: .informational, buttons: ["Ok"])
+			Alerts.Alert(title: "Successfully created repository.", message: "The repository at \(res.repository) has been created.", style: .informational)
 			saveRepo(sender)
 		} catch let error as ResticError {
 			let errMsg: String = {
@@ -104,10 +104,10 @@ class RepoEditViewController: NSViewController {
 				}
 			}()
 			NSLog("Couldn't create repository: \(error)")
-			Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(errMsg)", style: .critical, buttons: ["Ok"])
+			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(errMsg)", style: .critical)
 		} catch {
 			NSLog("Couldn't create repository: \(error)")
-			Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(error)", style: .critical, buttons: ["Ok"])
+			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(error)", style: .critical)
 		}
 	}
 	
@@ -116,14 +116,14 @@ class RepoEditViewController: NSViewController {
 		do {
 			let res = try ResticInterface.repoTest(repo: repo, rc: resticController)
 			if !res {
-				Alert(title: "The repository exists, but may not be the correct version.", message: "ResticGUI currently supports version 2 repositories.", style: .informational, buttons: ["Ok"])
+				Alerts.Alert(title: "The repository exists, but may not be the correct version.", message: "ResticGUI currently supports version 2 repositories.", style: .informational)
 			}
 		} catch ResticError.couldNotDecodeJSON(let rawStr, let error) {
 			NSLog("Error testing repository: \(rawStr)\n\(error)")
-			Alert(title: "Failed to test repository", message: "Your version of Restic may not be supported, or there may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
+			Alerts.Alert(title: "Failed to test repository", message: "Your version of Restic may not be supported, or there may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning)
 		} catch {
 			NSLog("Error testing repository: \(error)")
-			Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning, buttons: ["Ok"])
+			Alerts.Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning)
 		}
 	}
 	
@@ -181,26 +181,26 @@ class RepoEditViewController: NSViewController {
 		} catch let error as KeychainInterface.KeychainError {
 			switch error {
 			case .itemNotFound:
-				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+					Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
 			case .duplicateItem:
 				if DestructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
 						try KeychainInterface.delete(path: existingPath)
-						Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational, buttons: [])
+						Alerts.Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
 					} catch {
-						Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+						Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)
 					}
 				} else {
 					return
 				}
 			default:
-				Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical, buttons: ["Ok"])
+				Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical)
 				return
 			}
 			
 		} catch {
 			NSLog("Error saving the repository list: \(error)")
-			Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
+			Alerts.Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical)
 			return
 		}
 	}

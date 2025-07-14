@@ -5,6 +5,7 @@
 
 import Foundation
 import AppKit
+import SwiftToolbox
 
 class ReposManager: NSObject {
 	private var repos = Dictionary<String, Repo>()
@@ -28,7 +29,7 @@ class ReposManager: NSObject {
 				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: ReposManager.repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
-				Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical, buttons: ["Ok"])
+				Alerts.Alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical)
 			}
 		}
 		ReposManager.default = self

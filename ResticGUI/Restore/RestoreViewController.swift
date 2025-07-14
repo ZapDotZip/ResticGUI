@@ -85,7 +85,7 @@ class RestoreViewController: NSViewController {
 				if let paths = sourcePartialPathsTable.save() {
 					return RestorePlan.restoreSourceType.selectedFiles(files: paths)
 				} else {
-					Alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational, buttons: ["Ok"])
+					Alerts.Alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational)
 					return nil
 				}
 			}
@@ -98,7 +98,7 @@ class RestoreViewController: NSViewController {
 				if let path = destinationCustomPath.controller.path {
 					return RestorePlan.restoreDestinationType.newLocation(path: path)
 				} else {
-					Alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational, buttons: ["Ok"])
+					Alerts.Alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational)
 					return nil
 				}
 			}

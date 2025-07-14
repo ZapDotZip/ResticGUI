@@ -4,6 +4,7 @@
 //
 
 import Cocoa
+import SwiftToolbox
 
 class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
@@ -61,7 +62,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 					})
 				} catch {
 					NSLog("Couldn't load snapshots: \(error)")
-					Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
+					Alerts.Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning)
 				}
 				reload()
 				saveToCache()

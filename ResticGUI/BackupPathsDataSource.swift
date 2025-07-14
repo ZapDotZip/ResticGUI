@@ -4,6 +4,7 @@
 //
 
 import Cocoa
+import SwiftToolbox
 
 
 class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
@@ -159,7 +160,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 					}
 				} catch {
 					NSLog("Failed to load user-selected paths file: \(error)")
-					Alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning, buttons: ["Ok"])
+					Alerts.Alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning)
 				}
 			}
 			reload()

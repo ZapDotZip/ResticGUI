@@ -5,6 +5,7 @@
 
 
 import Cocoa
+import SwiftToolbox
 
 class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
 	
@@ -289,7 +290,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 							}
 						}
 					} catch {
-						Alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical, buttons: ["Ok"])
+						Alerts.Alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical)
 					}
 				}
 			}
@@ -323,10 +324,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 					backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
 					viewState = .backupInProgress
 				} else {
-					Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational, buttons: ["Ok"])
+					Alerts.Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
 				}
 			} else {
-				Alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational, buttons: ["Ok"])
+				Alerts.Alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
 			}
 		}
 	}
