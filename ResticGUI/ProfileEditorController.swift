@@ -157,13 +157,8 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	
 	@IBAction func setExcludeFile(_ sender: NSButton) {
 		if let url = FileDialogues.openPanel(message: "Select your exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
-			if #available(macOS 13.0, *) {
-				viewCon.selectedProfile?.excludePatternFile = url.path()
-				ExcludePatternFile.stringValue = url.path()
-			} else {
-				viewCon.selectedProfile?.excludePatternFile = url.path
-				ExcludePatternFile.stringValue = url.path
-			}
+			viewCon.selectedProfile?.excludePatternFile = url.localPath
+			ExcludePatternFile.stringValue = url.localPath
 			ExcludePatternFileClearButton.isEnabled = true
 		}
 	}

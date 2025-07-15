@@ -64,23 +64,14 @@ class RepoEditViewController: NSViewController {
 	
 	@IBAction func selectFolder(_ sender: NSButton) {
 		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
-			if #available(macOS 13.0, *) {
-				pathField.stringValue = url.path()
-			} else {
-				pathField.stringValue = url.path
-			}
+			pathField.stringValue = url.localPath
 		}
 	}
 	
 	@IBAction func chooseCacheDir(_ sender: NSButton) {
 		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
-			if #available(macOS 13.0, *) {
-				cacheDirLabel.stringValue = url.path()
-				cacheDirLabel.toolTip = url.path()
-			} else {
-				cacheDirLabel.stringValue = url.path
-				cacheDirLabel.toolTip = url.path
-			}
+			cacheDirLabel.stringValue = url.localPath
+			cacheDirLabel.toolTip = url.localPath
 		}
 	}
 	

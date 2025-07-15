@@ -88,7 +88,7 @@ class PrefTabGeneral: NSViewController {
 							return error.localizedDescription
 						}
 					}()
-					let path = URL(fileURLWithPath: ((UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "") as NSString).expandingTildeInPath)
+					let path = URL(localPath: ((UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "") as NSString).expandingTildeInPath)
 					self.setRLUI(path: path, status: NSImage.statusUnavailableName, silText: errtext)
 					self.displaySILMessage(self)
 				}

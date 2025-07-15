@@ -14,9 +14,9 @@ final class ResticController: NSObject {
 	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
-		URL(fileURLWithPath: "/opt/local/bin/restic"),
-		URL(fileURLWithPath: "/opt/homebrew/bin/restic"),
-		URL(fileURLWithPath: "/usr/local/bin/restic")
+		URL(localPath: "/opt/local/bin/restic"),
+		URL(localPath: "/opt/homebrew/bin/restic"),
+		URL(localPath: "/usr/local/bin/restic")
 	]
 // MARK: Setup
 	let dq: DispatchQueue
@@ -51,7 +51,7 @@ final class ResticController: NSObject {
 			} else if userSel == "Homebrew" {
 				return try homebrew()
 			} else if userSel != "Automatic" {
-				return try testVersion(URL(fileURLWithPath: (userSel as NSString).expandingTildeInPath))
+				return try testVersion(URL(localPath: (userSel as NSString).expandingTildeInPath))
 			}
 		}
 		return try automatic()

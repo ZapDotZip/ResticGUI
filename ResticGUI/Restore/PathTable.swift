@@ -61,11 +61,7 @@ class PathTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate, NSTex
 		}
 		for i in draggedItems {
 			if let draggedItem = i as? URL {
-				if #available(macOS 13.0, *) {
-					append(draggedItem.path())
-				} else {
-					append(draggedItem.path)
-				}
+				append(draggedItem.localPath)
 			}
 		}
 		return true

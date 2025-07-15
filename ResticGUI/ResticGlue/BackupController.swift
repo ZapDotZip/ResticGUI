@@ -221,7 +221,7 @@ class BackupController {
 	private let decoder = PropertyListDecoder.init()
 	private func getTMUserExclusions() -> [String] {
 		do {
-			let tmPrefs = try decoder.decode(TMPrefs.self, from: Data.init(contentsOf: URL(fileURLWithPath: "/Library/Preferences/com.apple.TimeMachine.plist")))
+			let tmPrefs = try decoder.decode(TMPrefs.self, from: Data.init(contentsOf: URL(localPath: "/Library/Preferences/com.apple.TimeMachine.plist")))
 			return tmPrefs.ExcludeByPath + tmPrefs.SkipPaths
 		} catch {
 			NSLog("Error getting TM User Exclusions: \(error)")
@@ -235,7 +235,7 @@ class BackupController {
 	private func getTMDefaultTMExclusions() -> [String] {
 		do {
 			if let plist = Bundle.main.path(forResource: "DefaultTimeMachineExclusions", ofType: "plist") {
-				let tmexcl = try decoder.decode(TMDefault.self, from: Data.init(contentsOf: URL(fileURLWithPath: plist)))
+				let tmexcl = try decoder.decode(TMDefault.self, from: Data.init(contentsOf: URL(localPath: plist)))
 				return tmexcl.standardExclusionPaths
 			}
 		} catch {
