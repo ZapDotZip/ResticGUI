@@ -75,7 +75,7 @@ class BackupController {
 					exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
 				}
 				if exclusions.count != 0 {
-					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-\(profile.name).txt")
+					let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-\(profile.name).txt")
 					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
 					if profile.exclusionsCS {
 						args.append("--exclude-file=\(exclusionsFile.path)")
@@ -84,7 +84,7 @@ class BackupController {
 					}
 				}
 				if let globalExclusions = UserDefaults.standard.string(forKey: DefaultsKeys.globalExclusions) {
-					let exclusionsFile = FileManager.default.temporaryDirectory.appendingPathComponent("restic-exclusions-global.txt")
+					let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-global.txt")
 					try globalExclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
 					if UserDefaults.standard.bool(forKey: DefaultsKeys.isGlobalExclusionsCaseSensitive) {
 						args.append("--exclude-file=\(exclusionsFile.path)")

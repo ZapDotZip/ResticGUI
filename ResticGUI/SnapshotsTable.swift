@@ -21,7 +21,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let encoder = PropertyListEncoder.init()
 	private let decoder = PropertyListDecoder.init()
 	
-	let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Snapshots", isDirectory: true)
+	let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
 	
 	required init?(coder: NSCoder) {
 		df.locale = .current
@@ -128,7 +128,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	func loadIfCached() {
 		if let repoID = repoManager.getSelectedRepo()?.id {
-			let snapshotCacheURL: URL = cacheDirectory.appendingPathComponent(repoID, isDirectory: false)
+			let snapshotCacheURL: URL = cacheDirectory.appending(path: repoID, isDirectory: false)
 			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
 				do {
 					let data = try Data.init(contentsOf: snapshotCacheURL)
@@ -148,7 +148,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	func saveToCache() {
 		if let repoID = repoManager.getSelectedRepo()?.loadID() {
-			let snapshotCacheURL: URL = cacheDirectory.appendingPathComponent(repoID, isDirectory: false)
+			let snapshotCacheURL: URL = cacheDirectory.appending(path: repoID, isDirectory: false)
 			if let data = try? encoder.encode(snapshots) {
 				do {
 					try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)

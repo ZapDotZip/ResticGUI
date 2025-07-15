@@ -19,8 +19,8 @@ final class ResticLogger {
 		
 		noData = "Error converting text to data".data(using: .utf8)!
 		
-		let loggingDir = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("Logs", isDirectory: true).appendingPathComponent("ResticGUI", isDirectory: true)
-		let logfilePath = loggingDir.appendingPathComponent("restic.log", isDirectory: false)
+		let loggingDir = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "Logs", isDirectory: true).appending(path: "ResticGUI", isDirectory: true)
+		let logfilePath = loggingDir.appending(path: "restic.log", isDirectory: false)
 		
 		do {
 			if !FileManager.default.fileExists(atPath: logfilePath.path) {

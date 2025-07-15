@@ -15,7 +15,9 @@ class ReposManager: NSObject {
 	@IBOutlet weak var profileEditor: ProfileEditorController!
 	
 	static let repolistFile: URL = {
-		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Repositories.plist", isDirectory: false)
+		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+			.appending(path: "ResticGUI", isDirectory: true)
+			.appending(path: "Repositories.plist", isDirectory: false)
 	}()
 	
 	private let encoder = PropertyListEncoder.init()

@@ -12,7 +12,9 @@ struct ProfileManager {
 	private static let PROFILE_EXT_DOT = ".plist"
 	
 	static let profileDir: URL = {
-		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("ResticGUI", isDirectory: true).appendingPathComponent("Profiles", isDirectory: true)
+		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+			.appending(path: "ResticGUI", isDirectory: true)
+			.appending(path: "Profiles", isDirectory: true)
 	}()
 	
 	private static let encoder = PropertyListEncoder.init()
@@ -51,7 +53,7 @@ struct ProfileManager {
 	}
 	
 	private static func getProfilePath(_ name: String) -> URL {
-		return profileDir.appendingPathComponent(name + PROFILE_EXT_DOT)
+		return profileDir.appending(path: name + PROFILE_EXT_DOT, isDirectory: false)
 	}
 	
 	/// Loads a single profile with the specified name, if it exists.
