@@ -93,6 +93,15 @@ final class ResticController: NSObject {
 		return versionInfo!
 	}
 	
+	func getResticURL() throws -> URL {
+		if let resticLocation {
+			return resticLocation
+		} else {
+			try setupFromDefaults()
+			return resticLocation!
+		}
+	}
+	
 // MARK: Run
 	/// Runs restic with the provided arguments and returns the output  as raw data and stderr as a String, if any.
 	/// - Parameter args: The list of arguments to use.
@@ -256,4 +265,5 @@ enum ResticError: Error {
 	case couldNotDecodeStringOutput
 	case couldNotDecodeJSON(String, String)
 	case noResticInstallationsFound(String)
+	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
 }

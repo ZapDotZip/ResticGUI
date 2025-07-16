@@ -50,9 +50,16 @@ final class ResticResponse {
 	
 	struct resticError: Decodable {
 		let message_type: String
-		let error: resticErrorMessage
+		let error: resticErrorMessage?
 		let during: String?
 		let item: String?
+		let code: Int?
+		let message: String?
+		var getMessage: String? {
+			get {
+				return message ?? error?.message
+			}
+		}
 	}
 	
 	struct resticErrorMessage: Decodable {

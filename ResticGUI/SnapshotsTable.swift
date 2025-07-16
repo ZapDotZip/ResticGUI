@@ -5,6 +5,7 @@
 
 import Cocoa
 import SwiftToolbox
+import SwiftProcessController
 
 class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
@@ -20,7 +21,8 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	private let encoder = PropertyListEncoder.init()
 	private let decoder = PropertyListDecoder.init()
-	
+	private let jsonDecoder = JSONDecoder.init()
+
 	let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
 	
 	required init?(coder: NSCoder) {
@@ -50,20 +52,46 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 	
 	@IBAction func reloadButton(_ sender: NSButton) {
-		load()
+		do {
+			try load()
+		} catch let err as ResticError {
+			switch err {
+				case .resticErrorMessage(message: let msg, code: let errCode, stderr: _):
+					var message = "Restic was unable to load the snapshots because \"\(msg ?? "(restic did not return an error message)")\""
+					if let errCode {
+						message = message + "\n\nRestic error code: \(errCode)"
+					}
+					Alerts.Alert(title: "Unable to load snapshots", message: message, style: .critical)
+				default:
+					Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(err.localizedDescription)", style: .critical)
+			}
+		} catch {
+			Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(error.localizedDescription)", style: .critical)
+		}
 	}
 	
-	func load() {
+	func load() throws {
 		if let selectedRepo = repoManager.getSelectedRepo() {
 			if let selectedProfile = viewCon.selectedProfile {
 				do {
-					try snapshots = resticController.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: selectedRepo.getEnv(), returning: [ResticResponse.Snapshot].self).0.filter({ (snap) -> Bool in
-						return snap.tags?.contains(selectedProfile.name) ?? false
-					})
+					let rl = try ResticController.default.getResticURL()
+					let pr = ProcessRunner(executableURL: rl)
+					pr.env = try selectedRepo.getEnv()
+					let result = try pr.run(args: ["-r", selectedRepo.path, "snapshots", "--json"])
+					if result.exitStatus == 0 {
+						snapshots = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: result.output)
+					} else {
+						let rErr = try jsonDecoder.decode(ResticResponse.resticError.self, from: result.output.count != 0 ? result.output : result.error)
+						NSLog("Couldn't load snapshots due to a restic error: \(rErr)")
+						throw ResticError.resticErrorMessage(message: rErr.getMessage, code: rErr.code, stderr: result.errorString() ?? "")
+					}
 				} catch {
 					NSLog("Couldn't load snapshots: \(error)")
-					Alerts.Alert(title: "Failed to load snapshots.", message: "An error occured trying to load the snapshots:\n\n\(error.localizedDescription)", style: .warning)
+					throw error
 				}
+				snapshots = snapshots.filter({ (snap) -> Bool in
+					return snap.tags?.contains(selectedProfile.name) ?? false
+				})
 				reload()
 				saveToCache()
 			}
