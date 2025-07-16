@@ -947,7 +947,7 @@
                                                                         <action selector="deletePath:" target="Usp-Mm-JLV" id="5Mi-kn-NHU"/>
                                                                     </connections>
                                                                 </button>
-                                                                <scrollView ambiguous="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
+                                                                <scrollView ambiguous="YES" borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usp-Mm-JLV" customClass="BackupPathsDataSource" customModule="ResticGUI" customModuleProvider="target">
                                                                     <rect key="frame" x="16" y="40" width="511" height="338"/>
                                                                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="H86-0r-Zjb">
                                                                         <rect key="frame" x="1" y="1" width="509" height="336"/>
@@ -1007,7 +1007,6 @@
                                                                                 </connections>
                                                                             </tableView>
                                                                         </subviews>
-                                                                        <nil key="backgroundColor"/>
                                                                     </clipView>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="KrY-iR-lMT"/>
@@ -1085,7 +1084,7 @@
                                                                     <rect key="frame" x="16" y="204" width="511" height="149"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="509" height="147"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="509" height="147"/>
@@ -1449,11 +1448,11 @@
                                                             <rect key="frame" x="10" y="33" width="543" height="381"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ba-4P-Vqk" customClass="SnapshotsTable" customModule="ResticGUI" customModuleProvider="target">
+                                                                <scrollView borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ba-4P-Vqk" customClass="SnapshotsTable" customModule="ResticGUI" customModuleProvider="target">
                                                                     <rect key="frame" x="8" y="36" width="527" height="337"/>
                                                                     <clipView key="contentView" id="eUB-Qr-Dy3">
                                                                         <rect key="frame" x="1" y="1" width="525" height="335"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveName="SnapshotsTable" rowSizeStyle="automatic" headerView="Yme-Qu-Smp" viewBased="YES" id="3id-wy-VkW">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="525" height="310"/>
@@ -1475,7 +1474,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="RVa-dl-s6H">
-                                                                                                <rect key="frame" x="11" y="1" width="146" height="17"/>
+                                                                                                <rect key="frame" x="1" y="1" width="146" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="piW-MG-fAa">
@@ -1507,7 +1506,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="4hN-gR-oTG">
-                                                                                                <rect key="frame" x="160" y="1" width="252" height="17"/>
+                                                                                                <rect key="frame" x="150" y="1" width="252" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n8q-qY-RTE">
@@ -1539,7 +1538,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="6b6-HS-9qW">
-                                                                                                <rect key="frame" x="415" y="1" width="89" height="17"/>
+                                                                                                <rect key="frame" x="405" y="1" width="89" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5H0-PV-DDQ">

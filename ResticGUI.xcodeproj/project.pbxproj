@@ -76,6 +76,20 @@
 			remoteGlobalIDString = EDC82A7B2D87866E006BBCAB;
 			remoteInfo = SwiftToolboxTests;
 		};
+		ED73B1BE2E26E81000038D68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EDC82A702D87866E006BBCAB;
+			remoteInfo = SwiftToolbox;
+		};
+		ED73B1C02E26E81000038D68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED46EDE02E19E7F200DE8B77 /* SwiftProcessController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EDD8BB312DEF755C00DDA5E1;
+			remoteInfo = SwiftProcessController;
+		};
 		ED75B9372C43212700EB9E39 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED75B91C2C43212600EB9E39 /* Project object */;
@@ -334,6 +348,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				ED73B1BF2E26E81000038D68 /* PBXTargetDependency */,
+				ED73B1C12E26E81000038D68 /* PBXTargetDependency */,
 			);
 			name = ResticGUI;
 			productName = ResticGUI;
@@ -543,6 +559,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		ED73B1BF2E26E81000038D68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftToolbox;
+			targetProxy = ED73B1BE2E26E81000038D68 /* PBXContainerItemProxy */;
+		};
+		ED73B1C12E26E81000038D68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftProcessController;
+			targetProxy = ED73B1C02E26E81000038D68 /* PBXContainerItemProxy */;
+		};
 		ED75B9382C43212700EB9E39 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = ED75B9232C43212600EB9E39 /* ResticGUI */;
