@@ -14,6 +14,8 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var viewCon: ViewController!
 	
 	@IBOutlet var table: NSTableView!
+	@IBOutlet var reloadButton: NSButton!
+	@IBOutlet var progressIndicator: NSProgressIndicator!
 	
 	var snapshots: [ResticResponse.Snapshot] = []
 	let df: DateFormatter = DateFormatter()
@@ -23,7 +25,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let decoder = PropertyListDecoder.init()
 	private let jsonDecoder = JSONDecoder.init()
 
-	let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
+	private static let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
 	
 	required init?(coder: NSCoder) {
 		df.locale = .current
@@ -52,9 +54,25 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 	
 	@IBAction func reloadButton(_ sender: NSButton) {
-		do {
-			try load()
-		} catch let err as ResticError {
+		if let selectedRepo = repoManager.getSelectedRepo(), let selectedProfile = viewCon.selectedProfile {
+			reloadButton.isEnabled = false
+			progressIndicator.startAnimation(self)
+			DispatchQueue.global(qos: .userInitiated).async {
+				do {
+					try self.load(selectedRepo, selectedProfile)
+					DispatchQueue.main.async { self.afterLoad() }
+				} catch {
+					DispatchQueue.main.async { self.loadError(error) }
+				}
+			}
+		}
+	}
+	
+	func loadError(_ error: Error) {
+		NSLog("Couldn't load snapshots: \(error)")
+		progressIndicator.stopAnimation(self)
+		reloadButton.isEnabled = true
+		if let err = error as? ResticError {
 			switch err {
 				case .resticErrorMessage(message: let msg, code: let errCode, stderr: _):
 					var message = "Restic was unable to load the snapshots because \"\(msg ?? "(restic did not return an error message)")\""
@@ -65,37 +83,32 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 				default:
 					Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(err.localizedDescription)", style: .critical)
 			}
-		} catch {
+		} else {
 			Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(error.localizedDescription)", style: .critical)
 		}
 	}
-	
-	func load() throws {
-		if let selectedRepo = repoManager.getSelectedRepo() {
-			if let selectedProfile = viewCon.selectedProfile {
-				do {
-					let rl = try ResticController.default.getResticURL()
-					let pr = ProcessRunner(executableURL: rl)
-					pr.env = try selectedRepo.getEnv()
-					let result = try pr.run(args: ["-r", selectedRepo.path, "snapshots", "--json"])
-					if result.exitStatus == 0 {
-						snapshots = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: result.output)
-					} else {
-						let rErr = try jsonDecoder.decode(ResticResponse.resticError.self, from: result.output.count != 0 ? result.output : result.error)
-						NSLog("Couldn't load snapshots due to a restic error: \(rErr)")
-						throw ResticError.resticErrorMessage(message: rErr.getMessage, code: rErr.code, stderr: result.errorString() ?? "")
-					}
-				} catch {
-					NSLog("Couldn't load snapshots: \(error)")
-					throw error
-				}
-				snapshots = snapshots.filter({ (snap) -> Bool in
-					return snap.tags?.contains(selectedProfile.name) ?? false
-				})
-				reload()
-				saveToCache()
-			}
+		
+	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
+		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
+		pr.env = try selectedRepo.getEnv()
+		let result = try pr.run(args: ["-r", selectedRepo.path, "snapshots", "--json"])
+		if result.exitStatus == 0 {
+			snapshots = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: result.output)
+		} else {
+			let rErr = try jsonDecoder.decode(ResticResponse.resticError.self, from: result.output.count != 0 ? result.output : result.error)
+			NSLog("Couldn't load snapshots due to a restic error: \(rErr)")
+			throw ResticError.resticErrorMessage(message: rErr.getMessage, code: rErr.code, stderr: result.errorString() ?? "")
 		}
+		snapshots = snapshots.filter({ (snap) -> Bool in
+			return snap.tags?.contains(selectedProfile.name) ?? false
+		})
+		saveToCache(selectedRepo)
+	}
+	
+	func afterLoad() {
+		reload()
+		progressIndicator.stopAnimation(self)
+		reloadButton.isEnabled = true
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -156,7 +169,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	func loadIfCached() {
 		if let repoID = repoManager.getSelectedRepo()?.id {
-			let snapshotCacheURL: URL = cacheDirectory.appending(path: repoID, isDirectory: false)
+			let snapshotCacheURL: URL = SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
 			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
 				do {
 					let data = try Data.init(contentsOf: snapshotCacheURL)
@@ -174,12 +187,12 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		reload()
 	}
 	
-	func saveToCache() {
-		if let repoID = repoManager.getSelectedRepo()?.loadID() {
-			let snapshotCacheURL: URL = cacheDirectory.appending(path: repoID, isDirectory: false)
+	func saveToCache(_ repo: Repo) {
+		if let repoID = repo.loadID() {
+			let snapshotCacheURL: URL = SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
 			if let data = try? encoder.encode(snapshots) {
 				do {
-					try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+					try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 					try data.write(to: snapshotCacheURL)
 					NSLog("Saved snapshot cache to \(snapshotCacheURL)")
 				} catch {

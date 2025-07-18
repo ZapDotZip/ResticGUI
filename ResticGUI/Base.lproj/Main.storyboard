@@ -893,7 +893,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView ambiguous="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView misplaced="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="197" y="0.0" width="582" height="521"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -910,7 +910,7 @@
                                                     <action selector="runBackup:" target="XfG-lQ-9wD" id="su8-c2-H1k"/>
                                                 </connections>
                                             </button>
-                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
+                                            <tabView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="O0D-t8-hRL">
                                                 <rect key="frame" x="5" y="55" width="563" height="427"/>
                                                 <font key="font" metaFont="system"/>
                                                 <tabViewItems>
@@ -1007,6 +1007,7 @@
                                                                                 </connections>
                                                                             </tableView>
                                                                         </subviews>
+                                                                        <nil key="backgroundColor"/>
                                                                     </clipView>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="300" id="KrY-iR-lMT"/>
@@ -1084,7 +1085,7 @@
                                                                     <rect key="frame" x="16" y="204" width="511" height="149"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="509" height="147"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="509" height="147"/>
@@ -1580,6 +1581,8 @@
                                                                     <connections>
                                                                         <outlet property="deleteButton" destination="xu5-EE-5lb" id="aE9-ek-uX9"/>
                                                                         <outlet property="mountButton" destination="bc8-Vs-6be" id="Idg-vx-KtX"/>
+                                                                        <outlet property="progressIndicator" destination="Kvw-Nb-jIC" id="9uI-wO-gxR"/>
+                                                                        <outlet property="reloadButton" destination="bYv-oh-qh8" id="fZw-ay-0cA"/>
                                                                         <outlet property="repoManager" destination="S7I-Xn-HVk" id="57j-9h-gqX"/>
                                                                         <outlet property="restoreButton" destination="Xcw-10-6Th" id="CtX-k0-dhW"/>
                                                                         <outlet property="table" destination="3id-wy-VkW" id="hQl-fd-pgn"/>
@@ -1627,6 +1630,9 @@
                                                                         <action selector="reloadButton:" target="1ba-4P-Vqk" id="Ad5-oU-OoE"/>
                                                                     </connections>
                                                                 </button>
+                                                                <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Kvw-Nb-jIC">
+                                                                    <rect key="frame" x="496" y="10" width="16" height="16"/>
+                                                                </progressIndicator>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="1ba-4P-Vqk" firstAttribute="top" secondItem="JsC-XZ-ZD3" secondAttribute="top" constant="8" id="2OC-Mc-s8F"/>
@@ -1635,11 +1641,13 @@
                                                                 <constraint firstAttribute="bottom" secondItem="Xcw-10-6Th" secondAttribute="bottom" constant="8" id="EoV-Nr-gQs"/>
                                                                 <constraint firstItem="Xcw-10-6Th" firstAttribute="leading" secondItem="JsC-XZ-ZD3" secondAttribute="leading" constant="8" id="HCc-Ic-EHN"/>
                                                                 <constraint firstItem="1ba-4P-Vqk" firstAttribute="leading" secondItem="JsC-XZ-ZD3" secondAttribute="leading" constant="8" id="RFe-3V-bf6"/>
+                                                                <constraint firstItem="Kvw-Nb-jIC" firstAttribute="centerY" secondItem="bYv-oh-qh8" secondAttribute="centerY" id="Shw-dT-leI"/>
                                                                 <constraint firstItem="bYv-oh-qh8" firstAttribute="centerY" secondItem="xu5-EE-5lb" secondAttribute="centerY" id="Vfm-eE-RST"/>
+                                                                <constraint firstItem="Kvw-Nb-jIC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xu5-EE-5lb" secondAttribute="trailing" constant="8" id="WG3-mx-Sxp"/>
                                                                 <constraint firstItem="bc8-Vs-6be" firstAttribute="top" secondItem="1ba-4P-Vqk" secondAttribute="bottom" constant="8" id="Wgo-9l-Npb"/>
-                                                                <constraint firstItem="bYv-oh-qh8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xu5-EE-5lb" secondAttribute="trailing" constant="8" id="ZgZ-Xt-I0b"/>
                                                                 <constraint firstAttribute="bottom" secondItem="xu5-EE-5lb" secondAttribute="bottom" constant="8" id="cYV-Rr-A3C"/>
                                                                 <constraint firstAttribute="bottom" secondItem="bc8-Vs-6be" secondAttribute="bottom" constant="8" id="dl0-pO-r8G"/>
+                                                                <constraint firstItem="bYv-oh-qh8" firstAttribute="leading" secondItem="Kvw-Nb-jIC" secondAttribute="trailing" constant="8" symbolic="YES" id="fFu-8W-CIS"/>
                                                                 <constraint firstAttribute="trailing" secondItem="bYv-oh-qh8" secondAttribute="trailing" constant="8" id="pgV-Yt-nd7"/>
                                                                 <constraint firstItem="bc8-Vs-6be" firstAttribute="leading" secondItem="Xcw-10-6Th" secondAttribute="trailing" constant="8" id="piO-hw-Uqm"/>
                                                             </constraints>
@@ -1681,7 +1689,7 @@
                                                     </binding>
                                                 </connections>
                                             </button>
-                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
+                                            <popUpButton horizontalHuggingPriority="100" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TN6-dg-ymR">
                                                 <rect key="frame" x="90" y="484" width="362" height="26"/>
                                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="JeJ-uv-bbN">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1695,7 +1703,7 @@
                                                     <action selector="selectorDidChange:" target="S7I-Xn-HVk" id="tTF-3C-xA8"/>
                                                 </connections>
                                             </popUpButton>
-                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
+                                            <segmentedControl toolTip="Add, remove, or edit the selected repository." horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-TL-A39">
                                                 <rect key="frame" x="457" y="486" width="106" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="K1c-qY-nA1"/>
@@ -1713,7 +1721,7 @@
                                                     <action selector="repoEditButton:" target="XfG-lQ-9wD" id="XEO-aZ-Wfj"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
+                                            <textField focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-g4-pqo">
                                                 <rect key="frame" x="10" y="491" width="73" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="bpD-Ed-yde"/>
