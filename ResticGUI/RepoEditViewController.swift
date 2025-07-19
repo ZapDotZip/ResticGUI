@@ -82,25 +82,48 @@ class RepoEditViewController: NSViewController {
 	
 	@IBAction func createRepo(_ sender: NSButton) {
 		let repo = repoFromUI()
-		do {
-			let (res, _) = try ResticInterface.repoInit(repo: repo, rc: resticController)
-			NSLog("Created repository response: \(res)")
-			Alerts.Alert(title: "Successfully created repository.", message: "The repository at \(res.repository) has been created.", style: .informational)
-			saveRepo(sender)
-		} catch let error as ResticError {
-			let errMsg: String = {
-				switch error {
-				case .couldNotDecodeJSON( _, let stderr):
-					return stderr
-				default:
-					return error.localizedDescription
+		progressIndicator.startAnimation(self)
+		saveButton.isEnabled = false
+		createRepoButton.isEnabled = false
+		testRepoButton.isEnabled = false
+		DispatchQueue.global(qos: .userInitiated).async {
+			do {
+				let response = try self.createRepo(repo)
+				DispatchQueue.main.async {
+					NSLog("Created repository response: \(response)")
+					self.controlTextDidChange(self)
+					self.progressIndicator.stopAnimation(self)
+					Alerts.Alert(title: "Successfully created repository.", message: "The repository at \(response.repository) has been created.", style: .informational)
+					self.saveRepo(sender)
 				}
-			}()
+			} catch {
+				DispatchQueue.main.async { self.createRepoError(error) }
+			}
+		}
+	}
+	
+	func createRepo(_ repo: Repo) throws -> ResticResponse.RepoInitResponse {
+		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
+		pr.env = try repo.getEnv()
+		pr.qualityOfService = .userInitiated
+		let result = try pr.run(args: ["--json", "-r", repo.path, "init"])
+		if let response = try? ResticController.default.jsonDecoder.decode(ResticResponse.RepoInitResponse.self, from: result.output) {
+			return response
+		} else {
+			let response = try ResticController.default.jsonDecoder.decode(ResticResponse.resticError.self, from: result.error)
+			throw ResticError.resticErrorMessage(message: response.getMessage, code: response.code ?? -1, stderr: result.errorString())
+		}
+	}
+	
+	func createRepoError(_ error: Error) {
+		controlTextDidChange(self)
+		progressIndicator.stopAnimation(self)
+		if let err = error as? ResticError {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(errMsg)", style: .critical)
-		} catch {
+			Alerts.Alert(title: "An error occured trying to create the repository.", message: err.description, style: .critical)
+		} else {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error message was:\n\n\(error)", style: .critical)
+			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
 		}
 	}
 	

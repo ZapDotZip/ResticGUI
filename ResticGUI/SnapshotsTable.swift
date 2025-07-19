@@ -82,6 +82,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
 		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
 		pr.env = try selectedRepo.getEnv()
+		pr.qualityOfService = .userInitiated
 		let result = try pr.run(args: ["-r", selectedRepo.path, "snapshots", "--json"])
 		if result.exitStatus == 0 {
 			snapshots = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: result.output)
