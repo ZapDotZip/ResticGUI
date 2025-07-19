@@ -73,16 +73,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		progressIndicator.stopAnimation(self)
 		reloadButton.isEnabled = true
 		if let err = error as? ResticError {
-			switch err {
-				case .resticErrorMessage(message: let msg, code: let errCode, stderr: _):
-					var message = "Restic was unable to load the snapshots because \"\(msg ?? "(restic did not return an error message)")\""
-					if let errCode {
-						message = message + "\n\nRestic error code: \(errCode)"
-					}
-					Alerts.Alert(title: "Unable to load snapshots", message: message, style: .critical)
-				default:
-					Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(err.localizedDescription)", style: .critical)
-			}
+			Alerts.Alert(title: "Unable to load snapshots", message: err.description, style: .critical)
 		} else {
 			Alerts.Alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(error.localizedDescription)", style: .critical)
 		}

@@ -110,3 +110,30 @@ final class ResticResponse {
 	}
 	
 }
+
+enum ResticError: Error, CustomStringConvertible {
+	case couldNotDecodeStringOutput
+	case couldNotDecodeJSON(rawStr: String, message: String)
+	case noResticInstallationsFound(String)
+	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
+	
+	var description: String {
+		switch self {
+			case .couldNotDecodeStringOutput:
+				return "Could not decode string output"
+			case .couldNotDecodeJSON(rawStr: _, message: let message):
+				return "Could not decode JSON: \"\(message)\")"
+			case .noResticInstallationsFound(let msg):
+				return "No Restic installations found (\(msg))"
+			case .resticErrorMessage(message: let message, code: let code, let stderr):
+				var msg = "\"\(message ?? "(no error message)")\""
+				if let code {
+					msg = "Restic returned error code \(code), \(msg)"
+				}
+				if let stderr, message == nil {
+					msg += ", stderr: \"\(stderr)\""
+				}
+				return msg
+		}
+	}
+}

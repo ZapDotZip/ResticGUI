@@ -146,7 +146,7 @@ final class ResticController: NSObject {
 			let rawStr: String = String.init(data: data, encoding: .utf8) ?? "Could not convert data to a string."
 			logger.stdout(rawStr)
 			NSLog("Error: \(error)")
-			throw ResticError.couldNotDecodeJSON(rawStr, stderr ?? "Could not decode Restic error output.")
+			throw ResticError.couldNotDecodeJSON(rawStr: rawStr, message: stderr ?? "Could not decode Restic error output.")
 		} catch {
 			logger.stdout(String.init(data: data, encoding: .utf8) ?? "Could not convert data to a string.")
 			NSLog("Error: \(error)")
@@ -259,11 +259,4 @@ final class ResticController: NSObject {
 		currentlyRunningProcess = nil
 	}
 	
-}
-
-enum ResticError: Error {
-	case couldNotDecodeStringOutput
-	case couldNotDecodeJSON(String, String)
-	case noResticInstallationsFound(String)
-	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
 }
