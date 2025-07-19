@@ -115,14 +115,19 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else {
 			return nil
 		}
-		if tableColumn!.identifier.rawValue == "Date & Time" {
-			cell.textField!.stringValue = df.string(from: snapshots[row].date)
-		} else if tableColumn!.identifier.rawValue == "Tags" {
-			cell.textField!.stringValue = snapshots[row].tags?.joined(separator: ", ") ?? ""
-		} else if tableColumn!.identifier.rawValue == "Size" {
-			cell.textField!.stringValue = byteFmt.string(fromByteCount: Int64(snapshots[row].summary.data_added_packed))
-		} else {
-			cell.textField!.stringValue = "Unknown Error"
+		guard let column = tableColumn else {
+			return nil
+		}
+		
+		switch column.identifier.rawValue {
+			case "Date & Time":
+				cell.textField!.stringValue = df.string(from: snapshots[row].date)
+			case "Tags":
+				cell.textField!.stringValue = snapshots[row].tags?.joined(separator: ", ") ?? ""
+			case "Size":
+				cell.textField!.stringValue = byteFmt.string(fromByteCount: Int64(snapshots[row].summary.data_added_packed))
+			default:
+				cell.textField!.stringValue = "Unknown Error"
 		}
 		return cell
 	}
