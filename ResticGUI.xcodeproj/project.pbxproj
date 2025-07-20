@@ -28,7 +28,6 @@
 		EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA642D10C1390081E223 /* PreferencesController.swift */; };
 		EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */; };
 		EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA672D10C1390081E223 /* BackupController.swift */; };
-		EDE0AA822D10C1390081E223 /* ResticInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA682D10C1390081E223 /* ResticInterface.swift */; };
 		EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA692D10C1390081E223 /* ResticController.swift */; };
 		EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */; };
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
@@ -145,7 +144,6 @@
 		EDE0AA642D10C1390081E223 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
 		EDE0AA672D10C1390081E223 /* BackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupController.swift; sourceTree = "<group>"; };
-		EDE0AA682D10C1390081E223 /* ResticInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticInterface.swift; sourceTree = "<group>"; };
 		EDE0AA692D10C1390081E223 /* ResticController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticController.swift; sourceTree = "<group>"; };
 		EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticLogger.swift; sourceTree = "<group>"; };
 		EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -285,10 +283,9 @@
 		EDE0AA6B2D10C1390081E223 /* ResticGlue */ = {
 			isa = PBXGroup;
 			children = (
+				EDE0AA692D10C1390081E223 /* ResticController.swift */,
 				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
 				ED2591752E19A45600C068E4 /* RestoreController.swift */,
-				EDE0AA692D10C1390081E223 /* ResticController.swift */,
-				EDE0AA682D10C1390081E223 /* ResticInterface.swift */,
 				EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 			);
@@ -519,7 +516,6 @@
 				ED2591762E19A45600C068E4 /* RestoreController.swift in Sources */,
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
-				EDE0AA822D10C1390081E223 /* ResticInterface.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */,
 				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,

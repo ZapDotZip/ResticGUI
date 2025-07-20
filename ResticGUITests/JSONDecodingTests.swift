@@ -23,7 +23,7 @@ class JSONDecodingTests: XCTestCase {
 """.data(using: .utf8)!
 		
 		do {
-			let obj = try jsonDecoder.decode([Snapshot].self, from: testData)
+			let obj = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: testData)
 			print(obj)
 			XCTAssertNotEqual(obj.first!.date, Date.init(timeIntervalSince1970: 0))
 			

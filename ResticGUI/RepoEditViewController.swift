@@ -90,7 +90,7 @@ class RepoEditViewController: NSViewController {
 		testRepoButton.isEnabled = false
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
-				let response = try self.createRepo(repo)
+				let response = try ResticController.default.run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
 				DispatchQueue.main.async {
 					NSLog("Created repository response: \(response)")
 					self.controlTextDidChange(self)
@@ -101,19 +101,6 @@ class RepoEditViewController: NSViewController {
 			} catch {
 				DispatchQueue.main.async { self.asyncErrorHandler(error, tryingTo: "create") }
 			}
-		}
-	}
-	
-	func createRepo(_ repo: Repo) throws -> ResticResponse.RepoInitResponse {
-		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
-		pr.env = try repo.getEnv()
-		pr.qualityOfService = .userInitiated
-		let result = try pr.run(args: ["--json", "-r", repo.path, "init"])
-		if let response = try? ResticController.default.jsonDecoder.decode(ResticResponse.RepoInitResponse.self, from: result.output) {
-			return response
-		} else {
-			let response = try ResticController.default.jsonDecoder.decode(ResticResponse.resticError.self, from: result.error)
-			throw ResticError.resticErrorMessage(message: response.getMessage, code: response.code ?? -1, stderr: result.errorString())
 		}
 	}
 	
@@ -137,7 +124,7 @@ class RepoEditViewController: NSViewController {
 		testRepoButton.isEnabled = false
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
-				let response = try self.testRepo(repo)
+				let response = try ResticController.default.run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
 				guard response.version == 2 else {
 					throw ResticError.unsupportedRepositoryVersion(version: response.version)
 				}
@@ -149,19 +136,6 @@ class RepoEditViewController: NSViewController {
 			} catch {
 				DispatchQueue.main.async { self.asyncErrorHandler(error, tryingTo: "test") }
 			}
-		}
-	}
-	
-	func testRepo(_ repo: Repo) throws -> ResticResponse.RepoConfig {
-		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
-		pr.env = try repo.getEnv()
-		pr.qualityOfService = .userInitiated
-		let result = try pr.run(args: ["--json", "-r", repo.path, "cat", "config"])
-		if let response = try? ResticController.default.jsonDecoder.decode(ResticResponse.RepoConfig.self, from: result.output) {
-			return response
-		} else {
-			let response = try ResticController.default.jsonDecoder.decode(ResticResponse.resticError.self, from: result.error)
-			throw ResticError.resticErrorMessage(message: response.getMessage, code: response.code ?? -1, stderr: result.errorString())
 		}
 	}
 	

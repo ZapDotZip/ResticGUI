@@ -80,17 +80,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 		
 	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
-		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
-		pr.env = try selectedRepo.getEnv()
-		pr.qualityOfService = .userInitiated
-		let result = try pr.run(args: ["-r", selectedRepo.path, "snapshots", "--json"])
-		if result.exitStatus == 0 {
-			snapshots = try jsonDecoder.decode([ResticResponse.Snapshot].self, from: result.output)
-		} else {
-			let rErr = try jsonDecoder.decode(ResticResponse.resticError.self, from: result.output.count != 0 ? result.output : result.error)
-			NSLog("Couldn't load snapshots due to a restic error: \(rErr)")
-			throw ResticError.resticErrorMessage(message: rErr.getMessage, code: rErr.code, stderr: result.errorString() ?? "")
-		}
+		snapshots = try ResticController.default.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: try selectedRepo.getEnv(), returning: [ResticResponse.Snapshot].self)
 		snapshots = snapshots.filter({ (snap) -> Bool in
 			return snap.tags?.contains(selectedProfile.name) ?? false
 		})

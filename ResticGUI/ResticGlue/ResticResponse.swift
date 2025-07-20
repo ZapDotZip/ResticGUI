@@ -112,7 +112,7 @@ final class ResticResponse {
 }
 
 enum ResticError: Error, CustomStringConvertible {
-	case couldNotDecodeStringOutput
+	case couldNotDecodeOutput
 	case couldNotDecodeJSON(rawStr: String, message: String)
 	case noResticInstallationsFound(String)
 	case unsupportedRepositoryVersion(version: Int)
@@ -120,8 +120,8 @@ enum ResticError: Error, CustomStringConvertible {
 	
 	var description: String {
 		switch self {
-			case .couldNotDecodeStringOutput:
-				return "Could not decode string output"
+			case .couldNotDecodeOutput:
+				return "Could not decode output from Restic. Make sure you are using a supported version in ResticGUI's Preferences."
 			case .couldNotDecodeJSON(rawStr: _, message: let message):
 				return "Could not decode JSON: \"\(message)\")"
 			case .noResticInstallationsFound(let msg):
