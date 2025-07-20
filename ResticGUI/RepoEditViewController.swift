@@ -6,6 +6,7 @@
 
 import AppKit
 import SwiftToolbox
+import SwiftProcessController
 
 
 
@@ -25,6 +26,7 @@ class RepoEditViewController: NSViewController {
 	@IBOutlet var testRepoButton: NSButton!
 	@IBOutlet var cacheDirLabel: NSTextField!
 	@IBOutlet var nameField: NSTextField!
+	@IBOutlet var progressIndicator: NSProgressIndicator!
 	
 	@IBOutlet weak var tableView: EnviormentTableView!
 	
@@ -97,7 +99,7 @@ class RepoEditViewController: NSViewController {
 					self.saveRepo(sender)
 				}
 			} catch {
-				DispatchQueue.main.async { self.createRepoError(error) }
+				DispatchQueue.main.async { self.asyncErrorHandler(error, tryingTo: "create") }
 			}
 		}
 	}
@@ -115,31 +117,51 @@ class RepoEditViewController: NSViewController {
 		}
 	}
 	
-	func createRepoError(_ error: Error) {
+	func asyncErrorHandler(_ error: Error, tryingTo: String) {
 		controlTextDidChange(self)
 		progressIndicator.stopAnimation(self)
 		if let err = error as? ResticError {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to create the repository.", message: err.description, style: .critical)
+			Alerts.Alert(title: "An error occured trying to \(tryingTo) the repository.", message: err.description, style: .critical)
 		} else {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to create the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
+			Alerts.Alert(title: "An error occured trying to \(tryingTo) the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
 		}
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {
 		let repo = repoFromUI()
-		do {
-			let res = try ResticInterface.repoTest(repo: repo, rc: resticController)
-			if !res {
-				Alerts.Alert(title: "The repository exists, but may not be the correct version.", message: "ResticGUI currently supports version 2 repositories.", style: .informational)
+		progressIndicator.startAnimation(self)
+		saveButton.isEnabled = false
+		createRepoButton.isEnabled = false
+		testRepoButton.isEnabled = false
+		DispatchQueue.global(qos: .userInitiated).async {
+			do {
+				let response = try self.testRepo(repo)
+				guard response.version == 2 else {
+					throw ResticError.unsupportedRepositoryVersion(version: response.version)
+				}
+				DispatchQueue.main.async { [self] in
+					progressIndicator.stopAnimation(self)
+					controlTextDidChange(self)
+					Alerts.Alert(title: "Repository successfully accessed", message: "The repository located at \(repo.path) is accessible.\n\nRepository ID: \(response.id)", style: .informational)
+				}
+			} catch {
+				DispatchQueue.main.async { self.asyncErrorHandler(error, tryingTo: "test") }
 			}
-		} catch ResticError.couldNotDecodeJSON(let rawStr, let error) {
-			NSLog("Error testing repository: \(rawStr)\n\(error)")
-			Alerts.Alert(title: "Failed to test repository", message: "Your version of Restic may not be supported, or there may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning)
-		} catch {
-			NSLog("Error testing repository: \(error)")
-			Alerts.Alert(title: "Failed to test repository", message: "There may be errors in the configuration preventing the repository from being opened:\n\n\(error)", style: .warning)
+		}
+	}
+	
+	func testRepo(_ repo: Repo) throws -> ResticResponse.RepoConfig {
+		let pr = ProcessRunner(executableURL: try ResticController.default.getResticURL())
+		pr.env = try repo.getEnv()
+		pr.qualityOfService = .userInitiated
+		let result = try pr.run(args: ["--json", "-r", repo.path, "cat", "config"])
+		if let response = try? ResticController.default.jsonDecoder.decode(ResticResponse.RepoConfig.self, from: result.output) {
+			return response
+		} else {
+			let response = try ResticController.default.jsonDecoder.decode(ResticResponse.resticError.self, from: result.error)
+			throw ResticError.resticErrorMessage(message: response.getMessage, code: response.code ?? -1, stderr: result.errorString())
 		}
 	}
 	
@@ -220,7 +242,7 @@ class RepoEditViewController: NSViewController {
 		}
 	}
 	
-	@objc func controlTextDidChange(_ sender: NSTextField) {
+	@objc func controlTextDidChange(_ sender: Any) {
 		let enable = pathField.stringValue.count != 0 && passwordField.stringValue.count != 0
 		saveButton.isEnabled = enable
 		createRepoButton.isEnabled = enable

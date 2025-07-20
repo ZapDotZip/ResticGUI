@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="rL6-C0-hqQ">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="rL6-C0-hqQ">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,7 +37,7 @@ Gw
                                     <action selector="dismissController:" target="rL6-C0-hqQ" id="oCs-sw-TPQ"/>
                                 </connections>
                             </button>
-                            <textField focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FGM-3c-sGA">
+                            <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FGM-3c-sGA">
                                 <rect key="frame" x="14" y="310" width="36" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Path:" id="exz-FF-1yF">
                                     <font key="font" metaFont="system"/>
@@ -45,7 +45,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="csN-nK-7HZ">
+                            <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="csN-nK-7HZ">
                                 <rect key="frame" x="14" y="282" width="66" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Password:" id="dk3-ny-AMO">
                                     <font key="font" metaFont="system"/>
@@ -63,7 +63,7 @@ Gw
                                     <action selector="selectFolder:" target="rL6-C0-hqQ" id="BM3-1G-7jv"/>
                                 </connections>
                             </button>
-                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nh3-DK-k1s">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nh3-DK-k1s">
                                 <rect key="frame" x="14" y="80" width="452" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="448" id="Imv-TW-bBJ"/>
@@ -76,7 +76,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-Bx-kUc">
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-Bx-kUc">
                                 <rect key="frame" x="54" y="307" width="302" height="21"/>
                                 <string key="toolTip">Type in a custom path if you are using a non-local option. Otherwise, select a folder you would like to use for the restic repository.</string>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="yuh-KX-w7H">
@@ -88,7 +88,7 @@ Gw
                                     <outlet property="delegate" destination="rL6-C0-hqQ" id="ZRa-sc-dFl"/>
                                 </connections>
                             </textField>
-                            <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q77-nY-6O4">
+                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q77-nY-6O4">
                                 <rect key="frame" x="84" y="279" width="380" height="21"/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Required" drawsBackground="YES" usesSingleLineMode="YES" id="uOJ-HK-xnF">
                                     <font key="font" metaFont="system"/>
@@ -122,7 +122,7 @@ Gw
                                     <action selector="testRepo:" target="rL6-C0-hqQ" id="Kwi-qL-2EY"/>
                                 </connections>
                             </button>
-                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="0An-qq-nEY">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="0An-qq-nEY">
                                 <rect key="frame" x="142" y="48" width="295" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="System Default" id="8Jm-aw-4v8">
                                     <font key="font" metaFont="system"/>
@@ -140,7 +140,7 @@ Gw
                                     <action selector="chooseCacheDir:" target="rL6-C0-hqQ" id="aFu-F7-cvQ"/>
                                 </connections>
                             </button>
-                            <textField focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="GF1-9Z-Aab">
+                            <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="GF1-9Z-Aab">
                                 <rect key="frame" x="14" y="339" width="68" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Nickname:" id="SGy-ee-0Wy">
                                     <font key="font" metaFont="system"/>
@@ -148,7 +148,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField toolTip="Type in a nickname to use in the drop-down list. Otherwise, the path name will be used." focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFh-h7-QZp">
+                            <textField toolTip="Type in a nickname to use in the drop-down list. Otherwise, the path name will be used." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFh-h7-QZp">
                                 <rect key="frame" x="88" y="336" width="376" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Optional" drawsBackground="YES" id="9Cq-3A-va9">
                                     <font key="font" metaFont="system"/>
@@ -172,12 +172,16 @@ Gw
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="V2J-PF-Bxr"/>
                                 </constraints>
                             </customView>
+                            <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Gbf-Lu-eKG">
+                                <rect key="frame" x="278" y="18" width="16" height="16"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tKe-eQ-6KT" secondAttribute="trailing" constant="16" id="0XU-nM-cSC"/>
                             <constraint firstItem="GF1-9Z-Aab" firstAttribute="firstBaseline" secondItem="MFh-h7-QZp" secondAttribute="firstBaseline" id="3a7-Wt-f0u"/>
                             <constraint firstItem="9ef-Ze-Z3G" firstAttribute="top" secondItem="Nh3-DK-k1s" secondAttribute="bottom" constant="14" id="5q0-3B-7Zb"/>
                             <constraint firstItem="FGM-3c-sGA" firstAttribute="firstBaseline" secondItem="4fy-Bx-kUc" secondAttribute="firstBaseline" id="7Mg-bV-Wga"/>
+                            <constraint firstItem="lvn-he-94D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gbf-Lu-eKG" secondAttribute="trailing" constant="28" id="8VX-oX-5mj"/>
                             <constraint firstItem="Q77-nY-6O4" firstAttribute="top" secondItem="MRl-Dj-lZe" secondAttribute="bottom" constant="8" id="8ok-Ji-84w"/>
                             <constraint firstItem="0An-qq-nEY" firstAttribute="leading" secondItem="9ef-Ze-Z3G" secondAttribute="trailing" constant="10" id="Bgz-TP-yGi"/>
                             <constraint firstItem="Q77-nY-6O4" firstAttribute="leading" secondItem="csN-nK-7HZ" secondAttribute="trailing" constant="6" id="C9I-Zq-Iqz"/>
@@ -190,10 +194,12 @@ Gw
                             <constraint firstAttribute="trailing" secondItem="gaT-LU-ufs" secondAttribute="trailing" constant="20" id="JqC-WD-Ar6"/>
                             <constraint firstAttribute="bottom" secondItem="wt5-ld-vgq" secondAttribute="bottom" constant="16" id="NaE-gM-fd4"/>
                             <constraint firstAttribute="trailing" secondItem="wt5-ld-vgq" secondAttribute="trailing" constant="16" id="R3c-KR-ttW"/>
+                            <constraint firstItem="Gbf-Lu-eKG" firstAttribute="centerY" secondItem="xgN-JY-Yu1" secondAttribute="centerY" id="U01-sd-1gk"/>
                             <constraint firstItem="4fy-Bx-kUc" firstAttribute="leading" secondItem="FGM-3c-sGA" secondAttribute="trailing" constant="6" id="XK5-Gu-DzH"/>
                             <constraint firstItem="Nh3-DK-k1s" firstAttribute="leading" secondItem="11l-Yx-EIL" secondAttribute="leading" constant="16" id="Xk7-4e-IDy"/>
                             <constraint firstItem="Qgw-uj-gRq" firstAttribute="top" secondItem="9ef-Ze-Z3G" secondAttribute="bottom" constant="10" id="bXt-PZ-y3f"/>
                             <constraint firstItem="GF1-9Z-Aab" firstAttribute="leading" secondItem="11l-Yx-EIL" secondAttribute="leading" constant="16" id="dQO-00-Vtt"/>
+                            <constraint firstItem="Gbf-Lu-eKG" firstAttribute="leading" secondItem="xgN-JY-Yu1" secondAttribute="trailing" constant="8" symbolic="YES" id="dvL-JD-TKr"/>
                             <constraint firstItem="csN-nK-7HZ" firstAttribute="leading" secondItem="11l-Yx-EIL" secondAttribute="leading" constant="16" id="efu-3w-Ml4"/>
                             <constraint firstItem="wt5-ld-vgq" firstAttribute="leading" secondItem="lvn-he-94D" secondAttribute="trailing" constant="10" id="gTh-e8-4Fi"/>
                             <constraint firstItem="MFh-h7-QZp" firstAttribute="top" secondItem="11l-Yx-EIL" secondAttribute="top" constant="14" id="htM-To-s2s"/>
@@ -212,7 +218,6 @@ Gw
                             <constraint firstItem="0An-qq-nEY" firstAttribute="centerY" secondItem="9ef-Ze-Z3G" secondAttribute="centerY" id="vH8-eI-qX5"/>
                             <constraint firstAttribute="bottom" secondItem="Qgw-uj-gRq" secondAttribute="bottom" constant="16" id="xCL-6i-ood"/>
                             <constraint firstItem="Qgw-uj-gRq" firstAttribute="leading" secondItem="11l-Yx-EIL" secondAttribute="leading" constant="16" id="xGE-Jh-HDM"/>
-                            <constraint firstItem="lvn-he-94D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xgN-JY-Yu1" secondAttribute="trailing" constant="28" id="xWj-uc-AFb"/>
                             <constraint firstItem="9ef-Ze-Z3G" firstAttribute="leading" secondItem="11l-Yx-EIL" secondAttribute="leading" constant="16" id="zP4-Vc-4RL"/>
                         </constraints>
                     </view>
@@ -222,6 +227,7 @@ Gw
                         <outlet property="nameField" destination="MFh-h7-QZp" id="JhP-nJ-xId"/>
                         <outlet property="passwordField" destination="Q77-nY-6O4" id="fZe-dm-eAP"/>
                         <outlet property="pathField" destination="4fy-Bx-kUc" id="BYZ-fT-1Ig"/>
+                        <outlet property="progressIndicator" destination="Gbf-Lu-eKG" id="wAp-bh-22I"/>
                         <outlet property="saveButton" destination="wt5-ld-vgq" id="008-1s-nLz"/>
                         <outlet property="tableView" destination="tKe-eQ-6KT" id="KCy-8F-z5t"/>
                         <outlet property="testRepoButton" destination="xgN-JY-Yu1" id="XPK-rt-IQF"/>

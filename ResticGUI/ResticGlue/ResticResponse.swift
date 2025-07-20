@@ -115,6 +115,7 @@ enum ResticError: Error, CustomStringConvertible {
 	case couldNotDecodeStringOutput
 	case couldNotDecodeJSON(rawStr: String, message: String)
 	case noResticInstallationsFound(String)
+	case unsupportedRepositoryVersion(version: Int)
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
 	
 	var description: String {
@@ -134,6 +135,8 @@ enum ResticError: Error, CustomStringConvertible {
 					msg += ", stderr: \"\(stderr)\""
 				}
 				return msg
+			case .unsupportedRepositoryVersion(version: let version):
+				return "ResticGUI only supports repository version 2, this repository is verion \(version)."
 		}
 	}
 }

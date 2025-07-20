@@ -124,11 +124,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		return cell
 	}
 	
-	
 	@IBOutlet var restoreButton: NSButton!
-	@IBAction func restoreButton(_ sender: NSButton) {
-		
-	}
 	
 	@IBOutlet var mountButton: NSButton!
 	@IBAction func mountButton(_ sender: NSButton) {
