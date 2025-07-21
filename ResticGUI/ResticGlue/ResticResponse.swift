@@ -6,18 +6,20 @@
 import Foundation
 
 final class ResticResponse {
+	private static let bcf = ByteCountFormatter.init()
+	private static let df = {
+		let df = DateFormatter()
+		df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+		return df
+	}()
+
 	
-	struct ResticVersion: Decodable, Equatable {
+	struct Version: Decodable, Equatable {
 		let version: String
 		let go_arch: String
 	}
 	
 	final class Snapshot: Codable {
-		private static let df = {
-			let df = DateFormatter()
-			df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-			return df
-		}()
 		let time: String
 		let parent: String?
 		let tree: String
@@ -32,7 +34,7 @@ final class ResticResponse {
 		let id: String
 		let short_id: String
 		
-		lazy var date: Date = ResticResponse.Snapshot.df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
+		lazy var date: Date = ResticResponse.df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
 	}
 	
 	struct backupProgress: Decodable {
@@ -48,7 +50,7 @@ final class ResticResponse {
 		let current_files: [String]?
 	}
 	
-	struct resticError: Decodable {
+	struct error: Decodable {
 		let message_type: String
 		let error: resticErrorMessage?
 		let during: String?
@@ -104,9 +106,19 @@ final class ResticResponse {
 		let files_restored: Int
 		let files_skipped: Int
 		let files_deleted: Int
-		let total_bytes: Int
-		let bytes_restored: Int
+		let total_bytes: Int64
+		let bytes_restored: Int64
 		let bytes_skipped: Int
+		
+		var progressReport: String {
+			get {
+				var text = "\(bcf.string(fromByteCount: bytes_restored))/\(bcf.string(fromByteCount: total_bytes)) restored, "
+				text += "\(files_restored)/\(total_files) files.\n"
+				text += "\(seconds_elapsed) seconds elapsed."
+				return text
+			}
+		}
+		
 	}
 	
 }
@@ -117,6 +129,10 @@ enum ResticError: Error, CustomStringConvertible {
 	case noResticInstallationsFound(String)
 	case unsupportedRepositoryVersion(version: Int)
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
+	
+	init(from rError: ResticResponse.error) {
+		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+	}
 	
 	var description: String {
 		switch self {
