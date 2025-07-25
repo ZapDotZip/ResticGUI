@@ -133,7 +133,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	
 	// MARK: Profile Tab: paths
 	@IBAction func addPath(_ sender: NSButton) {
-		if let urls = FileDialogues.openPanel(message: "Select items you would like to back up.", prompt: "Add", canChooseDirectories: true, canChooseFiles: true, canSelectMultipleItems: true, canCreateDirectories: false) {
+		if let urls = STBFilePanels.openPanel(message: "Select items you would like to back up.", canSelectMultipleItems: true, canCreateDirectories: true, selectableTypes: [.directories, .files()]) {
 			for url in urls {
 				selectedProfile?.addPath(url.path)
 			}
@@ -149,7 +149,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	@IBAction func importPathsFromTextFile(_ sender: NSButton) {
-		if let urls = FileDialogues.openPanel(message: "Select a text file containing paths to back up.", prompt: "Add", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: true, canCreateDirectories: false) {
+		if let urls = STBFilePanels.openPanel(message: "Select a text file containing paths to back up.", prompt: "Add", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files()]) {
 			for url in urls {
 				do {
 					let txt = try String.init(contentsOf: url)
@@ -158,7 +158,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 					}
 				} catch {
 					NSLog("Failed to load user-selected paths file: \(error)")
-					Alerts.Alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning)
+					STBAlerts.alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning)
 				}
 			}
 			reload()

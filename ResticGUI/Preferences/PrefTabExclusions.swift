@@ -23,7 +23,7 @@ class PrefTabExclusions: NSViewController {
 		}
     }
 	@IBAction func excludePatternFile(_ sender: NSButton) {
-		if let url = FileDialogues.openPanel(message: "Select an exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
+		if let url = STBFilePanels.openPanel(message: "Select an exclude pattern file.", canSelectMultipleItems: false, canCreateDirectories: false, selectableTypes: [.files()])?.first {
 			UserDefaults.standard.set(url, forKey: DefaultsKeys.globalExcludePatternFile)
 			ExcludeFileLabel.stringValue = url.localPath
 			ExcludeFileClearButton.isEnabled = true

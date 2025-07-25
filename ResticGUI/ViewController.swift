@@ -77,6 +77,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		} else if segue.identifier == "Restore" {
 			let vc = segue.destinationController as! RestoreViewController
 			vc.snapshotToRestore = snapshotsTable.selectedSnapshot
+			vc.repo = repoManager.getSelectedRepo()
 		} else {
 			NSLog("Error: segue \"\(segue.identifier ?? "nil")\" not properly set up!")
 		}
@@ -99,7 +100,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	func newProfile(name: String) -> Bool {
 		guard !profileSidebarList.contains(where: { $0.profile?.name == name }) else {
-			Alerts.Alert(title: "This profile name already exists.", message: "Choose a different profile name.", style: .informational)
+			STBAlerts.alert(title: "This profile name already exists.", message: "Choose a different profile name.", style: .informational)
 			return false
 		}
 		let new = Profile.init(name: name)
@@ -115,7 +116,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			if index <= 0 {
 				index = 1
 			}
-			let deleteResponse = Alerts.DestructiveAlert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
+			let deleteResponse = STBAlerts.destructiveAlert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
 			if deleteResponse {
 				ProfileManager.delete(p)
 				profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
@@ -147,16 +148,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	@IBAction @objc func exportProfile(_ sender: NSMenuItem) {
 		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
-			FileDialogues.savePanelModal(for: self.view.window!, message: "Export Profile", nameFieldLabel: "Export As:", nameField: selected.name + ".plist", currentDirectory: nil, canCreateDirectories: true, canSelectHiddenExtension: true, isExtensionHidden: false, completionHandler: { res, url in
-				if res == .OK || res == .continue, let destination = url {
-					ProfileManager.save(selected, to: destination)
+			STBFilePanels.savePanelModal(for: self.view.window!, nameFieldLabel: "Export As", nameField: selected.name + ".plist", isExtensionHidden: true, allowedFileExtensions: ["plist"], completionHandler: { url in
+				if let url {
+					ProfileManager.save(selected, to: url)
 				}
 			})
 		}
 	}
 	
 	@IBAction func importProfile(_ sender: NSMenuItem) {
-		if let urls = FileDialogues.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: true, canCreateDirectories: false, allowedFileTypes: ["plist"]) {
+		if let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) {
 			let newProfiles = urls.compactMap { url in
 				if let profile = ProfileManager.load(url) {
 					ProfileManager.save(profile)
@@ -277,19 +278,19 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
 			if let selectedRepo = repoManager.getSelectedRepo() {
-				let res = Alerts.DestructiveAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, destructiveButtonText: "Delete")
+				let res = STBAlerts.destructiveAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, destructiveButtonText: "Delete")
 				if res {
 					do {
 						do {
 							try repoManager.remove(selectedRepo)
 						} catch let error as KeychainInterface.KeychainError {
-							let res = Alerts.DestructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
+							let res = STBAlerts.destructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
 							if res {
 								try repoManager.remove(selectedRepo, removeFromKeychain: false)
 							}
 						}
 					} catch {
-						Alerts.Alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical)
+						STBAlerts.alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical)
 					}
 				}
 			}
@@ -323,10 +324,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 					backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
 					viewState = .backupInProgress
 				} else {
-					Alerts.Alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
+					STBAlerts.alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
 				}
 			} else {
-				Alerts.Alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
+				STBAlerts.alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
 			}
 		}
 	}

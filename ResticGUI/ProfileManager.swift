@@ -47,7 +47,7 @@ struct ProfileManager {
 			return p
 		} catch {
 			NSLog("Error loading profile: \(error)")
-			Alerts.Alert(title: "An error occured trying to load the profile \"\(url.lastPathComponent)\".", message: error.localizedDescription, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to load the profile \"\(url.lastPathComponent)\".", message: error.localizedDescription, style: .critical)
 		}
 		return nil
 	}
@@ -84,7 +84,7 @@ struct ProfileManager {
 					try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
 				} catch {
 					NSLog("Error creating Profiles directory: \(error)")
-					Alerts.Alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical)
+					STBAlerts.alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical)
 				}
 			}
 			save(profile, to: getProfilePath(profile.name))
@@ -102,7 +102,7 @@ struct ProfileManager {
 			try data.write(to: filePath)
 		} catch {
 			NSLog("Error saving Profile: \(error)")
-			Alerts.Alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical)
 		}
 	}
 	
@@ -113,7 +113,7 @@ struct ProfileManager {
 				try FileManager.default.trashItem(at: filePath, resultingItemURL: nil)
 			} catch {
 				NSLog("Error deleting profile: \(error)")
-				let res = Alerts.Alert(title: "Unable to delete profile.", message: "Couldn't delete the profile \(profile.name)\n\n\(error.localizedDescription)", style: .warning, buttons: ["Retry", "Cancel"])
+				let res = STBAlerts.alert(title: "Unable to delete profile.", message: "Couldn't delete the profile \(profile.name)\n\n\(error.localizedDescription)", style: .warning, buttons: ["Retry", "Cancel"])
 				if res == .alertFirstButtonReturn {
 					delete(profile)
 				}

@@ -62,14 +62,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			try FileManager.default.trashItem(at: ProfileManager.profileDir, resultingItemURL: nil)
 		} catch {
 			NSLog("error deleting app data: \(error)")
-			Alerts.Alert(title: "An error occured.", message: "Could not trash the profiles directory: \(error.localizedDescription)\n\nThe file is located at \(ProfileManager.profileDir.relativePath).", style: .warning)
+			STBAlerts.alert(title: "An error occured.", message: "Could not trash the profiles directory: \(error.localizedDescription)\n\nThe file is located at \(ProfileManager.profileDir.relativePath).", style: .warning)
 		}
 		do {
 			try FileManager.default.trashItem(at: ReposManager.repolistFile, resultingItemURL: nil)
-			Alerts.Alert(title: "Repositories Reset", message: "The repository list has been put in your trash.\n\nIf you want to delete passwords as well, open up Keychain Access and delete application passwords with the name \(Bundle.main.bundleIdentifier ?? "").", style: .informational)
+			STBAlerts.alert(title: "Repositories Reset", message: "The repository list has been put in your trash.\n\nIf you want to delete passwords as well, open up Keychain Access and delete application passwords with the name \(Bundle.main.bundleIdentifier ?? "").", style: .informational)
 		} catch {
 			NSLog("error deleting app data: \(error)")
-			Alerts.Alert(title: "An error occured.", message: "Could not trash the repository list: \(error.localizedDescription)\n\nThe file is located at \(ReposManager.repolistFile.relativePath).", style: .warning)
+			STBAlerts.alert(title: "An error occured.", message: "Could not trash the repository list: \(error.localizedDescription)\n\nThe file is located at \(ReposManager.repolistFile.relativePath).", style: .warning)
 		}
 		if deletePrefs {
 			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
@@ -92,7 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 		viewCon.saveQuit()
 		if backupController.state != .idle {
-			if !Alerts.DestructiveAlert(title: "Are you sure you want to quit?", message: "A backup is in progress. If you choose to quit, the backup will be stopped.", style: .informational, destructiveButtonText: "Quit") {
+			if !STBAlerts.destructiveAlert(title: "Are you sure you want to quit?", message: "A backup is in progress. If you choose to quit, the backup will be stopped.", style: .informational, destructiveButtonText: "Quit") {
 				return .terminateCancel
 			}
 		}

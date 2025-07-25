@@ -17,11 +17,12 @@ class RestoreViewController: NSViewController {
 	@IBOutlet weak var destinationTypeChosen: NSButton!
 
 	@IBOutlet weak var destinationOriginalOverwrite: NSButton!
-	@IBOutlet var destinationCustomPath: PathSelectorLabelView!
+	@IBOutlet var destinationCustomPath: STBPathSelectorLabelView!
 	
 	@IBOutlet weak var restoreButton: NSButton!
 	
 	var snapshotToRestore: ResticResponse.Snapshot!
+	var repo: Repo!
 	
 	
 	override func viewDidLoad() {
@@ -85,7 +86,7 @@ class RestoreViewController: NSViewController {
 				if let paths = sourcePartialPathsTable.save() {
 					return RestorePlan.restoreSourceType.selectedFiles(files: paths)
 				} else {
-					Alerts.Alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational)
+					STBAlerts.alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational)
 					return nil
 				}
 			}
@@ -98,25 +99,33 @@ class RestoreViewController: NSViewController {
 				if let path = destinationCustomPath.controller.path {
 					return RestorePlan.restoreDestinationType.newLocation(path: path)
 				} else {
-					Alerts.Alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational)
+					STBAlerts.alert(title: "Please select a restore path.", message: "You need to choose a path to restore to.", style: .informational)
 					return nil
 				}
 			}
 		}()
 		
 		if let src, let dest {
-			return RestorePlan(snapshot: snapshotToRestore, restoreSource: src, restoreDestination: dest)
+			return RestorePlan(snapshot: snapshotToRestore, repo: repo, restoreSource: src, restoreDestination: dest)
 		} else {
 			return nil
 		}
 	}
 	
 	
-	
 	@IBAction func restoreButtonPressed(_ sender: NSButton) {
-		let plan = generatePlanFromUI()
-		if let plan {
-			print(plan)
+		if let plan = generatePlanFromUI() {
+			performSegue(withIdentifier: "RestoreProgressSegue", sender: plan)
+		}
+	}
+	
+	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+		if segue.identifier == "RestoreProgressSegue", let plan = sender as? RestorePlan {
+			let vc = segue.destinationController as! RestoreProgressController
+			vc.plan = plan
+		} else {
+			NSLog("Error: segue \"\(segue.identifier ?? "nil")\" not properly set up!")
 		}
 	}
 	

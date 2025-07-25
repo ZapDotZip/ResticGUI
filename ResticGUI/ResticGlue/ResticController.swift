@@ -11,7 +11,7 @@ final class ResticController: NSObject {
 	#if arch(x86_64)
 	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "amd64")
 	#elseif arch(arm64)
-	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "arm64")
+	static let supportedRV = ResticResponse.Version.init(version: "0.18.0", go_arch: "arm64")
 	#endif
 	static let autoURLs = [
 		URL(localPath: "/opt/local/bin/restic"),
@@ -23,7 +23,7 @@ final class ResticController: NSObject {
 	let jsonDecoder = JSONDecoder()
 	private let logger: ResticLogger = ResticLogger.default
 	var resticLocation: URL?
-	var versionInfo: ResticResponse.ResticVersion?
+	var versionInfo: ResticResponse.Version?
 	
 	static var `default` = ResticController()
 	private override init() {
@@ -60,7 +60,7 @@ final class ResticController: NSObject {
 	/// Tests to see if the path points to a valid Restic binary by checking its version.
 	/// - Parameter path: The path to restic, will be set if the command runs successfully.
 	func testVersion(_ path: URL) throws {
-		let vers = try ProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.ResticVersion.self)
+		let vers = try ProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.Version.self)
 		resticLocation = path
 		versionInfo = vers.output
 	}
@@ -86,7 +86,7 @@ final class ResticController: NSObject {
 		throw ResticError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic from Homebrew.")
 	}
 	
-	func getVersionInfo() throws -> ResticResponse.ResticVersion {
+	func getVersionInfo() throws -> ResticResponse.Version {
 		if versionInfo == nil {
 			try setupFromDefaults()
 		}
@@ -109,7 +109,7 @@ final class ResticController: NSObject {
 		let result = try pr.run(args: args)
 		if let output = try? jsonDecoder.decode(D.self, from: result.output) {
 			return output
-		} else if let rError = try? jsonDecoder.decode(ResticResponse.resticError.self, from: result.error) {
+		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.error) {
 			throw ResticError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
 		} else {
 			throw ResticError.couldNotDecodeOutput

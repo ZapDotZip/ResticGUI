@@ -43,7 +43,7 @@ class BackupController {
 				qos = .background
 			}
 		}
-		if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && Machine.isOnBattery() {
+		if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && STBMachine.isOnBattery() {
 			qos = .background
 		}
 		return qos
@@ -94,7 +94,7 @@ class BackupController {
 				}
 			} catch {
 				DispatchQueue.main.sync {
-					let res = Alerts.Alert(title: "An error occured trying to create the exclusions file.", message: "Couldn't create the exclusions file.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Continue Anyways", "Cancel"])
+					let res = STBAlerts.alert(title: "An error occured trying to create the exclusions file.", message: "Couldn't create the exclusions file.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Continue Anyways", "Cancel"])
 					if res == .alertSecondButtonReturn {
 						return // cancel
 					}
@@ -118,7 +118,7 @@ class BackupController {
 			}
 			
 			if let readConcurrency = profile.readConcurrency {
-				if qos == .background && UserDefaults.standard.bool(forKey: DefaultsKeys.limitBackgroundCoreCount), let eCores = Machine.getDifferentialCoreCount()?.0, eCores < readConcurrency {
+				if qos == .background && UserDefaults.standard.bool(forKey: DefaultsKeys.limitBackgroundCoreCount), let eCores = STBMachine.getDifferentialCoreCount()?.0, eCores < readConcurrency {
 					args.append("--read-concurrency=\(eCores)")
 				} else {
 					args.append("--read-concurrency=\(readConcurrency)")
@@ -146,9 +146,11 @@ class BackupController {
 			DispatchQueue.main.async {
 				self.vc.displayProgress(progress.current_files?.first, progress.percent_done)
 			}
-		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.resticError.self, from: data) {
+		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.error.self, from: data) {
 			print(error.message_type)
-			Alerts.Alert(title: "An error occured while backing up.", message: "Restic:\n\n\(getStderr())", style: .critical)
+			DispatchQueue.main.async {
+				STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
+			}
 		} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: data) {
 			var sum: String = ""
 			dump(summary, to: &sum)
@@ -165,7 +167,7 @@ class BackupController {
 				}
 			}()
 			DispatchQueue.main.async {
-				Alerts.Alert(title: "An unkown error occured trying to back up.", message: "Recieved this error from restic:\n\n\(errMsg)", style: .critical)
+				STBAlerts.alert(title: "An unkown error occured trying to back up.", message: "Recieved this error from restic:\n\n\(errMsg)", style: .critical)
 			}
 		}
 	}

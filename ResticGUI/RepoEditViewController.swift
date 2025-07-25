@@ -42,7 +42,7 @@ class RepoEditViewController: NSViewController {
 			} catch {
 				passwordField.stringValue = ""
 				DispatchQueue.main.async {
-					Alerts.Alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
+					STBAlerts.alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
 				}
 			}
 			cacheDirLabel.stringValue = r.cacheDir ?? ""
@@ -65,13 +65,13 @@ class RepoEditViewController: NSViewController {
 	
 	
 	@IBAction func selectFolder(_ sender: NSButton) {
-		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic repository.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
+		if let url = STBFilePanels.openPanel(message: "Select the folder to use as the Restic repository.", canSelectMultipleItems: false, canCreateDirectories: true, selectableTypes: [.directories])?.first {
 			pathField.stringValue = url.localPath
 		}
 	}
 	
 	@IBAction func chooseCacheDir(_ sender: NSButton) {
-		if let url = FileDialogues.openPanel(message: "Select the folder to use as the Restic cache directory.", prompt: "Use this folder", canChooseDirectories: true, canChooseFiles: false, canSelectMultipleItems: false, canCreateDirectories: true)?.first {
+		if let url = STBFilePanels.openPanel(message: "Select the folder to use as the Restic cache directory.", canSelectMultipleItems: false, canCreateDirectories: true, selectableTypes: [.directories])?.first {
 			cacheDirLabel.stringValue = url.localPath
 			cacheDirLabel.toolTip = url.localPath
 		}
@@ -95,7 +95,7 @@ class RepoEditViewController: NSViewController {
 					NSLog("Created repository response: \(response)")
 					self.controlTextDidChange(self)
 					self.progressIndicator.stopAnimation(self)
-					Alerts.Alert(title: "Successfully created repository.", message: "The repository at \(response.repository) has been created.", style: .informational)
+					STBAlerts.alert(title: "Successfully created repository.", message: "The repository at \(response.repository) has been created.", style: .informational)
 					self.saveRepo(sender)
 				}
 			} catch {
@@ -109,10 +109,10 @@ class RepoEditViewController: NSViewController {
 		progressIndicator.stopAnimation(self)
 		if let err = error as? ResticError {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to \(tryingTo) the repository.", message: err.description, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: err.description, style: .critical)
 		} else {
 			NSLog("Couldn't create repository: \(error)")
-			Alerts.Alert(title: "An error occured trying to \(tryingTo) the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
+			STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
 		}
 	}
 	
@@ -131,7 +131,7 @@ class RepoEditViewController: NSViewController {
 				DispatchQueue.main.async { [self] in
 					progressIndicator.stopAnimation(self)
 					controlTextDidChange(self)
-					Alerts.Alert(title: "Repository successfully accessed", message: "The repository located at \(repo.path) is accessible.\n\nRepository ID: \(response.id)", style: .informational)
+					STBAlerts.alert(title: "Repository successfully accessed", message: "The repository located at \(repo.path) is accessible.\n\nRepository ID: \(response.id)", style: .informational)
 				}
 			} catch {
 				DispatchQueue.main.async { self.asyncErrorHandler(error, tryingTo: "test") }
@@ -192,26 +192,26 @@ class RepoEditViewController: NSViewController {
 		} catch let error as KeychainInterface.KeychainError {
 			switch error {
 			case .itemNotFound:
-					Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
+					STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
 			case .duplicateItem:
-				if Alerts.DestructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
+				if STBAlerts.destructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
 						try KeychainInterface.delete(path: pathField.stringValue)
-						Alerts.Alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
+						STBAlerts.alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
 					} catch {
-						Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)
+						STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)
 					}
 				} else {
 					return
 				}
 			default:
-				Alerts.Alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical)
+				STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical)
 				return
 			}
 			
 		} catch {
 			NSLog("Error saving the repository list: \(error)")
-			Alerts.Alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical)
 			return
 		}
 	}

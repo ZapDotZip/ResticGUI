@@ -156,7 +156,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	}
 	
 	@IBAction func setExcludeFile(_ sender: NSButton) {
-		if let url = FileDialogues.openPanel(message: "Select your exclude pattern file.", prompt: "Select", canChooseDirectories: false, canChooseFiles: true, canSelectMultipleItems: false, canCreateDirectories: false)?.first {
+		if let url = STBFilePanels.openPanel(message: "Select an exclude pattern file.", canSelectMultipleItems: false, canCreateDirectories: false, selectableTypes: [.files()])?.first {
 			viewCon.selectedProfile?.excludePatternFile = url.localPath
 			ExcludePatternFile.stringValue = url.localPath
 			ExcludePatternFileClearButton.isEnabled = true

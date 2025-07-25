@@ -30,7 +30,7 @@ final class ResticLogger {
 			logfile = try FileHandle.init(forUpdating: logfilePath)
 		} catch {
 			NSLog("Error creating log directory: \(error)")
-			Alerts.Alert(title: "An error occured trying to create the log file.", message: "ResticGUI will still run, but error information will not be recorded.\n\n\(error.localizedDescription)", style: .critical)
+			STBAlerts.alert(title: "An error occured trying to create the log file.", message: "ResticGUI will still run, but error information will not be recorded.\n\n\(error.localizedDescription)", style: .critical)
 			logfile = FileHandle.standardError // Just write the output to the app's stderr instead of failing the application.
 		}
 		logfile.truncateFile(atOffset: 0)
