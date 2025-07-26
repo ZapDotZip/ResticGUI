@@ -82,10 +82,17 @@ class PrefTabGeneral: NSViewController {
 				DispatchQueue.main.async {
 					NSLog("Error: \(error)")
 					let errtext = {
-						if error is DecodingError {
-							return "This version of Restic may be too old, or the binary is not Restic at all."
-						} else {
-							return error.localizedDescription
+						switch error {
+							case is DecodingError:
+								return "This version of Restic may be too old, or the binary is not Restic at all."
+							case let error as NSError:
+								if error.code == NSFileNoSuchFileError {
+									return error.localizedDescription + "\n(The file may not have execute permissions.)"
+								} else {
+									return error.localizedDescription
+								}
+							default:
+								return error.localizedDescription
 						}
 					}()
 					let path = URL(localPath: ((UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) ?? "") as NSString).expandingTildeInPath)
