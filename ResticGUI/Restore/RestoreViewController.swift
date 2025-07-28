@@ -94,7 +94,7 @@ class RestoreViewController: NSViewController {
 		
 		let dest: RestorePlan.restoreDestinationType? = {
 			if destinationTypeOriginal.state == .on {
-				return RestorePlan.restoreDestinationType.originalSource(overwrite: destinationOriginalOverwrite.state == .on)
+				return RestorePlan.restoreDestinationType.originalSource(overwriteChangedOnly: destinationOriginalOverwrite.state == .on)
 			} else {
 				if let path = destinationCustomPath.controller.path {
 					return RestorePlan.restoreDestinationType.newLocation(path: path)

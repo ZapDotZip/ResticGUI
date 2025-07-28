@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="bU7-R8-ocO">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -83,7 +82,7 @@ Gw
                                     <action selector="restoreSnapshotType:" target="bU7-R8-ocO" id="Mi8-aH-h9L"/>
                                 </connections>
                             </button>
-                            <customView horizontalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="6Ae-eh-v73" customClass="PathSelectorLabelView" customModule="SwiftToolbox">
+                            <customView horizontalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="6Ae-eh-v73" customClass="STBPathSelectorLabelView" customModule="SwiftToolbox">
                                 <rect key="frame" x="50" y="60" width="408" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="xKY-bZ-ixT"/>
@@ -96,7 +95,7 @@ Gw
                                 <rect key="frame" x="20" y="169" width="438" height="70"/>
                                 <clipView key="contentView" drawsBackground="NO" id="2fp-vh-eSo">
                                     <rect key="frame" x="1" y="1" width="436" height="68"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="aVY-rc-Yua">
                                             <rect key="frame" x="0.0" y="0.0" width="436" height="68"/>
@@ -118,7 +117,7 @@ Gw
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="Q5r-Ca-Hqe">
-                                                            <rect key="frame" x="1" y="1" width="375" height="17"/>
+                                                            <rect key="frame" x="11" y="1" width="375" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-AA-4rY">
@@ -211,16 +210,17 @@ Gw
                         <outlet property="sourcePartialPathsTable" destination="oFZ-Av-TV2" id="kBU-If-SPL"/>
                         <outlet property="sourceTypeEntire" destination="ga0-82-dfw" id="Yg5-Rd-bti"/>
                         <outlet property="sourceTypePartial" destination="DDA-LN-puf" id="vTj-Sv-MnG"/>
+                        <segue destination="gU5-Dn-eoO" kind="sheet" identifier="RestoreProgressSegue" id="Psp-6Q-uFX"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="132" y="152.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Restore Progress Controller-->
         <scene sceneID="3hy-wu-ksm">
             <objects>
-                <viewController id="gU5-Dn-eoO" sceneMemberID="viewController">
+                <viewController id="gU5-Dn-eoO" customClass="RestoreProgressController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="bWN-nX-HP3">
                         <rect key="frame" x="0.0" y="0.0" width="296" height="118"/>
                         <subviews>
@@ -264,10 +264,15 @@ Gw
                             <constraint firstItem="U9T-km-gnx" firstAttribute="top" secondItem="bWN-nX-HP3" secondAttribute="top" constant="20" symbolic="YES" id="xcf-Mg-5vP"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cancel" destination="K6A-5K-wPg" id="fGP-wI-R9p"/>
+                        <outlet property="label" destination="IVl-O3-xP9" id="DHK-aa-aeE"/>
+                        <outlet property="progressBar" destination="U9T-km-gnx" id="2Fa-31-7Ah"/>
+                    </connections>
                 </viewController>
                 <customObject id="2B8-DA-q2A" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="634" y="160.5"/>
+            <point key="canvasLocation" x="668" y="152"/>
         </scene>
     </scenes>
 </document>
