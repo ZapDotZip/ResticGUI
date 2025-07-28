@@ -80,7 +80,7 @@ class PrefTabGeneral: NSViewController {
 				}
 			} catch {
 				DispatchQueue.main.async {
-					NSLog("Error: \(error)")
+					STB.log("\(error)")
 					let errtext = {
 						switch error {
 							case is DecodingError:

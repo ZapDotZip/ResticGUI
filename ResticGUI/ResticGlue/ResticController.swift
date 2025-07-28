@@ -45,13 +45,15 @@ final class ResticController: NSObject {
 		resticLocation = nil
 		versionInfo = nil
 		if let userSel = UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) {
-			NSLog("User configured default \(userSel)")
-			if userSel == "MacPorts" {
-				return try testVersion(ResticController.autoURLs[0])
-			} else if userSel == "Homebrew" {
-				return try homebrew()
-			} else if userSel != "Automatic" {
-				return try testVersion(URL(localPath: (userSel as NSString).expandingTildeInPath))
+			switch userSel {
+				case "MacPorts":
+					return try testVersion(ResticController.autoURLs[0])
+				case "Homebrew":
+					return try homebrew()
+				case "Automatic":
+					return try automatic()
+				default:
+					return try testVersion(URL(localPathExpandingTilde: userSel))
 			}
 		}
 		return try automatic()
