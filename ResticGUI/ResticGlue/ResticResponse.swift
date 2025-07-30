@@ -135,6 +135,7 @@ enum ResticError: Error, CustomStringConvertible {
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+		Logger.default.log(self)
 	}
 	
 	init?(exitCode: Int32) {
@@ -148,6 +149,7 @@ enum ResticError: Error, CustomStringConvertible {
 			case 12: self = .exitCode(code: 12, description: "Wrong repository password")
 			default: self = .exitCode(code: exitCode, description: "Unknown exit code reason")
 		}
+		Logger.default.log("Restic returned exit code \(self)")
 	}
 	
 	var description: String {

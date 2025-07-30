@@ -88,7 +88,7 @@ class RestoreController {
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
 			display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
 		} else {
-			ResticLogger.default.log("Undecodable stderr data received from Restic")
+			Logger.default.log("Undecodable stderr data received from Restic")
 		}
 	}
 	

@@ -30,7 +30,7 @@
 		EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */; };
 		EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA672D10C1390081E223 /* BackupController.swift */; };
 		EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA692D10C1390081E223 /* ResticController.swift */; };
-		EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */; };
+		EDE0AA842D10C1390081E223 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* Logger.swift */; };
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
 		EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */; };
 		EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6F2D10C1390081E223 /* DataClasses.swift */; };
@@ -104,6 +104,27 @@
 			remoteGlobalIDString = ED75B9232C43212600EB9E39;
 			remoteInfo = ResticGUI;
 		};
+		ED8392942E3AA916003FDFBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ED66D1A42E32BA3300D6307C;
+			remoteInfo = SwiftToolboxTestApp;
+		};
+		ED8392962E3AA916003FDFBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ED66D1B42E32BA3400D6307C;
+			remoteInfo = SwiftToolboxTestAppTests;
+		};
+		ED8392982E3AA916003FDFBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ED66D1BE2E32BA3400D6307C;
+			remoteInfo = SwiftToolboxTestAppUITests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -147,7 +168,7 @@
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
 		EDE0AA672D10C1390081E223 /* BackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupController.swift; sourceTree = "<group>"; };
 		EDE0AA692D10C1390081E223 /* ResticController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticController.swift; sourceTree = "<group>"; };
-		EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticLogger.swift; sourceTree = "<group>"; };
+		EDE0AA6A2D10C1390081E223 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsDataSource.swift; sourceTree = "<group>"; };
 		EDE0AA6F2D10C1390081E223 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
@@ -217,6 +238,9 @@
 			children = (
 				ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */,
 				ED581FEF2E0A116F00F2BE6F /* SwiftToolboxTests.xctest */,
+				ED8392952E3AA916003FDFBF /* SwiftToolboxTestApp.app */,
+				ED8392972E3AA916003FDFBF /* SwiftToolboxTestAppTests.xctest */,
+				ED8392992E3AA916003FDFBF /* SwiftToolboxTestAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -288,7 +312,7 @@
 				EDE0AA692D10C1390081E223 /* ResticController.swift */,
 				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
 				ED2591752E19A45600C068E4 /* RestoreController.swift */,
-				EDE0AA6A2D10C1390081E223 /* ResticLogger.swift */,
+				EDE0AA6A2D10C1390081E223 /* Logger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 			);
 			path = ResticGlue;
@@ -474,6 +498,27 @@
 			remoteRef = ED581FEE2E0A116F00F2BE6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		ED8392952E3AA916003FDFBF /* SwiftToolboxTestApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = SwiftToolboxTestApp.app;
+			remoteRef = ED8392942E3AA916003FDFBF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ED8392972E3AA916003FDFBF /* SwiftToolboxTestAppTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftToolboxTestAppTests.xctest;
+			remoteRef = ED8392962E3AA916003FDFBF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ED8392992E3AA916003FDFBF /* SwiftToolboxTestAppUITests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftToolboxTestAppUITests.xctest;
+			remoteRef = ED8392982E3AA916003FDFBF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -520,7 +565,7 @@
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
-				EDE0AA842D10C1390081E223 /* ResticLogger.swift in Sources */,
+				EDE0AA842D10C1390081E223 /* Logger.swift in Sources */,
 				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,
 				EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,

@@ -21,7 +21,7 @@ final class ResticController: NSObject {
 // MARK: Setup
 	let dq: DispatchQueue
 	let jsonDecoder = JSONDecoder()
-	private let logger: ResticLogger = ResticLogger.default
+	private let logger: Logger = Logger.default
 	var resticLocation: URL?
 	var versionInfo: ResticResponse.Version?
 	

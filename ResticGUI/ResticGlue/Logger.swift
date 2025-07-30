@@ -1,28 +1,28 @@
 //
-//  ResticLogger.swift
+//  Logger.swift
 //  ResticGUI
 //
 
 import Foundation
 import SwiftToolbox
+import SwiftProcessController
 
-final class ResticLogger {
-	let logfile: FileHandle
-	let df: DateFormatter
-	let noData: Data
-	static let `default` = ResticLogger()
+final class Logger {
+	private let logfile: FileHandle
+	private let df: DateFormatter
+	private let dq: DispatchQueue
+	static let `default` = Logger()
 	
 	private init() {
 		df = DateFormatter.init()
 		df.locale = .current
 		df.dateFormat = "YYYY-MM-dd hh:mm:ss a"
 		
-		noData = "Error converting text to data".data(using: .utf8)!
-		
-		let loggingDir = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "Logs", isDirectory: true).appending(path: "ResticGUI", isDirectory: true)
-		let logfilePath = loggingDir.appending(path: "restic.log", isDirectory: false)
-		
 		do {
+			let loggingDir = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "Logs", isDirectory: true).appending(path: "ResticGUI", isDirectory: true)
+			
+			let logfilePath = loggingDir.appending(path: "restic.log", isDirectory: false)
+			
 			if !FileManager.default.fileExists(atPath: logfilePath.path) {
 				try FileManager.default.createDirectory(at: loggingDir, withIntermediateDirectories: true, attributes: nil)
 				FileManager.default.createFile(atPath: logfilePath.path, contents: nil, attributes: nil)
@@ -33,13 +33,19 @@ final class ResticLogger {
 			STBAlerts.alert(title: "An error occured trying to create the log file.", message: "ResticGUI will still run, but error information will not be recorded.\n\n\(error.localizedDescription)", style: .critical)
 			logfile = FileHandle.standardError // Just write the output to the app's stderr instead of failing the application.
 		}
-		logfile.truncateFile(atOffset: 0)
+		dq = DispatchQueue(label: "LoggingQueue", qos: .background)
+		
+		dq.async {
+			self.logfile.truncateFile(atOffset: 0)
+		}
 	}
 	
 	/// Writes the raw string directly to the log file.
 	/// - Parameter str: The string to write.
 	func write(_ str: String) {
-		logfile.write(str.data(using: .utf8) ?? noData)
+		dq.async {
+			self.logfile.write(Data(str.utf8))
+		}
 	}
 	
 	/// Returns the formatted current date.
@@ -53,9 +59,19 @@ final class ResticLogger {
 		}
 	}
 	
+	func log(_ rErr: ResticError) {
+		write("\(date()): \(rErr)\n")
+	}
+	
 	/// Logs the string by prepending the date before it.
 	/// - Parameter str: The string to write.
-	func runCmd(path: URL, args: [String]) { write("\(date()): Running \(path.path) \(args)\n") }
+	func runCmd(path: URL, args: [String]) {
+		write("\(date()): Running \(path.path) \(args)\n")
+	}
+	
+	func run(process: SPCBase, args: [String]) {
+		write("\(date()): Running \(process.executableURL.localPath) \(args)\n with env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
+	}
 	
 	/// Logs Standard Error from restic.
 	/// - Parameter str: The string to write.
@@ -75,6 +91,8 @@ final class ResticLogger {
 	
 	
 	deinit {
-		logfile.closeFile()
+		dq.sync {
+			logfile.closeFile()
+		}
 	}
 }
