@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="bU7-R8-ocO">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -95,7 +96,7 @@ Gw
                                 <rect key="frame" x="20" y="169" width="438" height="70"/>
                                 <clipView key="contentView" drawsBackground="NO" id="2fp-vh-eSo">
                                     <rect key="frame" x="1" y="1" width="436" height="68"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="aVY-rc-Yua">
                                             <rect key="frame" x="0.0" y="0.0" width="436" height="68"/>
@@ -117,7 +118,7 @@ Gw
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="Q5r-Ca-Hqe">
-                                                            <rect key="frame" x="11" y="1" width="375" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="375" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-AA-4rY">
@@ -251,13 +252,27 @@ Gw
 </string>
                                 </buttonCell>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BCA-Fn-Dxr">
+                                <rect key="frame" x="212" y="13" width="71" height="32"/>
+                                <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jBy-Ib-agP">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="pauseButtonPressed:" target="gU5-Dn-eoO" id="WLj-K1-1bo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="IVl-O3-xP9" secondAttribute="trailing" constant="20" symbolic="YES" id="HuY-mS-HaP"/>
                             <constraint firstAttribute="trailing" secondItem="U9T-km-gnx" secondAttribute="trailing" constant="20" symbolic="YES" id="MGa-eE-Svk"/>
+                            <constraint firstAttribute="bottom" secondItem="BCA-Fn-Dxr" secondAttribute="bottom" constant="20" symbolic="YES" id="NPp-cT-gTl"/>
+                            <constraint firstAttribute="trailing" secondItem="BCA-Fn-Dxr" secondAttribute="trailing" constant="20" symbolic="YES" id="Uxk-rz-XlY"/>
+                            <constraint firstItem="BCA-Fn-Dxr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K6A-5K-wPg" secondAttribute="trailing" constant="12" symbolic="YES" id="XHP-NM-Gkv"/>
                             <constraint firstAttribute="bottom" secondItem="K6A-5K-wPg" secondAttribute="bottom" constant="20" symbolic="YES" id="Zs1-RR-4vu"/>
                             <constraint firstItem="U9T-km-gnx" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="cRt-x8-UaW"/>
                             <constraint firstItem="IVl-O3-xP9" firstAttribute="top" secondItem="U9T-km-gnx" secondAttribute="bottom" constant="8" symbolic="YES" id="kCg-7F-KYa"/>
+                            <constraint firstItem="BCA-Fn-Dxr" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="pp0-wP-hbN"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="tV9-jr-wMO"/>
                             <constraint firstItem="IVl-O3-xP9" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="vZZ-lo-aQd"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="xNt-tv-Ch5"/>
@@ -267,6 +282,7 @@ Gw
                     <connections>
                         <outlet property="cancel" destination="K6A-5K-wPg" id="fGP-wI-R9p"/>
                         <outlet property="label" destination="IVl-O3-xP9" id="DHK-aa-aeE"/>
+                        <outlet property="pauseButton" destination="BCA-Fn-Dxr" id="54h-Ib-iSb"/>
                         <outlet property="progressBar" destination="U9T-km-gnx" id="2Fa-31-7Ah"/>
                     </connections>
                 </viewController>

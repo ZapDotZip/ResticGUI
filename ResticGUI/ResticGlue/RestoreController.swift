@@ -28,6 +28,11 @@ class RestoreController {
 	private var plan: RestorePlan
 	private var display: ProgressDisplayer
 	
+	private let jsonDec = JSONDecoder()
+	
+	private var proc: ProcessControllerTyped<ResticResponse.RestoreProgress>?
+	private var summary: ResticResponse.RestoreProgress?
+	
 	init(plan: RestorePlan, reportingTo display: ProgressDisplayer) {
 		self.plan = plan
 		self.display = display
@@ -53,9 +58,9 @@ class RestoreController {
 	
 	func restore() {
 		do {
-			let pr = try ProcessControllerTyped<ResticResponse.RestoreProgress>.init(executableURL: ResticController.default.getResticURL(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: exitHandler(_:), decoderType: .JSON)
-			pr.env = try plan.repo.getEnv()
-			try pr.launch(args: argsFromPlan())
+			proc = try ProcessControllerTyped<ResticResponse.RestoreProgress>.init(executableURL: ResticController.default.getResticURL(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: exitHandler(_:), decoderType: .JSON)
+			proc?.env = try plan.repo.getEnv()
+			try proc?.launch(args: argsFromPlan())
 		} catch {
 			display.displayError(error, isFatal: true)
 		}
@@ -66,25 +71,56 @@ class RestoreController {
 			case .object(output: let output):
 				if let progress = output.percent_done {
 					display.updateProgress(to: progress, infoText: output.progressReport)
+					summary = output.summaryReport
 				}
 			case .error(rawData: let rawData, decodingError: _):
-				if let rErr = try? JSONDecoder().decode(ResticResponse.error.self, from: rawData) {
+				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
 					display.displayError(ResticError.init(from: rErr), isFatal: false)
+				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
+					display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown message."), isFatal: false)
 				}
 		}
 	}
 	
-	func stderrHandler(_ err: Data) {
-		
+	func stderrHandler(_ errData: Data) {
+		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
+			display.displayError(ResticError.init(from: rErr), isFatal: false)
+		} else if let errStr = String.init(data: errData, encoding: .utf8) {
+			display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
+		} else {
+			ResticLogger.default.log("Undecodable stderr data received from Restic")
+		}
 	}
 	
 	func exitHandler(_ exitCode: Int32) {
-		display.finish(summary: "", with: nil)
+		let exitError = ResticError(exitCode: exitCode)
+		if let sum = summary?.summaryReport {
+			display.finish(summary: sum, with: exitError)
+		} else {
+			display.finish(summary: "No summary available.", with: exitError)
+		}
+	}
+	
+	func stop() {
+		proc?.terminate()
+	}
+	
+	func pause() {
+		_ = proc?.suspend()
+	}
+	
+	func resume() {
+		_ = proc?.resume()
+	}
+	
+	var isSuspended: Bool {
+		return proc?.processState == .suspended
 	}
 	
 }
 
 /// Protocol for communicating between an async progress task and a user interface to display determinate progress from a running task.
+/// > Important: The implementing class is responsible for ensuring UI updates happen on the main thread.
 protocol ProgressDisplayer {
 	
 	/// Called when the task first starts or when the max progress value changes.
@@ -93,8 +129,8 @@ protocol ProgressDisplayer {
 	///   - max: The maximum value for the progress.
 	func setProgressBar(to value: Double, max: Double)
 	
-	/// Indicates that the process is currently running with indeterminate progress.
-	/// - Parameter isIndeterminate: Whether or not the process's progress is indeterminate.
+	/// Indicates that the task is currently running with indeterminate progress.
+	/// - Parameter isIndeterminate: Whether or not the task's progress is indeterminate.
 	func setIndeterminate(_ isIndeterminate: Bool)
 	
 	/// Called when the progress changes.
@@ -108,9 +144,9 @@ protocol ProgressDisplayer {
 	/// - Parameter isFatal: Whether or not the error was fatal.
 	func displayError(_ error: Error, isFatal: Bool)
 	
-	/// Called when the task ends. If the process returns an error
+	/// Called when the task ends. If the task returns an error
 	/// - Parameter summary: A summary of the task.
-	/// - Parameter error: The error the process finished with, if any.
+	/// - Parameter error: The error the task finished with, if any.
 	func finish(summary: String?, with error: Error?)
 	
 }
