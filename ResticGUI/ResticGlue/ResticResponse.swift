@@ -7,11 +7,13 @@ import Foundation
 
 final class ResticResponse {
 	private static let bcf = ByteCountFormatter.init()
+	private static let dcf = DateComponentsFormatter()
 	private static let df = {
 		let df = DateFormatter()
 		df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 		return df
 	}()
+
 
 	
 	struct Version: Decodable, Equatable {
@@ -58,9 +60,7 @@ final class ResticResponse {
 		let code: Int?
 		let message: String?
 		var getMessage: String? {
-			get {
-				return message ?? error?.message
-			}
+			return message ?? error?.message
 		}
 	}
 	
@@ -111,12 +111,14 @@ final class ResticResponse {
 		let bytes_skipped: Int
 		
 		var progressReport: String {
-			get {
-				var text = "\(bcf.string(fromByteCount: bytes_restored))/\(bcf.string(fromByteCount: total_bytes)) restored, "
-				text += "\(files_restored)/\(total_files) files.\n"
-				text += "\(seconds_elapsed) seconds elapsed."
-				return text
-			}
+			var text = "\(bcf.string(fromByteCount: bytes_restored))/\(bcf.string(fromByteCount: total_bytes)) restored, "
+			text += "\(files_restored)/\(total_files) files.\n"
+			text += "\(seconds_elapsed) seconds elapsed."
+			return text
+		}
+		
+		var summaryReport: String {
+			return "Restored \(total_files) files, \(bcf.string(fromByteCount: total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed)) ?? "\(seconds_elapsed) seconds")"
 		}
 		
 	}
@@ -129,9 +131,23 @@ enum ResticError: Error, CustomStringConvertible {
 	case noResticInstallationsFound(String)
 	case unsupportedRepositoryVersion(version: Int)
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
+	case exitCode(code: Int32, description: String)
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+	}
+	
+	init?(exitCode: Int32) {
+		switch exitCode {
+			case 0: return nil
+			case 1: self = .exitCode(code: 1, description: "Command failed")
+			case 2: self = .exitCode(code: 2, description: "Go runtime error")
+			case 3: self = .exitCode(code: 3, description: "Could not read source data")
+			case 10: self = .exitCode(code: 10, description: "Repository does not exist")
+			case 11: self = .exitCode(code: 11, description: "Repository could not be locked")
+			case 12: self = .exitCode(code: 12, description: "Wrong repository password")
+			default: self = .exitCode(code: exitCode, description: "Unknown exit code reason")
+		}
 	}
 	
 	var description: String {
@@ -153,6 +169,8 @@ enum ResticError: Error, CustomStringConvertible {
 				return msg
 			case .unsupportedRepositoryVersion(version: let version):
 				return "ResticGUI only supports repository version 2, this repository is verion \(version)."
+			case .exitCode(code: let code, description: let description):
+				return description + " (exit code: \(code))."
 		}
 	}
 }
