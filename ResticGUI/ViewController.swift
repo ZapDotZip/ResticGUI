@@ -283,7 +283,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 					do {
 						do {
 							try repoManager.remove(selectedRepo)
-						} catch let error as KeychainInterface.KeychainError {
+						} catch let error as STBKeychainError {
 							let res = STBAlerts.destructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
 							if res {
 								try repoManager.remove(selectedRepo, removeFromKeychain: false)

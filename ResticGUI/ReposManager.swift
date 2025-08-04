@@ -93,7 +93,7 @@ class ReposManager: NSObject {
 	/// - Parameter repo: The repo to remove.
 	func remove(_ repo: Repo, removeFromKeychain: Bool = true) throws {
 		if removeFromKeychain {
-			try KeychainInterface.delete(path: repo.path)
+			try STBKeychain.delete(path: repo.path)
 		}
 		
 		let name = repo.getName()

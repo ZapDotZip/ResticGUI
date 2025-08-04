@@ -153,7 +153,7 @@ class RepoEditViewController: NSViewController {
 		return repo
 	}
 	
-	func updateExistingRepo(existing: Repo) throws(KeychainInterface.KeychainError) {
+	func updateExistingRepo(existing: Repo) throws(STBKeychainError) {
 		if existing.path != pathField.stringValue {
 			try existing.updatePath(newPath: pathField.stringValue)
 		}
@@ -189,14 +189,14 @@ class RepoEditViewController: NSViewController {
 			}
 			selectedRepo = nil
 			dismiss(self)
-		} catch let error as KeychainInterface.KeychainError {
+		} catch let error as STBKeychainError {
 			switch error {
 			case .itemNotFound:
 					STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
 			case .duplicateItem:
 				if STBAlerts.destructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
-						try KeychainInterface.delete(path: pathField.stringValue)
+						try STBKeychain.delete(path: pathField.stringValue)
 						STBAlerts.alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
 					} catch {
 						STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)

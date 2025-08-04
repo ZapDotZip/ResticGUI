@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftToolbox
 
 
 final class Profile: Codable, Equatable {
@@ -97,7 +98,7 @@ final class Repo: Codable {
 	init(path: String, password: String) throws {
 		self.path = path
 		self.cachedPassword = password
-		try KeychainInterface.add(path: path, password: password)
+		try STBKeychain.add(path: path, password: password)
 	}
 	
 	/// Creates a Repo object without adding the password to the keychain.
@@ -135,11 +136,11 @@ final class Repo: Codable {
 		try container.encodeIfPresent(self.id, forKey: .id)
 	}
 	
-	func getPassword() throws(KeychainInterface.KeychainError) -> String {
+	func getPassword() throws(STBKeychainError) -> String {
 		guard cachedPassword == nil else {
 			return cachedPassword!
 		}
-		cachedPassword = try KeychainInterface.load(path: path)
+		cachedPassword = try STBKeychain.load(path: path)
 		return cachedPassword!
 	}
 	
@@ -151,26 +152,26 @@ final class Repo: Codable {
 	
 	/// Sets the password and adds it to the keychain.
 	/// - Parameter newPass: The updated password.
-	func saveNewPassword(newPass: String) throws(KeychainInterface.KeychainError) {
-		try KeychainInterface.add(path: path, password: newPass)
+	func saveNewPassword(newPass: String) throws(STBKeychainError) {
+		try STBKeychain.add(path: path, password: newPass)
 		cachedPassword = newPass
 	}
 	
 	/// Sets the password and updates the keychain.
 	/// - Parameter newPass: The updated password.
-	func updatePassword(newPass: String) throws(KeychainInterface.KeychainError) {
-		try KeychainInterface.updateOrAdd(path: path, password: newPass)
+	func updatePassword(newPass: String) throws(STBKeychainError) {
+		try STBKeychain.updateOrAdd(path: path, password: newPass)
 		cachedPassword = newPass
 	}
 	
 	/// Updates the path and keychain.
 	/// - Parameter newPath: The updated path.
-	func updatePath(newPath: String) throws(KeychainInterface.KeychainError) {
-		try KeychainInterface.update(path: newPath)
+	func updatePath(newPath: String) throws(STBKeychainError) {
+		try STBKeychain.update(path: newPath)
 		path = newPath
 	}
 	
-	func selfDeletePassword() throws(KeychainInterface.KeychainError) {
+	func selfDeletePassword() throws(STBKeychainError) {
 		// TODO: implement
 	}
 	
@@ -181,7 +182,7 @@ final class Repo: Codable {
 	}
 	
 	/// Returns a repo-configured env dictionary with password.
-	func getEnv() throws(KeychainInterface.KeychainError) -> [String : String] {
+	func getEnv() throws(STBKeychainError) -> [String : String] {
 		var newEnv = env ?? [String : String]()
 		newEnv["HOME"] = ProcessInfo.processInfo.environment["HOME"]
 		newEnv["RESTIC_PASSWORD"] = try getPassword()
