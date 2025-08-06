@@ -11,7 +11,8 @@ class RestoreViewController: NSViewController {
 	@IBOutlet weak var sourceTypeEntire: NSButton!
 	@IBOutlet weak var sourceTypePartial: NSButton!
 	
-	@IBOutlet weak var sourcePartialPathsTable: PathTable!
+	@IBOutlet weak var sourcePathsTable: STBPathListView!
+	private var sourcePathsList: STBPathListController!
 	
 	@IBOutlet weak var destinationTypeOriginal: NSButton!
 	@IBOutlet weak var destinationTypeChosen: NSButton!
@@ -24,9 +25,10 @@ class RestoreViewController: NSViewController {
 	var snapshotToRestore: ResticResponse.Snapshot!
 	var repo: Repo!
 	
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		sourcePathsList = sourcePathsTable.controller
+		sourcePathsList.addObserver(self, forKeyPath: "listDidChange", context: nil)
 		destinationCustomPath.controller.setup(path: nil, callback: self.pathDidChange(_:))
 		destinationCustomPath.controller.canChooseFiles = false
 	}
@@ -53,7 +55,7 @@ class RestoreViewController: NSViewController {
 	
 	private var destinationCustomPathIsSet = false
 	private func restoreButtonEnabled() {
-		let sourceIsValid = sourceTypeEntire.state == .on || (sourceTypePartial.state == .on && true)
+		let sourceIsValid = sourceTypeEntire.state == .on || (sourceTypePartial.state == .on && sourcePathsList.listCount > 0)
 		
 		let destinationIsValid = destinationTypeOriginal.state == .on || (destinationCustomPathIsSet && destinationTypeChosen.state == .on)
 		
@@ -70,6 +72,16 @@ class RestoreViewController: NSViewController {
 		return true
 	}
 	
+	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		guard object as? STBPathListController == sourcePathsList else {
+			return super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+		}
+		if sourcePathsList.listCount > 0 {
+			sourceTypePartial.state = .on
+		}
+		restoreButtonEnabled()
+	}
+	
 	@IBAction func restoreSnapshotType(_ sender: NSButton) {
 		restoreButtonEnabled()
 	}
@@ -83,8 +95,8 @@ class RestoreViewController: NSViewController {
 			if sourceTypeEntire.state == .on {
 				return RestorePlan.restoreSourceType.entireSnapshot
 			} else {
-				if let paths = sourcePartialPathsTable.save() {
-					return RestorePlan.restoreSourceType.selectedFiles(files: paths)
+				if sourcePathsList.listCount > 0 {
+					return RestorePlan.restoreSourceType.selectedFiles(files: sourcePathsList.getStrings())
 				} else {
 					STBAlerts.alert(title: "No files chosen to restore.", message: "Please choose at least one file or folder to restore, or choose to restore an entire snapshot.", style: .informational)
 					return nil
