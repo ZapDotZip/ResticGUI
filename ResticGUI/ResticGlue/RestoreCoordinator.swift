@@ -1,10 +1,11 @@
 //
-//  RestoreController.swift
+//  RestoreCoordinator.swift
 //  ResticGUI
 //
 
 import Foundation
 import SwiftProcessController
+import SwiftToolbox
 
 struct RestorePlan {
 	enum restoreSourceType {
@@ -23,7 +24,7 @@ struct RestorePlan {
 	
 }
 
-class RestoreController {
+class RestoreCoordinator {
 	private static let rc = ResticController.default
 	private var plan: RestorePlan
 	private var display: ProgressDisplayer
@@ -38,8 +39,9 @@ class RestoreController {
 		self.display = display
 	}
 	
-	func argsFromPlan() -> [String] {
-		var args = ["restore", plan.snapshot.id, "--target"]
+	func argsFromPlan() throws -> [String] {
+		var args = ["-r", plan.repo.path, "restore", plan.snapshot.id, "--target"]
+		
 		switch plan.restoreDestination {
 			case .originalSource(overwriteChangedOnly: let overwriteChangedOnly):
 				args.append("/")
@@ -53,14 +55,26 @@ class RestoreController {
 				args.append(path.localPath)
 		}
 		
+		switch plan.restoreSource {
+			case .entireSnapshot:
+				break
+			case .selectedFiles(let files):
+				args.append("--include-file")
+				let file = STB.temporaryFilename()
+				try files.joined(separator: "\n").write(to: file, atomically: true, encoding: .utf8)
+				args.append(file.localPath)
+		}
+		
 		return args
 	}
 	
 	func restore() {
 		do {
 			proc = try ProcessControllerTyped<ResticResponse.RestoreProgress>.init(executableURL: ResticController.default.getResticURL(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: exitHandler(_:), decoderType: .JSON)
-			proc?.env = try plan.repo.getEnv()
-			try proc?.launch(args: argsFromPlan())
+			proc!.env = try plan.repo.getEnv()
+			let args: [String] = try argsFromPlan()
+			Logger.default.run(process: proc!, args: args)
+			try proc!.launch(args: args)
 		} catch {
 			display.displayError(error, isFatal: true)
 		}
@@ -71,7 +85,7 @@ class RestoreController {
 			case .object(output: let output):
 				if let progress = output.percent_done {
 					display.updateProgress(to: progress, infoText: output.progressReport)
-					summary = output.summaryReport
+					summary = output
 				}
 			case .error(rawData: let rawData, decodingError: _):
 				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
@@ -86,6 +100,7 @@ class RestoreController {
 		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
 			display.displayError(ResticError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
+			Logger.default.stderr(errStr)
 			display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
 		} else {
 			Logger.default.log("Undecodable stderr data received from Restic")
