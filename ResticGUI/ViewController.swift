@@ -36,7 +36,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		
 		// view data setup
 		initSidebar(ProfileManager.loadAllProfiles())
-		profileEditor.viewDidLoad()
 		repoManager.initUIView()
 		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile) {
 			selectedProfile = ProfileManager.load(name: s)

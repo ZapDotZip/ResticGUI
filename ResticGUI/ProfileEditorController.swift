@@ -11,12 +11,12 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	
 	@IBOutlet var TabView: NSTabView!
 	@IBOutlet var snapshotsTable: SnapshotsTable!
-	var viewCon: ViewController!
+	@IBOutlet var viewCon: ViewController!
 	var repoManager: ReposManager!
 	
-	func viewDidLoad() {
+	override func awakeFromNib() {
+		super.awakeFromNib()
 		ExcludeTextView.font = NSFont.init(name: "Menlo", size: 12)
-		BackupPathsDS.viewCon = viewCon
 		TabView.selectTabViewItem(at: UserDefaults.standard.integer(forKey: DefaultsKeys.profileEditorTab))
 	}
 	
