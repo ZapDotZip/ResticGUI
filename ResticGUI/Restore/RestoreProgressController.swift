@@ -16,8 +16,8 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	
 	public var plan: RestorePlan?
 	
-	private let dq = DispatchQueue.init(label: "RestoreController", qos: .background)
-	private var restoreController: RestoreController?
+	private let dq = DispatchQueue.init(label: "RestoreCoordinator", qos: .background)
+	private var restoreController: RestoreCoordinator?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,7 +29,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	override func viewDidAppear() {
 		if let plan {
 			dq.async { [self] in
-				restoreController = RestoreController(plan: plan, reportingTo: self)
+				restoreController = RestoreCoordinator(plan: plan, reportingTo: self)
 				restoreController?.restore()
 			}
 			pauseButton.isEnabled = true

@@ -132,6 +132,7 @@ enum ResticError: Error, CustomStringConvertible {
 	case unsupportedRepositoryVersion(version: Int)
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
 	case exitCode(code: Int32, description: String)
+	case unknownError(message: String?)
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
@@ -173,6 +174,8 @@ enum ResticError: Error, CustomStringConvertible {
 				return "ResticGUI only supports repository version 2, this repository is verion \(version)."
 			case .exitCode(code: let code, description: let description):
 				return description + " (exit code: \(code))."
+			case .unknownError(message: let message):
+				return message ?? "There was an unkown error"
 		}
 	}
 }

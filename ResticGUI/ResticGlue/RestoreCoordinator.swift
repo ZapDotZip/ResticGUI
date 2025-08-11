@@ -59,10 +59,9 @@ class RestoreCoordinator {
 			case .entireSnapshot:
 				break
 			case .selectedFiles(let files):
-				args.append("--include-file")
 				let file = STB.temporaryFilename()
 				try files.joined(separator: "\n").write(to: file, atomically: true, encoding: .utf8)
-				args.append(file.localPath)
+				args.append(contentsOf: ["--include-file", file.localPath])
 		}
 		
 		return args
@@ -85,13 +84,16 @@ class RestoreCoordinator {
 			case .object(output: let output):
 				if let progress = output.percent_done {
 					display.updateProgress(to: progress, infoText: output.progressReport)
+				} else {
 					summary = output
 				}
 			case .error(rawData: let rawData, decodingError: _):
 				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
 					display.displayError(ResticError.init(from: rErr), isFatal: false)
 				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
-					display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown message."), isFatal: false)
+					display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
+				} else {
+					display.displayError(ResticError.unknownError(message: "Restic returned undecodable data."), isFatal: false)
 				}
 		}
 	}
