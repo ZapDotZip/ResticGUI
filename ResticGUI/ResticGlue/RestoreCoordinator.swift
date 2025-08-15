@@ -40,7 +40,7 @@ class RestoreCoordinator {
 	}
 	
 	func argsFromPlan() throws -> [String] {
-		var args = ["-r", plan.repo.path, "restore", plan.snapshot.id, "--target"]
+		var args = ["--json", "-r", plan.repo.path, "restore", plan.snapshot.id, "--target"]
 		
 		switch plan.restoreDestination {
 			case .originalSource(overwriteChangedOnly: let overwriteChangedOnly):
@@ -89,6 +89,7 @@ class RestoreCoordinator {
 				}
 			case .error(rawData: let rawData, decodingError: _):
 				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
+					Logger.default.log("stdout (decoded json): \(rErr)")
 					display.displayError(ResticError.init(from: rErr), isFatal: false)
 				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
 					display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
@@ -100,10 +101,15 @@ class RestoreCoordinator {
 	
 	func stderrHandler(_ errData: Data) {
 		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
+			Logger.default.stderr("(decoded json): \(rErr)")
 			display.displayError(ResticError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
-			Logger.default.stderr(errStr)
-			display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
+			if errStr.contains("terminated received, cleaning up") {
+				return
+			} else {
+				Logger.default.stderr(errStr)
+				display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
+			}
 		} else {
 			Logger.default.log("Undecodable stderr data received from Restic")
 		}
