@@ -17,7 +17,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	public var plan: RestorePlan?
 	
 	private let dq = DispatchQueue.init(label: "RestoreCoordinator", qos: .background)
-	private var restoreController: RestoreCoordinator?
+	private var restoreCoordinator: RestoreCoordinator?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,8 +29,8 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	override func viewDidAppear() {
 		if let plan {
 			dq.async { [self] in
-				restoreController = RestoreCoordinator(plan: plan, reportingTo: self)
-				restoreController?.restore()
+				restoreCoordinator = RestoreCoordinator(plan: plan, reportingTo: self)
+				restoreCoordinator?.restore()
 			}
 			pauseButton.isEnabled = true
 		} else {
@@ -58,7 +58,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	
 	func displayError(_ error: Error, isFatal: Bool) {
 		DispatchQueue.main.async {
-			if let rErr = error as? ResticError {
+			if let rErr = error as? ResticError, case let .exitCode(code, _) = rErr, code != 130 {
 				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: rErr.description, style: .critical)
 			} else {
 				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: "The error message was:\n\n\(error.localizedDescription)", style: .critical)
@@ -71,6 +71,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	
 	func finish(summary: String?, with error: (any Error)?) {
 		DispatchQueue.main.async {
+			self.restoreCoordinator = nil
 			if let error {
 				self.displayError(error, isFatal: false)
 			}
@@ -98,5 +99,14 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 		}
 	}
 	
+	var wasCancelled = false
+	@IBAction func cancelButtonPressed(_ sender: NSButton) {
+		guard let restoreCoordinator else {
+			dismiss(self)
+			return
+		}
+		restoreCoordinator.terminate()
+		wasCancelled = true
+	}
 	
 }
