@@ -100,25 +100,40 @@ final class ResticResponse {
 	
 	struct RestoreProgress: Decodable {
 		let message_type: String
-		let seconds_elapsed: Int
+		let seconds_elapsed: Int?
 		let percent_done: Double? // nil if backup complete
 		let total_files: Int
-		let files_restored: Int
-		let files_skipped: Int
-		let files_deleted: Int
-		let total_bytes: Int64
-		let bytes_restored: Int64
-		let bytes_skipped: Int
+		let files_restored: Int?
+		let files_skipped: Int?
+		let files_deleted: Int?
+		let total_bytes: Int64?
+		let bytes_restored: Int64?
+		let bytes_skipped: Int?
+		
+		private func bcfOrNil(_ val: Int64?) -> String {
+			guard let val else {
+				return "???"
+			}
+			return bcf.string(fromByteCount: val)
+		}
+		
+		private func numOrNil(_ val: Int?) -> String {
+			guard let val else {
+				return "???"
+			}
+			return "\(val)"
+		}
 		
 		var progressReport: String {
-			var text = "\(bcf.string(fromByteCount: bytes_restored))/\(bcf.string(fromByteCount: total_bytes)) restored, "
-			text += "\(files_restored)/\(total_files) files.\n"
-			text += "\(seconds_elapsed) seconds elapsed."
-			return text
+			return """
+				\(bcfOrNil(bytes_restored))/\(bcfOrNil(total_bytes)) restored
+				\(numOrNil(files_restored))/\(total_files) files restored
+				\(numOrNil(seconds_elapsed)) seconds elapsed
+			"""
 		}
 		
 		var summaryReport: String {
-			return "Restored \(total_files) files, \(bcf.string(fromByteCount: total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed)) ?? "\(seconds_elapsed) seconds")"
+			return "Restored \(total_files) files, \(bcfOrNil(total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed ?? 0)) ?? "\(seconds_elapsed ?? 0) seconds")"
 		}
 		
 	}
@@ -136,7 +151,6 @@ enum ResticError: Error, CustomStringConvertible {
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
-		Logger.default.log(self)
 	}
 	
 	init?(exitCode: Int32) {
