@@ -194,17 +194,18 @@ Gw
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="IVl-O3-xP9" secondAttribute="trailing" constant="20" symbolic="YES" id="HuY-mS-HaP"/>
                             <constraint firstAttribute="trailing" secondItem="U9T-km-gnx" secondAttribute="trailing" constant="20" symbolic="YES" id="MGa-eE-Svk"/>
                             <constraint firstAttribute="bottom" secondItem="BCA-Fn-Dxr" secondAttribute="bottom" constant="20" symbolic="YES" id="NPp-cT-gTl"/>
+                            <constraint firstItem="U9T-km-gnx" firstAttribute="trailing" secondItem="IVl-O3-xP9" secondAttribute="trailing" id="Nj8-bX-abU"/>
+                            <constraint firstItem="IVl-O3-xP9" firstAttribute="top" secondItem="U9T-km-gnx" secondAttribute="bottom" constant="8" symbolic="YES" id="Pdl-Mb-mh9"/>
                             <constraint firstAttribute="trailing" secondItem="BCA-Fn-Dxr" secondAttribute="trailing" constant="20" symbolic="YES" id="Uxk-rz-XlY"/>
                             <constraint firstItem="BCA-Fn-Dxr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="K6A-5K-wPg" secondAttribute="trailing" constant="12" symbolic="YES" id="XHP-NM-Gkv"/>
                             <constraint firstAttribute="bottom" secondItem="K6A-5K-wPg" secondAttribute="bottom" constant="20" symbolic="YES" id="Zs1-RR-4vu"/>
                             <constraint firstItem="U9T-km-gnx" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="cRt-x8-UaW"/>
+                            <constraint firstItem="IVl-O3-xP9" firstAttribute="leading" secondItem="U9T-km-gnx" secondAttribute="leading" id="eya-sz-mUx"/>
                             <constraint firstItem="IVl-O3-xP9" firstAttribute="top" secondItem="U9T-km-gnx" secondAttribute="bottom" constant="8" symbolic="YES" id="kCg-7F-KYa"/>
                             <constraint firstItem="BCA-Fn-Dxr" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="pp0-wP-hbN"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="tV9-jr-wMO"/>
-                            <constraint firstItem="IVl-O3-xP9" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="vZZ-lo-aQd"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="xNt-tv-Ch5"/>
                             <constraint firstItem="U9T-km-gnx" firstAttribute="top" secondItem="bWN-nX-HP3" secondAttribute="top" constant="20" symbolic="YES" id="xcf-Mg-5vP"/>
                         </constraints>

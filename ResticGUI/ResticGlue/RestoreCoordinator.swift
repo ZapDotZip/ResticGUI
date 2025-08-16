@@ -108,7 +108,7 @@ class RestoreCoordinator {
 				return
 			} else {
 				Logger.default.stderr(errStr)
-				display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
+				display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
 			}
 		} else {
 			Logger.default.log("Undecodable stderr data received from Restic")

@@ -13,8 +13,7 @@ final class ResticResponse {
 		df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
 		return df
 	}()
-
-
+	
 	
 	struct Version: Decodable, Equatable {
 		let version: String
@@ -102,7 +101,7 @@ final class ResticResponse {
 		let message_type: String
 		let seconds_elapsed: Int?
 		let percent_done: Double? // nil if backup complete
-		let total_files: Int
+		let total_files: Int?
 		let files_restored: Int?
 		let files_skipped: Int?
 		let files_deleted: Int?
@@ -126,14 +125,14 @@ final class ResticResponse {
 		
 		var progressReport: String {
 			return """
-				\(bcfOrNil(bytes_restored))/\(bcfOrNil(total_bytes)) restored
-				\(numOrNil(files_restored))/\(total_files) files restored
+				\(bcf.string(fromByteCount: bytes_restored ?? 0))/\(bcfOrNil(total_bytes)) restored
+				\(files_restored ?? 0)/\(numOrNil(total_files)) files restored
 				\(numOrNil(seconds_elapsed)) seconds elapsed
 			"""
 		}
 		
 		var summaryReport: String {
-			return "Restored \(total_files) files, \(bcfOrNil(total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed ?? 0)) ?? "\(seconds_elapsed ?? 0) seconds")"
+			return "Restored \(numOrNil(total_files)) files, \(bcfOrNil(total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed ?? 0)) ?? "\(seconds_elapsed ?? 0) seconds")"
 		}
 		
 	}

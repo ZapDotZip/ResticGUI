@@ -57,27 +57,35 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	}
 	
 	func displayError(_ error: Error, isFatal: Bool) {
-		DispatchQueue.main.async {
-			if let rErr = error as? RGError, case let .exitCode(code, _) = rErr, code != 130 {
-				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: rErr.description, style: .critical)
+		DispatchQueue.main.async { [self] in
+			if let rErr = error as? RGError {
+				switch rErr {
+				case .exitCode(let code, _):
+					if code == 130 && !wasCancelled {
+						STBAlerts.alert(title: "An error occured while trying to restore the backup", message: rErr.description, style: .critical)
+					}
+				default:
+					STBAlerts.alert(title: "An error occured while trying to restore the backup", message: rErr.description, style: .critical)
+				}
 			} else {
 				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: "The error message was:\n\n\(error.localizedDescription)", style: .critical)
 			}
 			if isFatal {
-				self.dismiss(self)
+				dismiss(self)
 			}
 		}
 	}
 	
 	func finish(summary: String?, with error: (any Error)?) {
-		DispatchQueue.main.async {
-			self.restoreCoordinator = nil
+		DispatchQueue.main.async { [self] in
+			restoreCoordinator = nil
 			if let error {
-				self.displayError(error, isFatal: false)
+				displayError(error, isFatal: false)
 			}
 			if let summary {
 				STBAlerts.alert(title: "Restore finished", message: "The restore has finished:\n\n\(summary)", style: .informational)
 			}
+			dismiss(self)
 		}
 	}
 	
