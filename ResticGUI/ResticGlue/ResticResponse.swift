@@ -162,6 +162,7 @@ enum ResticError: Error, CustomStringConvertible {
 			case 10: self = .exitCode(code: 10, description: "Repository does not exist")
 			case 11: self = .exitCode(code: 11, description: "Repository could not be locked")
 			case 12: self = .exitCode(code: 12, description: "Wrong repository password")
+			case 130: self = .exitCode(code: 130, description: "Restic was interrupted using SIGINT or SIGSTOP")
 			default: self = .exitCode(code: exitCode, description: "Unknown exit code reason")
 		}
 		Logger.default.log("Restic returned exit code \(self)")
