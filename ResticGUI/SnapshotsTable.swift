@@ -72,7 +72,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		NSLog("Couldn't load snapshots: \(error)")
 		progressIndicator.stopAnimation(self)
 		reloadButton.isEnabled = true
-		if let err = error as? ResticError {
+		if let err = error as? RGError {
 			STBAlerts.alert(title: "Unable to load snapshots", message: err.description, style: .critical)
 		} else {
 			STBAlerts.alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(error.localizedDescription)", style: .critical)

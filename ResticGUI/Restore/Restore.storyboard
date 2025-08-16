@@ -153,19 +153,16 @@ Gw
             <objects>
                 <viewController id="gU5-Dn-eoO" customClass="RestoreProgressController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="bWN-nX-HP3">
-                        <rect key="frame" x="0.0" y="0.0" width="296" height="118"/>
+                        <rect key="frame" x="0.0" y="0.0" width="340" height="118"/>
                         <subviews>
                             <progressIndicator horizontalHuggingPriority="1000" verticalHuggingPriority="1000" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="U9T-km-gnx">
-                                <rect key="frame" x="20" y="79" width="256" height="20"/>
+                                <rect key="frame" x="20" y="79" width="300" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="256" id="pQT-CR-6pR"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="pQT-CR-6pR"/>
                                 </constraints>
                             </progressIndicator>
                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVl-O3-xP9">
-                                <rect key="frame" x="18" y="56" width="260" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="256" id="It3-Ft-bgb"/>
-                                </constraints>
+                                <rect key="frame" x="18" y="56" width="304" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="Progress" id="Xgc-1Y-TFU">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -181,9 +178,12 @@ Gw
 Gw
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="cancelButtonPressed:" target="gU5-Dn-eoO" id="WAh-9l-8YL"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BCA-Fn-Dxr">
-                                <rect key="frame" x="212" y="13" width="71" height="32"/>
+                                <rect key="frame" x="256" y="13" width="71" height="32"/>
                                 <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jBy-Ib-agP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>

@@ -107,7 +107,7 @@ class RepoEditViewController: NSViewController {
 	func asyncErrorHandler(_ error: Error, tryingTo: String) {
 		controlTextDidChange(self)
 		progressIndicator.stopAnimation(self)
-		if let err = error as? ResticError {
+		if let err = error as? RGError {
 			NSLog("Couldn't create repository: \(error)")
 			STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: err.description, style: .critical)
 		} else {
@@ -126,7 +126,7 @@ class RepoEditViewController: NSViewController {
 			do {
 				let response = try ResticController.default.run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
 				guard response.version == 2 else {
-					throw ResticError.unsupportedRepositoryVersion(version: response.version)
+					throw RGError.unsupportedRepositoryVersion(version: response.version)
 				}
 				DispatchQueue.main.async { [self] in
 					progressIndicator.stopAnimation(self)

@@ -90,11 +90,11 @@ class RestoreCoordinator {
 			case .error(rawData: let rawData, decodingError: _):
 				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
 					Logger.default.log("stdout (decoded json): \(rErr)")
-					display.displayError(ResticError.init(from: rErr), isFatal: false)
+					display.displayError(RGError.init(from: rErr), isFatal: false)
 				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
-					display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
+					display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
 				} else {
-					display.displayError(ResticError.unknownError(message: "Restic returned undecodable data."), isFatal: false)
+					display.displayError(RGError.unknownError(message: "Restic returned undecodable data."), isFatal: false)
 				}
 		}
 	}
@@ -102,13 +102,13 @@ class RestoreCoordinator {
 	func stderrHandler(_ errData: Data) {
 		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
 			Logger.default.stderr("(decoded json): \(rErr)")
-			display.displayError(ResticError.init(from: rErr), isFatal: false)
+			display.displayError(RGError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
 			if errStr.contains("terminated received, cleaning up") {
 				return
 			} else {
 				Logger.default.stderr(errStr)
-				display.displayError(ResticError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
+				display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned unknown error message."), isFatal: false)
 			}
 		} else {
 			Logger.default.log("Undecodable stderr data received from Restic")
@@ -116,7 +116,7 @@ class RestoreCoordinator {
 	}
 	
 	func exitHandler(_ exitCode: Int32) {
-		let exitError = ResticError(exitCode: exitCode)
+		let exitError = RGError(exitCode: exitCode)
 		if let sum = summary?.summaryReport {
 			display.finish(summary: sum, with: exitError)
 		} else {

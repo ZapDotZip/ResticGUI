@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED06377F2D63E971004E26BC /* EnviormentTableView.xib */; };
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
-		ED2591762E19A45600C068E4 /* RestoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2591752E19A45600C068E4 /* RestoreController.swift */; };
+		ED2591762E19A45600C068E4 /* RestoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */; };
+		ED3985072E5002320014CDB2 /* RGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3985012E50022F0014CDB2 /* RGError.swift */; };
 		ED46EDED2E19E7F900DE8B77 /* SwiftProcessController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED46EDE82E19E7F300DE8B77 /* SwiftProcessController.framework */; };
 		ED46EDEE2E19E7F900DE8B77 /* SwiftProcessController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED46EDE82E19E7F300DE8B77 /* SwiftProcessController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED581FF52E0A11A700F2BE6F /* SwiftToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; };
@@ -144,7 +145,8 @@
 /* Begin PBXFileReference section */
 		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
 		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
-		ED2591752E19A45600C068E4 /* RestoreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreController.swift; sourceTree = "<group>"; };
+		ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCoordinator.swift; sourceTree = "<group>"; };
+		ED3985012E50022F0014CDB2 /* RGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGError.swift; sourceTree = "<group>"; };
 		ED46EDE02E19E7F200DE8B77 /* SwiftProcessController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftProcessController.xcodeproj; path = ../SwiftProcessController/SwiftProcessController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftToolbox.xcodeproj; path = ../SwiftToolbox/SwiftToolbox.xcodeproj; sourceTree = "<group>"; };
 		ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticResponse.swift; sourceTree = "<group>"; };
@@ -309,7 +311,7 @@
 			children = (
 				EDE0AA692D10C1390081E223 /* ResticController.swift */,
 				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
-				ED2591752E19A45600C068E4 /* RestoreController.swift */,
+				ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */,
 				EDE0AA6A2D10C1390081E223 /* Logger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 			);
@@ -333,6 +335,7 @@
 				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
 				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
 				ED06377F2D63E971004E26BC /* EnviormentTableView.xib */,
+				ED3985012E50022F0014CDB2 /* RGError.swift */,
 				EDFB37A12E12EDB60006CC2C /* Restore */,
 				EDE0AA6B2D10C1390081E223 /* ResticGlue */,
 				EDE0AA662D10C1390081E223 /* Preferences */,
@@ -558,8 +561,9 @@
 				EDF0A5F72E149DA8003B3FFC /* PathTable.swift in Sources */,
 				EDFB37A32E12EDB60006CC2C /* RestoreViewController.swift in Sources */,
 				EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */,
-				ED2591762E19A45600C068E4 /* RestoreController.swift in Sources */,
+				ED2591762E19A45600C068E4 /* RestoreCoordinator.swift in Sources */,
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
+				ED3985072E5002320014CDB2 /* RGError.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* Logger.swift in Sources */,

@@ -58,7 +58,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	
 	func displayError(_ error: Error, isFatal: Bool) {
 		DispatchQueue.main.async {
-			if let rErr = error as? ResticError, case let .exitCode(code, _) = rErr, code != 130 {
+			if let rErr = error as? RGError, case let .exitCode(code, _) = rErr, code != 130 {
 				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: rErr.description, style: .critical)
 			} else {
 				STBAlerts.alert(title: "An error occured while trying to restore the backup", message: "The error message was:\n\n\(error.localizedDescription)", style: .critical)

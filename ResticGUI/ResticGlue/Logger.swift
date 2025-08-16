@@ -59,7 +59,7 @@ final class Logger {
 		}
 	}
 	
-	func log(_ rErr: ResticError) {
+	public func log(_ rErr: RGError) {
 		write("\(date()): \(rErr)\n")
 	}
 	

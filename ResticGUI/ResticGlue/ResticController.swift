@@ -75,7 +75,7 @@ final class ResticController: NSObject {
 			}
 		}
 		NSLog("ResticController: Could not find a valid restic installation automatically.")
-		throw ResticError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic on your computer.")
+		throw RGError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic on your computer.")
 	}
 		
 	func homebrew() throws {
@@ -85,7 +85,7 @@ final class ResticController: NSObject {
 				return rv
 			}
 		}
-		throw ResticError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic from Homebrew.")
+		throw RGError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic from Homebrew.")
 	}
 	
 	func getVersionInfo() throws -> ResticResponse.Version {
@@ -112,9 +112,9 @@ final class ResticController: NSObject {
 		if let output = try? jsonDecoder.decode(D.self, from: result.output) {
 			return output
 		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.error) {
-			throw ResticError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
+			throw RGError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
 		} else {
-			throw ResticError.couldNotDecodeOutput
+			throw RGError.couldNotDecodeOutput
 		}
 	}
 	
