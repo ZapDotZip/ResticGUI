@@ -88,13 +88,13 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 	}
 	
 	@IBAction func pauseButtonPressed(_ sender: NSButton) {
-		if let restoreController {
-			if restoreController.isSuspended {
-				restoreController.pause()
-				pauseButton.stringValue = "Resume"
-			} else {
-				restoreController.resume()
+		if let restoreCoordinator {
+			if restoreCoordinator.isSuspended {
+				restoreCoordinator.resume()
 				pauseButton.stringValue = "Pause"
+			} else {
+				restoreCoordinator.pause()
+				pauseButton.stringValue = "Resume"
 			}
 		}
 	}

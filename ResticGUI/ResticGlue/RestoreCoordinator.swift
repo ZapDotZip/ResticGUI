@@ -124,7 +124,7 @@ class RestoreCoordinator {
 		}
 	}
 	
-	func stop() {
+	func terminate() {
 		proc?.terminate()
 	}
 	
