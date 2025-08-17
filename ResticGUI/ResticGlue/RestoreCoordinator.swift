@@ -72,7 +72,7 @@ class RestoreCoordinator {
 			proc = try ProcessControllerTyped<ResticResponse.RestoreProgress>.init(executableURL: ResticController.default.getResticURL(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: exitHandler(_:), decoderType: .JSON)
 			proc!.env = try plan.repo.getEnv()
 			let args: [String] = try argsFromPlan()
-			Logger.default.run(process: proc!, args: args)
+			RGLogger.default.run(process: proc!, args: args)
 			try proc!.launch(args: args)
 		} catch {
 			display.displayError(error, isFatal: true)
@@ -89,7 +89,7 @@ class RestoreCoordinator {
 				}
 			case .error(rawData: let rawData, decodingError: _):
 				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
-					Logger.default.log("stdout (decoded json): \(rErr)")
+					RGLogger.default.log("stdout (decoded json): \(rErr)")
 					display.displayError(RGError.init(from: rErr), isFatal: false)
 				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
 					display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
@@ -101,17 +101,17 @@ class RestoreCoordinator {
 	
 	func stderrHandler(_ errData: Data) {
 		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
-			Logger.default.stderr("(decoded json): \(rErr)")
+			RGLogger.default.stderr("(decoded json): \(rErr)")
 			display.displayError(RGError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
 			if errStr.contains("terminated received, cleaning up") {
 				return
 			} else {
-				Logger.default.stderr(errStr)
+				RGLogger.default.stderr(errStr)
 				display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
 			}
 		} else {
-			Logger.default.log("Undecodable stderr data received from Restic")
+			RGLogger.default.log("Undecodable stderr data received from Restic")
 		}
 	}
 	

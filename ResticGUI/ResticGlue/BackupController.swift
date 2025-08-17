@@ -154,13 +154,13 @@ class BackupController {
 		} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: data) {
 			var sum: String = ""
 			dump(summary, to: &sum)
-			Logger.default.log(sum)
+			RGLogger.default.log(sum)
 			lastBackupSummary = summary
 		} else {
 			let str: String = String(data: data, encoding: .utf8) ?? "Error decoding output."
 			let errMsg: String = {
 				if str.count != 0 {
-					Logger.default.stdout(str)
+					RGLogger.default.stdout(str)
 					return str
 				} else {
 					return getStderr()

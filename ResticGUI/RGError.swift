@@ -28,7 +28,7 @@ enum RGError: Error, CustomStringConvertible {
 			case 130: self = .exitCode(code: 130, description: "Restic was interrupted using SIGINT or SIGSTOP")
 			default: self = .exitCode(code: exitCode, description: "Unknown exit code reason")
 		}
-		Logger.default.log("Restic returned exit code \(self)")
+		RGLogger.default.log("Restic returned exit code \(self)")
 	}
 	
 	var description: String {

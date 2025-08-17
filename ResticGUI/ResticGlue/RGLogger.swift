@@ -7,11 +7,11 @@ import Foundation
 import SwiftToolbox
 import SwiftProcessController
 
-final class Logger {
+final class RGLogger {
 	private let logfile: FileHandle
 	private let df: DateFormatter
 	private let dq: DispatchQueue
-	static let `default` = Logger()
+	static let `default` = RGLogger()
 	
 	private init() {
 		df = DateFormatter.init()
@@ -42,18 +42,21 @@ final class Logger {
 	
 	/// Writes the raw string directly to the log file.
 	/// - Parameter str: The string to write.
-	func write(_ str: String) {
+	private func write(_ str: String) {
+		#if DEBUG
+			print(str)
+		#endif
 		dq.async {
 			self.logfile.write(Data(str.utf8))
 		}
 	}
 	
 	/// Returns the formatted current date.
-	func date() -> String { return df.string(from: Date.init()) }
+	private func date() -> String { return df.string(from: Date.init()) }
 	
 	/// Logs the string by prepending the date before it.
 	/// - Parameter str: The string to write.
-	func log(_ str: String) {
+	public func log(_ str: String) {
 		if str.count != 0 {
 			write("\(date()): \(str)\n")
 		}
@@ -65,17 +68,17 @@ final class Logger {
 	
 	/// Logs the string by prepending the date before it.
 	/// - Parameter str: The string to write.
-	func runCmd(path: URL, args: [String]) {
+	public func runCmd(path: URL, args: [String]) {
 		write("\(date()): Running \(path.path) \(args)\n")
 	}
 	
-	func run(process: SPCBase, args: [String]) {
+	public func run(process: SPCBase, args: [String]) {
 		write("\(date()): Running \(process.executableURL.localPath) \(args)\n with env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
 	}
 	
 	/// Logs Standard Error from restic.
 	/// - Parameter str: The string to write.
-	func stderr(_ str: String?) {
+	public func stderr(_ str: String?) {
 		if str != nil, str?.count != 0 {
 			write("\(date()): stderr: \(str!)\n")
 		}
@@ -83,16 +86,10 @@ final class Logger {
 	
 	/// Logs Standard Output when it's not JSON.
 	/// - Parameter str: The string to write.
-	func stdout(_ str: String) {
+	public func stdout(_ str: String) {
 		if str.count != 0 {
 			write("\(date()): stdout: \(str)\n")
 		}
 	}
 	
-	
-	deinit {
-		dq.sync {
-			logfile.closeFile()
-		}
-	}
 }
