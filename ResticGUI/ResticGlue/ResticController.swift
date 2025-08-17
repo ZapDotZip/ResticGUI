@@ -9,7 +9,7 @@ import SwiftProcessController
 
 final class ResticController: NSObject {
 	#if arch(x86_64)
-	static let supportedRV = ResticResponse.ResticVersion.init(version: "0.18.0", go_arch: "amd64")
+	static let supportedRV = ResticResponse.Version.init(version: "0.18.0", go_arch: "amd64")
 	#elseif arch(arm64)
 	static let supportedRV = ResticResponse.Version.init(version: "0.18.0", go_arch: "arm64")
 	#endif

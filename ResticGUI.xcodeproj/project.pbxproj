@@ -30,7 +30,7 @@
 		EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */; };
 		EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA672D10C1390081E223 /* BackupController.swift */; };
 		EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA692D10C1390081E223 /* ResticController.swift */; };
-		EDE0AA842D10C1390081E223 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* Logger.swift */; };
+		EDE0AA842D10C1390081E223 /* RGLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* RGLogger.swift */; };
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
 		EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */; };
 		EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6F2D10C1390081E223 /* DataClasses.swift */; };
@@ -168,7 +168,7 @@
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
 		EDE0AA672D10C1390081E223 /* BackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupController.swift; sourceTree = "<group>"; };
 		EDE0AA692D10C1390081E223 /* ResticController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticController.swift; sourceTree = "<group>"; };
-		EDE0AA6A2D10C1390081E223 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		EDE0AA6A2D10C1390081E223 /* RGLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGLogger.swift; sourceTree = "<group>"; };
 		EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsDataSource.swift; sourceTree = "<group>"; };
 		EDE0AA6F2D10C1390081E223 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 				EDE0AA692D10C1390081E223 /* ResticController.swift */,
 				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
 				ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */,
-				EDE0AA6A2D10C1390081E223 /* Logger.swift */,
+				EDE0AA6A2D10C1390081E223 /* RGLogger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 			);
 			path = ResticGlue;
@@ -566,7 +566,7 @@
 				ED3985072E5002320014CDB2 /* RGError.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
-				EDE0AA842D10C1390081E223 /* Logger.swift in Sources */,
+				EDE0AA842D10C1390081E223 /* RGLogger.swift in Sources */,
 				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,
 				EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,
@@ -760,16 +760,17 @@
 				CODE_SIGN_ENTITLEMENTS = ResticGUI/ResticGUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -781,16 +782,17 @@
 				CODE_SIGN_ENTITLEMENTS = ResticGUI/ResticGUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
