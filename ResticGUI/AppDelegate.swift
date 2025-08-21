@@ -13,8 +13,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	private lazy var resticController = ResticController.default
 	var backupController: BackupController!
 	
+	let appVersion: String
+	
 	override init() {
+		appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 		super.init()
+		let lastLaunchVersion = UserDefaults.standard.string(forKey: "Version")
+		if lastLaunchVersion == nil {
+			UserDefaults.standard.set(appVersion, forKey: "Version")
+		}
+		
 		if NSEvent.modifierFlags.contains(.shift) {
 			safeMode()
 		}
