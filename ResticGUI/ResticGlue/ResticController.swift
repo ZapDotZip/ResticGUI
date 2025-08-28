@@ -62,7 +62,7 @@ final class ResticController: NSObject {
 	/// Tests to see if the path points to a valid Restic binary by checking its version.
 	/// - Parameter path: The path to restic, will be set if the command runs successfully.
 	func testVersion(_ path: URL) throws {
-		let vers = try ProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.Version.self)
+		let vers = try SPCProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.Version.self, decodingWith: .JSON)
 		resticLocation = path
 		versionInfo = vers.output
 	}
@@ -105,7 +105,7 @@ final class ResticController: NSObject {
 	}
 	
 	func run<D: Decodable>(args: [String], env: [String : String], returning: D.Type) throws -> D {
-		let pr = ProcessRunner(executableURL: try getResticURL())
+		let pr = SPCProcessRunner(executableURL: try getResticURL())
 		pr.env = env
 		pr.qualityOfService = .userInitiated
 		let result = try pr.run(args: args)

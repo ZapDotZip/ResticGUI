@@ -72,7 +72,7 @@ final class RGLogger {
 		write("\(date()): Running \(path.path) \(args)\n")
 	}
 	
-	public func run(process: SPCBase, args: [String]) {
+	public func run(process: _SPCBase, args: [String]) {
 		write("\(date()): Running \(process.executableURL.localPath) \(args)\n with env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
 	}
 	
