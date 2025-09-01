@@ -14,11 +14,7 @@ class ReposManager: NSObject {
 	@IBOutlet weak var repoEditControl: NSSegmentedControl!
 	@IBOutlet weak var profileEditor: ProfileEditorController!
 	
-	static let repolistFile: URL = {
-		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-			.appending(path: "ResticGUI", isDirectory: true)
-			.appending(path: "Repositories.plist", isDirectory: false)
-	}()
+	static let repolistFile: URL = AppDelegate.appSupportDirectory.appending(path: "Repositories.plist", isDirectory: false)
 	
 	private let encoder = PropertyListEncoder.init()
 	private let decoder = PropertyListDecoder.init()

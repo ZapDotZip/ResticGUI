@@ -15,6 +15,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	let appVersion: String
 	
+	public static let appSupportDirectory: URL = {
+		#if DEBUG
+		if CommandLine.arguments.contains("--test") {
+			return FileManager.default.temporaryDirectory
+				.appending(path: UUID().uuidString, isDirectory: true)
+				.appending(path: "ResticGUI", isDirectory: true)
+		} else {
+			return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true)
+		}
+		#else
+		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true)
+		#endif
+	}()
+	
 	override init() {
 		appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 		super.init()

@@ -11,11 +11,7 @@ class ProfileManager {
 	private static let PROFILE_EXT = "plist"
 	private static let PROFILE_EXT_DOT = ".plist"
 	
-	static let profileDir: URL = {
-		return try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-			.appending(path: "ResticGUI", isDirectory: true)
-			.appending(path: "Profiles", isDirectory: true)
-	}()
+	static let profileDir: URL = AppDelegate.appSupportDirectory.appending(path: "Profiles", isDirectory: true)
 	
 	private static let encoder = {
 		let ple = PropertyListEncoder.init()
