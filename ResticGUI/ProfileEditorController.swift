@@ -37,9 +37,7 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 	/// - Parameter profile: The profile to load.
 	func setupMainEditorView(profile: Profile) {
 		// save the existing profile if it has been modified
-		if let prof = viewCon.selectedProfile {
-			ProfileManager.save(prof)
-		}
+		viewCon.saveSelectedProfile()
 		viewCon.view.window?.title = profile.name
 		viewCon.selectedProfile = profile
 		BackupPathsDS.load(fromProfile: profile)

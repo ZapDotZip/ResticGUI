@@ -35,10 +35,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		outline.menu = profileListMenu
 		
 		// view data setup
-		initSidebar(ProfileManager.loadAllProfiles())
+		initSidebar(ProfileManager.getProfilesList())
 		repoManager.initUIView()
 		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile) {
-			selectedProfile = ProfileManager.load(name: s)
+			selectedProfile = loadWithError(named: s)
 			if let p = selectedProfile {
 				outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(p.name) ?? 1), byExtendingSelection: false)
 			}
@@ -56,7 +56,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	func indexOfProfile(_ name: String) -> Int? {
 		for (idx, poh) in profileSidebarList.enumerated() {
-			if poh.profile?.name == name {
+			if poh.profile == name {
 				return idx
 			}
 		}
@@ -83,11 +83,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	func saveQuit() {
-		if let profile = selectedProfile {
-			ProfileManager.save(profile)
-		} else {
-			NSLog("No profile selected to save.")
-		}
+		saveSelectedProfile()
 	}
 	
 	
@@ -98,69 +94,85 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	var selectedProfile: Profile?
 	
 	func newProfile(name: String) -> Bool {
-		guard !profileSidebarList.contains(where: { $0.profile?.name == name }) else {
+		guard !profileSidebarList.contains(where: { $0.profile == name }) else {
 			STBAlerts.alert(title: "This profile name already exists.", message: "Choose a different profile name.", style: .informational)
 			return false
 		}
 		let new = Profile.init(name: name)
 		append(profile: new)
-		ProfileManager.save(new)
+		saveWithError(new)
 		outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(new.name) ?? 1), byExtendingSelection: false)
 		return true
 	}
 	
 	@IBAction func deleteProfile(_ sender: NSButton) {
-		if let p = selectedProfile {
-			var index = (indexOfProfile(p.name) ?? 0) - 1
-			if index <= 0 {
-				index = 1
+		guard let profile = selectedProfile?.name else { return }
+		
+		var index = (indexOfProfile(profile) ?? 0) - 1
+		if index <= 0 {
+			index = 1
+		}
+		let deleteResponse = STBAlerts.destructiveAlert(title: "Delete profile \"\(profile)\"?", message: "Are you sure you want to delete the profile \"\(profile)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
+		if deleteResponse {
+			ProfileManager.delete(profile)
+			profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
+				if let profile = poh.profile {
+					return profile != profile
+				}
+				return true
 			}
-			let deleteResponse = STBAlerts.destructiveAlert(title: "Delete profile \"\(p.name)\".", message: "Are you sure you want to delete the profile \"\(p.name)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
-			if deleteResponse {
-				ProfileManager.delete(p)
-				profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
-					if let p = poh.profile {
-						return p != selectedProfile
-					}
-					return true
-				}
-				outline.reloadData()
-				selectedProfile = nil
-				if profileSidebarList.count == 1 {
-					performSegue(withIdentifier: "NewProfile", sender: sender)
-				} else {
-					outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
-				}
+			outline.removeItems(at: [index], inParent: nil)
+//			outline.reloadData()
+			selectedProfile = nil
+			if profileSidebarList.count == 1 {
+				performSegue(withIdentifier: "NewProfile", sender: sender)
 			} else {
-				NSLog("Delete cancelled")
+				outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
 			}
 		} else {
-			NSLog("No profile selected to delete.")
+			NSLog("Delete cancelled")
 		}
 	}
 	
 	func editProfileName(_ sender: NSTextField) {
 		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
-			selected.name = sender.stringValue
+			if selectedProfile?.name == selected {
+				saveSelectedProfile()
+			}
+			do {
+				try ProfileManager.rename(from: selected, to: sender.stringValue)
+			} catch {
+				STBAlerts.alert(title: "Couldn't rename profile.", message: "An error occured while trying to change the profile named \"\(selected)\" to \"\(sender.stringValue)\"", error: error, style: .critical)
+			}
 		}
 	}
 	
 	@IBAction @objc func exportProfile(_ sender: NSMenuItem) {
-		if let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile {
-			STBFilePanels.savePanelModal(for: self.view.window!, nameFieldLabel: "Export As", nameField: selected.name + ".plist", isExtensionHidden: true, allowedFileExtensions: ["plist"], completionHandler: { url in
-				if let url {
-					ProfileManager.save(selected, to: url)
-				}
-			})
+		guard let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile,
+				let profile = try? ProfileManager.load(named: selected) else {
+			return
 		}
+		STBFilePanels.savePanelModal(for: self.view.window!, nameFieldLabel: "Export As", nameField: selected + ".plist", isExtensionHidden: true, allowedFileExtensions: ["plist"], completionHandler: { url in
+			if let url {
+				do {
+					try ProfileManager.save(profile, to: url)
+				} catch {
+					STBAlerts.alert(title: "Couldn't export profile.", message: "An error occured while trying to export the profile named \"\(selected)\"", error: error, style: .critical)
+				}
+			}
+		})
 	}
 	
 	@IBAction func importProfile(_ sender: NSMenuItem) {
 		if let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) {
 			let newProfiles = urls.compactMap { url in
 				if let profile = ProfileManager.load(url) {
-					ProfileManager.save(profile)
-					return profile
+					do {
+						try ProfileManager.save(profile)
+						return profile.name
+					} catch {
+						STBAlerts.alert(title: "Couldn't load profile", message: "Failed to load the profile located at \(url.localPath). Tge profile may be corrupt, or invalid.", error: error, style: .critical)
+					}
 				}
 				return nil
 			}
@@ -175,17 +187,17 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	var profileSidebarList: [ProfileOrHeader] = []
 	
 	func append(profile: Profile) {
-		profileSidebarList.append(ProfileOrHeader.init(profile: profile))
+		profileSidebarList.append(ProfileOrHeader.init(profile: profile.name))
 		profileSidebarList.sort { (a, b) -> Bool in
 			if let ap = a.profile, let bp = b.profile {
-				return ap.name < bp.name
+				return ap < bp
 			}
 			return false
 		}
 		outline.reloadData()
 	}
 	
-	func initSidebar(_ newProfiles: [Profile]) {
+	func initSidebar(_ newProfiles: [String]) {
 		profileSidebarList.reserveCapacity(profileSidebarList.count + newProfiles.count)
 		for i in newProfiles {
 			profileSidebarList.append(ProfileOrHeader.init(profile: i))
@@ -214,7 +226,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			return profilesCellView
 		} else {
 			profilesCellView = (outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ProfileCell"), owner: self) as! NSTableCellView)
-			profilesCellView.textField?.stringValue = (item as! ProfileOrHeader).profile!.name
+			profilesCellView.textField?.stringValue = (item as! ProfileOrHeader).profile!
 			return profilesCellView
 			
 		}
@@ -229,32 +241,54 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	func outlineViewSelectionDidChange(_ notification: Notification) {
-		save()
-		if let selected = outline.item(atRow: outline.selectedRow) as? ProfileOrHeader {
-			if let p = selected.profile {
-				DeleteProfileButton.isEnabled = true
-				profileEditor.setupMainEditorView(profile: p)
-				selectedProfile = p
-				UserDefaults.standard.set(p.name, forKey: DefaultsKeys.lastSelectedProfile)
-			} else {
-				DeleteProfileButton.isEnabled = false
-				self.view.window?.title = "ResticGUI"
-			}
-		} else {
+		saveSelectedProfile()
+		guard let selected = outline.item(atRow: outline.selectedRow) as? ProfileOrHeader, let p = selected.profile else {
 			DeleteProfileButton.isEnabled = false
 			self.view.window?.title = "ResticGUI"
+			return
+		}
+		DeleteProfileButton.isEnabled = true
+		if let profile = loadWithError(named: p) {
+			profileEditor.setupMainEditorView(profile: profile)
+			selectedProfile = profile
+			UserDefaults.standard.set(profile.name, forKey: DefaultsKeys.lastSelectedProfile)
 		}
 	}
 	
-	private func save() {
+	func saveSelectedProfile() {
 		if let p = selectedProfile {
-			ProfileManager.save(p)
+			do {
+				try ProfileManager.save(p)
+			} catch {
+				NSLog("Couldn't save profile: \(error)")
+				STBAlerts.alert(title: "An error occured trying to save the current profile.", message: "The profile \"\(p.name)\" could not be saved:\n\n\(error.localizedDescription)", style: .critical)
+			}
+		}
+	}
+	
+	func saveWithError(_ profile: Profile) {
+		do {
+			try ProfileManager.save(profile)
+		} catch {
+			NSLog("Couldn't save profile: \(error)")
+			STBAlerts.alert(title: "An error occured trying to save the profile.", message: "The profile \"\(profile.name)\" could not be saved.", error: error,style: .critical)
+		}
+	}
+	
+	private func loadWithError(named: String) -> Profile? {
+		do {
+			return try ProfileManager.load(named: named)
+		} catch {
+			DispatchQueue.main.async {
+				STBAlerts.alert(title: "An error occured trying to load a profile", message: "The profile \"\(named)\" could not be loaded.", error: error, style: .critical)
+			}
+			return nil
 		}
 	}
 	
 	@IBAction func saveProfile(_ sender: NSMenuItem) {
 		self.view.window?.makeFirstResponder(self) // removes control from text fields
-		save()
+		saveSelectedProfile()
 	}
 	
 	@IBAction func newProfile(_ sender: NSMenuItem) {
@@ -262,35 +296,26 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	@IBAction func revertToSaved(_ sender: NSMenuItem) {
-		if let p = selectedProfile {
-			if let saved = ProfileManager.load(name: p.name) {
-				if let i = profileSidebarList.firstIndex(where: { (poh) -> Bool in
-					return poh.profile === selectedProfile
-				}) {
-					profileSidebarList[i].profile = saved
-					outline.reloadData()
-				}
-			}
-		}
+		guard let selectedProfile else { return }
+		guard let saved = loadWithError(named: selectedProfile.name) else { return }
+		profileEditor.setupMainEditorView(profile: saved)
 	}
 	
 	@IBAction func repoEditButton(_ sender: NSSegmentedControl) {
 		if sender.selectedSegment == 1 {
-			if let selectedRepo = repoManager.getSelectedRepo() {
-				let res = STBAlerts.destructiveAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, destructiveButtonText: "Delete")
-				if res {
+			guard let selectedRepo = repoManager.getSelectedRepo() else { return }
+			if STBAlerts.destructiveAlert(title: "Remove repository \"\(selectedRepo.getName())\"", message: "The repository will be removed from the list.", style: .informational, destructiveButtonText: "Delete") {
+				do {
 					do {
-						do {
-							try repoManager.remove(selectedRepo)
-						} catch let error as STBKeychainError {
-							let res = STBAlerts.destructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
-							if res {
-								try repoManager.remove(selectedRepo, removeFromKeychain: false)
-							}
+						try repoManager.remove(selectedRepo)
+					} catch let error as STBKeychainError {
+						let deletingRepoKeychainError = STBAlerts.destructiveAlert(title: "Unable to remove password from Keychain.", message: "The password for the repo you are trying to delete could not be removed from the keychain:\n\(error.errorDescription ?? "")\n\nDelete the repository anyways?", style: .warning, destructiveButtonText: "Delete")
+						if deletingRepoKeychainError {
+							try repoManager.remove(selectedRepo, removeFromKeychain: false)
 						}
-					} catch {
-						STBAlerts.alert(title: "An error occurred tryingt to save the repository list..", message: "\(error)", style: .critical)
 					}
+				} catch {
+					STBAlerts.alert(title: "An error occurred trying to save the repository list.", message: nil, error: error, style: .critical)
 				}
 			}
 		} else if sender.selectedSegment == 0 {
@@ -316,7 +341,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			viewState = .noBackupInProgress
 		} else {
 			if let profile = selectedProfile {
-				ProfileManager.save(profile)
+				saveSelectedProfile()
 				if let repo = repoManager.getSelectedRepo() {
 					viewState = .backupStarting
 					progressBar.isIndeterminate = scanAhead.state == .off

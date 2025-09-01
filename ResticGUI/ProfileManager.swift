@@ -7,7 +7,7 @@ import Cocoa
 import SwiftToolbox
 
 /// Loads and saves profiles.
-struct ProfileManager {
+class ProfileManager {
 	private static let PROFILE_EXT = "plist"
 	private static let PROFILE_EXT_DOT = ".plist"
 	
@@ -17,23 +17,27 @@ struct ProfileManager {
 			.appending(path: "Profiles", isDirectory: true)
 	}()
 	
-	private static let encoder = PropertyListEncoder.init()
+	private static let encoder = {
+		let ple = PropertyListEncoder.init()
+		ple.outputFormat = .xml
+		return ple
+	}()
 	private static let decoder = PropertyListDecoder.init()
 	
 	/// Loads all saved profiles and returns an array of Profiles.
 	/// - Returns: an array of profiles, empty if there are none.
-	static func loadAllProfiles() -> [Profile] {
+	static func getProfilesList() -> [String] {
 		guard FileManager.default.fileExists(atPath: profileDir.path) else {
 			return []
 		}
 		if let enumerator = try? FileManager.default.contentsOfDirectory(at: profileDir, includingPropertiesForKeys: [], options: .skipsHiddenFiles) {
 			return enumerator.compactMap { url in
 				if url.pathExtension == PROFILE_EXT {
-					return load(url)
+					return url.deletingPathExtension().lastPathComponent
 				} else {
 					return nil
 				}
-			}.sorted { $0.name < $1.name }
+			}.sorted { $0 < $1 }
 		}
 		return []
 	}
@@ -59,67 +63,54 @@ struct ProfileManager {
 	/// Loads a single profile with the specified name, if it exists.
 	/// - Parameter name: the name of the profile
 	/// - Returns: the Profile if found, otherwise nil.
-	static func load(name: String) -> Profile? {
-		let filePath: URL = getProfilePath(name)
-		if !FileManager.default.fileExists(atPath: filePath.path) {
-			return nil
-		}
-		
-		do {
-			let data = try Data.init(contentsOf: filePath)
-			let p = try decoder.decode(Profile.self, from: data)
-			return p
-		} catch {
-			NSLog("Error loading single profile: \(error)")
-			return nil
-		}
+	static func load(named: String) throws -> Profile {
+		let filePath: URL = getProfilePath(named)
+		let data = try Data.init(contentsOf: filePath)
+		let p = try decoder.decode(Profile.self, from: data)
+		return p
 	}
 
 	/// Saves the provided profile to the Profiles directory, overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
-	static func save(_ profile: Profile) {
-		if profile != load(name: profile.name) {
-			if !FileManager.default.fileExists(atPath: profileDir.path) {
-				do {
-					try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
-				} catch {
-					NSLog("Error creating Profiles directory: \(error)")
-					STBAlerts.alert(title: "An error occured trying to create the Profiles directory.", message: "Unable to create the directory necessary for storing profile information.\n\n\(error.localizedDescription)", style: .critical)
-				}
-			}
-			save(profile, to: getProfilePath(profile.name))
-		} else {
+	static func save(_ profile: Profile) throws {
+		guard profile == (try? load(named: profile.name)) else {
 			NSLog("Profile not saved because it was unmodified.")
+			return
 		}
+		if !FileManager.default.fileExists(atPath: profileDir.localPath) {
+			try FileManager.default.createDirectory(at: profileDir, withIntermediateDirectories: true, attributes: nil)
+		}
+		try save(profile, to: getProfilePath(profile.name))
 	}
 	
 	/// Saves the provided profile to the specified directory., overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
-	static func save(_ profile: Profile, to filePath: URL) {
-		encoder.outputFormat = .xml
-		do {
-			let data = try encoder.encode(profile)
-			try data.write(to: filePath)
-		} catch {
-			NSLog("Error saving Profile: \(error)")
-			STBAlerts.alert(title: "An error occured trying to save the Profile \"\(profile.name)\".", message: error.localizedDescription, style: .critical)
-		}
+	static func save(_ profile: Profile, to filePath: URL) throws {
+		let data = try encoder.encode(profile)
+		try data.write(to: filePath)
 	}
 	
-	static func delete(_ profile: Profile) {
-		let filePath = getProfilePath(profile.name)
+	static func delete(_ profileName: String) {
+		let filePath = getProfilePath(profileName)
 		if FileManager.default.fileExists(atPath: filePath.path) {
 			do {
 				try FileManager.default.trashItem(at: filePath, resultingItemURL: nil)
 			} catch {
 				NSLog("Error deleting profile: \(error)")
-				let res = STBAlerts.alert(title: "Unable to delete profile.", message: "Couldn't delete the profile \(profile.name)\n\n\(error.localizedDescription)", style: .warning, buttons: ["Retry", "Cancel"])
+				let res = STBAlerts.alert(title: "Unable to delete profile.", message: "Couldn't delete the profile \(profileName)\n\n\(error.localizedDescription)", style: .warning, buttons: ["Retry", "Cancel"])
 				if res == .alertFirstButtonReturn {
-					delete(profile)
+					delete(profileName)
 				}
 			}
 			
 		}
+	}
+	
+	public static func rename(from oldName: String, to newName: String) throws {
+		let profile = try load(named: oldName)
+		profile.name = newName
+		try save(profile)
+		try FileManager.default.moveItem(at: getProfilePath(oldName), to: getProfilePath(newName))
 	}
 	
 }
@@ -130,14 +121,14 @@ struct ProfileManager {
 class ProfileOrHeader {
 	let isHeader: Bool
 	var header: String?
-	var profile: Profile?
+	var profile: String?
 	
 	init(header: String) {
 		self.isHeader = true
 		self.header = header
 	}
 	
-	init(profile: Profile) {
+	init(profile: String) {
 		self.isHeader = false
 		self.profile = profile
 	}
