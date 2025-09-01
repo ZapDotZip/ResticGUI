@@ -55,12 +55,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	func indexOfProfile(_ name: String) -> Int? {
-		for (idx, poh) in profileSidebarList.enumerated() {
-			if poh.profile == name {
-				return idx
-			}
-		}
-		return nil
+		return profileSidebarList.firstIndex { $0.profile == name }
 	}
 		
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
