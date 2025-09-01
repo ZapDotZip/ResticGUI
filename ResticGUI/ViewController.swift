@@ -37,10 +37,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		// view data setup
 		initSidebar(ProfileManager.getProfilesList())
 		repoManager.initUIView()
-		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile) {
+		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile), let index = indexOfProfile(s) {
 			selectedProfile = loadWithError(named: s)
 			if let p = selectedProfile {
-				outline.selectRowIndexes(IndexSet.init(integer: indexOfProfile(p.name) ?? 1), byExtendingSelection: false)
+				outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
 			}
 		}
 		scanAhead.state = UserDefaults.standard.bool(forKey: DefaultsKeys.scanAhead) ? .on : .off
