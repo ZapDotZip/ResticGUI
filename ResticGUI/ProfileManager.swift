@@ -69,7 +69,7 @@ class ProfileManager {
 	/// Saves the provided profile to the Profiles directory, overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
 	static func save(_ profile: Profile) throws {
-		guard profile == (try? load(named: profile.name)) else {
+		guard profile != (try? load(named: profile.name)) else {
 			NSLog("Profile not saved because it was unmodified.")
 			return
 		}
