@@ -103,29 +103,24 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func deleteProfile(_ sender: NSButton) {
 		guard let profile = selectedProfile?.name else { return }
 		
-		var index = (indexOfProfile(profile) ?? 0) - 1
-		if index <= 0 {
-			index = 1
-		}
+		let index = (indexOfProfile(profile) ?? 0)
 		let deleteResponse = STBAlerts.destructiveAlert(title: "Delete profile \"\(profile)\"?", message: "Are you sure you want to delete the profile \"\(profile)\"? It will be moved to your Trash.", style: .informational, destructiveButtonText: "Delete")
 		if deleteResponse {
 			ProfileManager.delete(profile)
+			selectedProfile = nil
 			profileSidebarList = profileSidebarList.filter { (poh) -> Bool in
-				if let profile = poh.profile {
-					return profile != profile
+				if let pohProfile = poh.profile {
+					return profile != pohProfile
 				}
 				return true
 			}
 			outline.removeItems(at: [index], inParent: nil)
 //			outline.reloadData()
-			selectedProfile = nil
 			if profileSidebarList.count == 1 {
 				performSegue(withIdentifier: "NewProfile", sender: sender)
 			} else {
 				outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
 			}
-		} else {
-			NSLog("Delete cancelled")
 		}
 	}
 	
