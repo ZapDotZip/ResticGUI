@@ -14,7 +14,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="371"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button toolTip="Add the repository to the list of repositories." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wt5-ld-vgq">
+                            <button identifier="repoSaveEditButton" toolTip="Add the repository to the list of repositories." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wt5-ld-vgq">
                                 <rect key="frame" x="407" y="9" width="64" height="32"/>
                                 <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="00U-OH-Hve">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -24,7 +24,7 @@
                                     <action selector="saveRepo:" target="rL6-C0-hqQ" id="VPT-Kx-ozA"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lvn-he-94D">
+                            <button identifier="repoCancelEditButton" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lvn-he-94D">
                                 <rect key="frame" x="335" y="9" width="76" height="32"/>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bcB-OR-cXB">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -53,7 +53,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MRl-Dj-lZe">
+                            <button identifier="repoSelectFolderButton" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MRl-Dj-lZe">
                                 <rect key="frame" x="357" y="301" width="114" height="32"/>
                                 <buttonCell key="cell" type="push" title="Select Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6zF-R2-dTj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -76,7 +76,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-Bx-kUc">
+                            <textField identifier="repoPath" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-Bx-kUc">
                                 <rect key="frame" x="54" y="307" width="302" height="21"/>
                                 <string key="toolTip">Type in a custom path if you are using a non-local option. Otherwise, select a folder you would like to use for the restic repository.</string>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="yuh-KX-w7H">
@@ -88,7 +88,7 @@ Gw
                                     <outlet property="delegate" destination="rL6-C0-hqQ" id="ZRa-sc-dFl"/>
                                 </connections>
                             </textField>
-                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q77-nY-6O4">
+                            <secureTextField identifier="repoPassword" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q77-nY-6O4">
                                 <rect key="frame" x="84" y="279" width="380" height="21"/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Required" drawsBackground="YES" usesSingleLineMode="YES" id="uOJ-HK-xnF">
                                     <font key="font" metaFont="system"/>
@@ -102,7 +102,7 @@ Gw
                                     <outlet property="delegate" destination="rL6-C0-hqQ" id="dop-lo-Bh7"/>
                                 </connections>
                             </secureTextField>
-                            <button toolTip="Creates the repository at the given path using restic init." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qgw-uj-gRq">
+                            <button identifier="repoCreateButton" toolTip="Creates the repository at the given path using restic init." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qgw-uj-gRq">
                                 <rect key="frame" x="9" y="9" width="143" height="32"/>
                                 <buttonCell key="cell" type="push" title="Create Repository" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="060-l5-x7h">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -112,7 +112,7 @@ Gw
                                     <action selector="createRepo:" target="rL6-C0-hqQ" id="U6h-Ne-M1z"/>
                                 </connections>
                             </button>
-                            <button toolTip="Check to see if the repository can be accessed via restic." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xgN-JY-Yu1">
+                            <button identifier="repoTestButton" toolTip="Check to see if the repository can be accessed via restic." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xgN-JY-Yu1">
                                 <rect key="frame" x="148" y="9" width="129" height="32"/>
                                 <buttonCell key="cell" type="push" title="Test Repository" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RSJ-3K-3Vc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -130,7 +130,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button toolTip="Choose a custom cache directory for this repository. Overrides the value set in ResticGUI's Preferences, if set." horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9ef-Ze-Z3G">
+                            <button identifier="repoCacheDirectoryButton" toolTip="Choose a custom cache directory for this repository. Overrides the value set in ResticGUI's Preferences, if set." horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9ef-Ze-Z3G">
                                 <rect key="frame" x="9" y="39" width="132" height="32"/>
                                 <buttonCell key="cell" type="push" title="Cache Directory" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="h8g-et-HOp">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -148,7 +148,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField toolTip="Type in a nickname to use in the drop-down list. Otherwise, the path name will be used." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFh-h7-QZp">
+                            <textField identifier="repoNickname" toolTip="Type in a nickname to use in the drop-down list. Otherwise, the path name will be used." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFh-h7-QZp">
                                 <rect key="frame" x="88" y="336" width="376" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Optional" drawsBackground="YES" id="9Cq-3A-va9">
                                     <font key="font" metaFont="system"/>
@@ -156,7 +156,7 @@ Gw
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button toolTip="Clear cache directory" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gaT-LU-ufs">
+                            <button identifier="repoCacheDirectoryDeleteButton" toolTip="Clear cache directory" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gaT-LU-ufs">
                                 <rect key="frame" x="445" y="49" width="15" height="15"/>
                                 <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" inset="2" id="eew-2A-42b">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -166,7 +166,7 @@ Gw
                                     <action selector="clearCacheDir:" target="rL6-C0-hqQ" id="VkV-so-ipd"/>
                                 </connections>
                             </button>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="tKe-eQ-6KT" customClass="EnviormentTableView" customModule="ResticGUI" customModuleProvider="target">
+                            <customView identifier="repoEnvTable" translatesAutoresizingMaskIntoConstraints="NO" id="tKe-eQ-6KT" customClass="EnviormentTableView" customModule="ResticGUI" customModuleProvider="target">
                                 <rect key="frame" x="16" y="140" width="448" height="129"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="V2J-PF-Bxr"/>

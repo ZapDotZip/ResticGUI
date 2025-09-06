@@ -39,7 +39,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		repoManager.initUIView()
 		if let s = UserDefaults.standard.string(forKey: DefaultsKeys.lastSelectedProfile), let index = indexOfProfile(s) {
 			selectedProfile = loadWithError(named: s)
-			if let p = selectedProfile {
+			if selectedProfile != nil {
 				outline.selectRowIndexes(IndexSet.init(integer: index), byExtendingSelection: false)
 			}
 		}
