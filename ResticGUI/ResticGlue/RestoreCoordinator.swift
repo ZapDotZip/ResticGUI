@@ -24,14 +24,16 @@ struct RestorePlan {
 	
 }
 
-class RestoreCoordinator {
+class RestoreCoordinator: SPCProcessDecoderDelegate {
+	typealias D = ResticResponse.RestoreProgress
+	
 	private static let rc = ResticController.default
 	private var plan: RestorePlan
 	private var display: ProgressDisplayer
 	
 	private let jsonDec = JSONDecoder()
 	
-	private var proc: ProcessControllerTyped<ResticResponse.RestoreProgress>?
+	private var proc: SPCProcessControllerDecoder<D>?
 	private var summary: ResticResponse.RestoreProgress?
 	
 	init(plan: RestorePlan, reportingTo display: ProgressDisplayer) {
@@ -69,7 +71,7 @@ class RestoreCoordinator {
 	
 	func restore() {
 		do {
-			proc = try ProcessControllerTyped<ResticResponse.RestoreProgress>.init(executableURL: ResticController.default.getResticURL(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: exitHandler(_:), decoderType: .JSON)
+			proc = try SPCProcessControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
 			proc!.env = try plan.repo.getEnv()
 			let args: [String] = try argsFromPlan()
 			RGLogger.default.run(process: proc!, args: args)
@@ -79,7 +81,7 @@ class RestoreCoordinator {
 		}
 	}
 	
-	func progressHandler(_ response: StreamingProcessResult<ResticResponse.RestoreProgress>) {
+	func stdoutHandler(_ response: SPCStreamingResult<D>) {
 		switch response {
 			case .object(output: let output):
 				if let progress = output.percent_done {
@@ -115,7 +117,7 @@ class RestoreCoordinator {
 		}
 	}
 	
-	func exitHandler(_ exitCode: Int32) {
+	func terminationHandler(exitCode: Int32) {
 		let exitError = RGError(exitCode: exitCode)
 		if let sum = summary?.summaryReport {
 			display.finish(summary: sum, with: exitError)
