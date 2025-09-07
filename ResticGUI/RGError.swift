@@ -11,9 +11,20 @@ enum RGError: Error, CustomStringConvertible {
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
 	case exitCode(code: Int32, description: String)
 	case unknownError(message: String?)
+	case osError(message: String, description: String)
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+	}
+	
+	/// Creates an error message from an "OS" error, typically caught when doing file-system operations.
+	///
+	/// The resulting description will be `"\(message):\n\n\(error.localizedDescription"`
+	/// - Parameters:
+	///   - err: The generic Error thrown by a Foundation function.
+	///   - message: What the app was trying to do.
+	init(from err: Error, message: String) {
+		self = .osError(message: message, description: err.localizedDescription)
 	}
 	
 	init?(exitCode: Int32) {
@@ -54,6 +65,8 @@ enum RGError: Error, CustomStringConvertible {
 				return description + " (exit code: \(code))."
 			case .unknownError(message: let message):
 				return message ?? "There was an unkown error"
+			case .osError(message: let message, description: let description):
+				return "\(message):\n\n\(description)"
 		}
 	}
 }

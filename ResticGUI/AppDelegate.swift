@@ -104,7 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func viewFinishedLoading(vc: ViewController) {
 		viewCon = vc
-		backupController = BackupController.init(resticController: resticController, viewController: vc)
+		backupController = BackupController.init(viewController: vc)
 	}
 	
 	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

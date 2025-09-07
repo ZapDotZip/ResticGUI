@@ -14,127 +14,126 @@ class BackupController {
 		case suspended
 	}
 	
-	let rc: ResticController
+	let rc: ResticController = .default
 	let vc: ViewController
-	var errOut: Data
+	var errOut = Data()
 	var didRecieveErrors = false
 	var state: BackupState = .idle
 	var lastBackupSummary: ResticResponse.backupSummary?
 	
-	init(resticController: ResticController, viewController: ViewController) {
-		rc = resticController
+	init(viewController: ViewController) {
 		vc = viewController
-		errOut = Data()
 	}
 	
-	private func getQoS() -> QualityOfService {
-		var qos: QualityOfService = .default
-		if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
-			if pref == "userInitiated" {
-				qos = .userInitiated
-			} else if pref == "utility" {
-				qos = .utility
-			} else if pref == "background" {
+	private var QoS: QualityOfService {
+		get {
+			var qos: QualityOfService = .default
+			if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
+				if pref == "userInitiated" {
+					qos = .userInitiated
+				} else if pref == "utility" {
+					qos = .utility
+				} else if pref == "background" {
+					qos = .background
+				}
+			}
+			if #available(macOS 12.0, *) {
+				if UserDefaults.standard.bool(forKey: DefaultsKeys.lowPowerQoS) && ProcessInfo.processInfo.isLowPowerModeEnabled {
+					qos = .background
+				}
+			}
+			if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && STBMachine.isOnBattery() {
 				qos = .background
 			}
+			return qos
 		}
-		if #available(macOS 12.0, *) {
-			if UserDefaults.standard.bool(forKey: DefaultsKeys.lowPowerQoS) && ProcessInfo.processInfo.isLowPowerModeEnabled {
-				qos = .background
-			}
-		}
-		if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && STBMachine.isOnBattery() {
-			qos = .background
-		}
-		return qos
 	}
 	
-	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) {
+	private func arguments(from profile: Profile, and repo: Repo, scanAhead: Bool = true) throws -> [String] {
+		// setup
+		var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
+		for i in profile.tags {
+			args.append(contentsOf: ["--tag", i])
+		}
+		if !scanAhead {
+			args.append("--no-scan")
+		}
+		
+		args.append(contentsOf: profile.paths)
+		do {
+			var exclusions = ""
+			if let e = profile.exclusions {
+				exclusions.append(e)
+			}
+			if profile.excludesTMUser {
+				exclusions.append(self.getTMUserExclusions().joined(separator: "\n"))
+			}
+			if profile.excludesTMDefault {
+				exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
+			}
+			if exclusions.count != 0 {
+				let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-\(profile.name).txt")
+				try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
+				if profile.exclusionsCS {
+					args.append("--exclude-file=\(exclusionsFile.path)")
+				} else {
+					args.append("--iexclude-file=\(exclusionsFile.path)")
+				}
+			}
+			if let globalExclusions = UserDefaults.standard.string(forKey: DefaultsKeys.globalExclusions) {
+				let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-global.txt")
+				try globalExclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
+				if UserDefaults.standard.bool(forKey: DefaultsKeys.isGlobalExclusionsCaseSensitive) {
+					args.append("--exclude-file=\(exclusionsFile.path)")
+				} else {
+					args.append("--iexclude-file=\(exclusionsFile.path)")
+				}
+			}
+		} catch {
+			NSLog("Error creating exclusion file: \(error)")
+			throw RGError(from: error, message: "An error occured trying to create the exclusions file")
+		}
+		
+		if let epf = profile.excludePatternFile {
+			if profile.excludePatternFileCS {
+				args.append("--exclude-file=\(epf)")
+			} else {
+				args.append("--iexclude-file=\(epf)")
+			}
+		}
+		
+		if profile.excludeCacheDirs {
+			args.append("--exclude-caches=true")
+		}
+		
+		if let compression = profile.compression {
+			args.append("--compression=\(compression)")
+		}
+		
+		if let readConcurrency = profile.readConcurrency {
+			if QoS == .background && UserDefaults.standard.bool(forKey: DefaultsKeys.limitBackgroundCoreCount), let eCores = STBMachine.getDifferentialCoreCount()?.0, eCores < readConcurrency {
+				args.append("--read-concurrency=\(eCores)")
+			} else {
+				args.append("--read-concurrency=\(readConcurrency)")
+			}
+		}
+		
+		if let packSize = profile.packSize {
+			args.append("--pack-size=\(packSize)")
+		}
+		
+		if let excludeMaxFilesize = profile.excludeMaxFilesize {
+			args.append("--exclude-larger-than=\(excludeMaxFilesize)")
+		}
+		return args
+	}
+	
+	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) throws {
+		let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
 		state = .inProgress
-		rc.dq.async {
-			let qos = self.getQoS()
-			// setup
-			var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
-			for i in profile.tags {
-				args.append(contentsOf: ["--tag", i])
-			}
-			if !scanAhead {
-				args.append("--no-scan")
-			}
-			
-			args.append(contentsOf: profile.paths)
+		rc.dq.async { [self] in
 			do {
-				var exclusions = ""
-				if let e = profile.exclusions {
-					exclusions.append(e)
-				}
-				if profile.excludesTMUser {
-					exclusions.append(self.getTMUserExclusions().joined(separator: "\n"))
-				}
-				if profile.excludesTMDefault {
-					exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
-				}
-				if exclusions.count != 0 {
-					let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-\(profile.name).txt")
-					try exclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
-					if profile.exclusionsCS {
-						args.append("--exclude-file=\(exclusionsFile.path)")
-					} else {
-						args.append("--iexclude-file=\(exclusionsFile.path)")
-					}
-				}
-				if let globalExclusions = UserDefaults.standard.string(forKey: DefaultsKeys.globalExclusions) {
-					let exclusionsFile = FileManager.default.temporaryDirectory.appending(path: "restic-exclusions-global.txt")
-					try globalExclusions.write(to: exclusionsFile, atomically: true, encoding: .utf8)
-					if UserDefaults.standard.bool(forKey: DefaultsKeys.isGlobalExclusionsCaseSensitive) {
-						args.append("--exclude-file=\(exclusionsFile.path)")
-					} else {
-						args.append("--iexclude-file=\(exclusionsFile.path)")
-					}
-				}
-			} catch {
-				DispatchQueue.main.sync {
-					let res = STBAlerts.alert(title: "An error occured trying to create the exclusions file.", message: "Couldn't create the exclusions file.\n\n\(error.localizedDescription)", style: .critical, buttons: ["Continue Anyways", "Cancel"])
-					if res == .alertSecondButtonReturn {
-						return // cancel
-					}
-				}
-			}
-			
-			if let epf = profile.excludePatternFile {
-				if profile.excludePatternFileCS {
-					args.append("--exclude-file=\(epf)")
-				} else {
-					args.append("--iexclude-file=\(epf)")
-				}
-			}
-			
-			if profile.excludeCacheDirs {
-				args.append("--exclude-caches=true")
-			}
-			
-			if let compression = profile.compression {
-				args.append("--compression=\(compression)")
-			}
-			
-			if let readConcurrency = profile.readConcurrency {
-				if qos == .background && UserDefaults.standard.bool(forKey: DefaultsKeys.limitBackgroundCoreCount), let eCores = STBMachine.getDifferentialCoreCount()?.0, eCores < readConcurrency {
-					args.append("--read-concurrency=\(eCores)")
-				} else {
-					args.append("--read-concurrency=\(readConcurrency)")
-				}
-			}
-			
-			if let packSize = profile.packSize {
-				args.append("--pack-size=\(packSize)")
-			}
-			
-			if let excludeMaxFilesize = profile.excludeMaxFilesize {
-				args.append("--exclude-larger-than=\(excludeMaxFilesize)")
-			}
-			
-			do {
-				try self.rc.launch(args: args, env: repo.getEnv(), stdoutHandler: self.progressHandler(_:), stderrHandler: self.stderrHandler(_:), terminationHandler: self.terminationHandler(_:), qos: qos)
+				try rc.launch(args: args, env: repo.getEnv(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: terminationHandler(_:), qos: QoS)
 			} catch {
 				NSLog(error.localizedDescription)
 			}
