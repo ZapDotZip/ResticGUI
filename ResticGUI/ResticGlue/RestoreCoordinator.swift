@@ -29,14 +29,14 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 	
 	private static let rc = ResticController.default
 	private var plan: RestorePlan
-	private var display: ProgressDisplayer
+	private var display: any ProgressDisplayer<String>
 	
 	private let jsonDec = JSONDecoder()
 	
 	private var proc: SPCProcessControllerDecoder<D>?
 	private var summary: ResticResponse.RestoreProgress?
 	
-	init(plan: RestorePlan, reportingTo display: ProgressDisplayer) {
+	init(plan: RestorePlan, reportingTo display: any ProgressDisplayer<String>) {
 		self.plan = plan
 		self.display = display
 	}

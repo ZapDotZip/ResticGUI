@@ -7,7 +7,7 @@
 import Cocoa
 import SwiftToolbox
 
-class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
+class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource, ProgressDisplayer {
 	
 	@IBOutlet var profileEditor: ProfileEditorController!
 	@IBOutlet var repoManager: ReposManager!
@@ -335,7 +335,12 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				if let repo = repoManager.getSelectedRepo() {
 					viewState = .backupStarting
 					progressBar.isIndeterminate = scanAhead.state == .off
-					backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
+					do {
+						try backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
+					} catch {
+						displayError(error, isFatal: false)
+						return
+					}
 					viewState = .backupInProgress
 				} else {
 					STBAlerts.alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
@@ -345,6 +350,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			}
 		}
 	}
+	
 	
 	enum ViewState {
 		case noBackupInProgress
@@ -382,7 +388,15 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 			
 	var completedBackupPopover: NSPopover? = nil
-	
+	func finish(summary: ResticResponse.backupSummary?, with error: (any Error)?) {
+		DispatchQueue.main.async { [self] in
+			if let error {
+				displayError(error, isFatal: false)
+			}
+			completedBackup(summary)
+		}
+	}
+
 	func completedBackup(_ summary: ResticResponse.backupSummary?) {
 		progressBar.isIndeterminate = false
 		if let sum = summary {
@@ -429,7 +443,20 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		runBackupButton.title = "Start Backup"
 	}
 	
+	func setIndeterminate(_ isIndeterminate: Bool) {
+		DispatchQueue.main.async {
+			self.progressBar.isIndeterminate = isIndeterminate
+		}
+	}
 	
+	func displayError(_ error: any Error, isFatal: Bool) {
+		DispatchQueue.main.async {
+			STBAlerts.alert(title: "An error occured while trying to back up.", message: nil, error: error, style: .critical)
+			if isFatal {
+				self.viewState = .noBackupInProgress
+			}
+		}
+	}
 	
 	func setMessage(_ text: String) {
 		progressLabel.stringValue = text
@@ -440,12 +467,23 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		runBackupButton.isEnabled = enabled
 	}
 	
-	func displayProgress(_ text: String?, _ progress: Double) {
-		if text != nil {
-			progressLabel.stringValue = text!
+	func setProgressBar(to value: Double, max: Double) {
+		DispatchQueue.main.async { [self] in
+			progressBar.doubleValue = value
+			progressBar.maxValue = max
 		}
-		progressBar.doubleValue = progress
 	}
+	
+	func updateProgress(to value: Double, infoText: String?) {
+		DispatchQueue.main.async { [self] in
+			progressBar.isIndeterminate = false
+			progressBar.doubleValue = value
+			if let infoText {
+				progressLabel.stringValue = infoText
+			}
+		}
+	}
+	
 }
 
 
