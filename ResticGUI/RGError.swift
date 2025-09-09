@@ -3,9 +3,10 @@
 //  ResticGUI
 //
 
+import Foundation
+
 enum RGError: Error, CustomStringConvertible {
-	case couldNotDecodeOutput
-	case couldNotDecodeJSON(rawStr: String, message: String)
+	case couldNotDecodeOutput(Error?)
 	case noResticInstallationsFound(String)
 	case unsupportedRepositoryVersion(version: Int)
 	case resticErrorMessage(message: String?, code: Int?, stderr: String?)
@@ -15,6 +16,17 @@ enum RGError: Error, CustomStringConvertible {
 	
 	init(from rError: ResticResponse.error) {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+	}
+	
+	/// Decodes from a failed `SPCProcessResultDecoded`
+	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32) {
+		let err = stderr
+		let out = String(data: rawData, encoding: .utf8)
+		if err != nil || out != nil {
+			self = .resticErrorMessage(message: out, code: Int(exitCode), stderr: err)
+		} else {
+			self = .couldNotDecodeOutput(decodingError)
+		}
 	}
 	
 	/// Creates an error message from an "OS" error, typically caught when doing file-system operations.
@@ -46,8 +58,6 @@ enum RGError: Error, CustomStringConvertible {
 		switch self {
 			case .couldNotDecodeOutput:
 				return "Could not decode output from Restic. Make sure you are using a supported version in ResticGUI's Preferences."
-			case .couldNotDecodeJSON(rawStr: _, message: let message):
-				return "Could not decode JSON: \"\(message)\")"
 			case .noResticInstallationsFound(let msg):
 				return "No Restic installations found (\(msg))"
 			case .resticErrorMessage(message: let message, code: let code, let stderr):

@@ -94,7 +94,7 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 					RGLogger.default.log("stdout (decoded json): \(rErr)")
 					display.displayError(RGError.init(from: rErr), isFatal: false)
 				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
-					display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
+					display.displayError(RGError.unknownError(message: errStr), isFatal: false)
 				} else {
 					display.displayError(RGError.unknownError(message: "Restic returned undecodable data."), isFatal: false)
 				}
@@ -110,7 +110,7 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 				return
 			} else {
 				RGLogger.default.stderr(errStr)
-				display.displayError(RGError.couldNotDecodeJSON(rawStr: errStr, message: "Restic returned an unknown error message."), isFatal: false)
+				display.displayError(RGError.unknownError(message: errStr), isFatal: false)
 			}
 		} else {
 			RGLogger.default.log("Undecodable stderr data received from Restic")

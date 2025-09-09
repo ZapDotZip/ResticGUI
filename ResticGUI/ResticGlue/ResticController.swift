@@ -74,7 +74,7 @@ final class ResticController: NSObject {
 				return rv
 			}
 		}
-		NSLog("ResticController: Could not find a valid restic installation automatically.")
+		RGLogger.default.log("ResticController: Could not find a valid restic installation automatically.")
 		throw RGError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic on your computer.")
 	}
 		
@@ -114,7 +114,7 @@ final class ResticController: NSObject {
 		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.error) {
 			throw RGError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
 		} else {
-			throw RGError.couldNotDecodeOutput
+			throw RGError.couldNotDecodeOutput(nil)
 		}
 	}
 	
