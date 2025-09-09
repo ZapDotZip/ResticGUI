@@ -27,7 +27,7 @@ final class ResticController: NSObject {
 	
 	static var `default` = ResticController()
 	private override init() {
-		dq = DispatchQueue.init(label: "ResticController", qos: .background, attributes: [], autoreleaseFrequency: .inherit, target: nil)
+		dq = DispatchQueue.init(label: "zap.zip.ResticGUI.ResticController", qos: .background)
 		super.init()
 		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.resticLocation, options: .new, context: nil)
 	}
@@ -116,99 +116,6 @@ final class ResticController: NSObject {
 		} else {
 			throw RGError.couldNotDecodeOutput
 		}
-	}
-	
-// MARK: launch
-	typealias pipedDataHandler = (Data) -> Void
-	typealias terminationHandler = (Int32) -> Void
-	
-	let newLine: UInt8 = "\n".data(using: .ascii)![0]
-	var partial: Data = Data()
-	var readHandler: pipedDataHandler!
-	var errHandler: pipedDataHandler!
-	var termHandler: terminationHandler!
-	
-	func read(_ data: Data) {
-		partial.append(data)
-		var splits = partial.split(separator: newLine)
-		let last: Data? = splits.popLast()
-		for i in splits {
-			readHandler(i)
-		}
-		if last != nil {
-			if JSONSerialization.isValidJSONObject(last as Any) {
-				readHandler(last!)
-				partial = Data()
-			} else {
-				partial = last!
-				partial.append(newLine)
-			}
-		}
-	}
-	
-	func exit(_ p: Process) {
-		readHandler(partial)
-		logger.log("Finished with exit code: \(p.terminationStatus)")
-		termHandler(p.terminationStatus)
-	}
-	
-	
-	var currentlyRunningProcess: Process?
-	/// Launches restic for monitoring.
-	/// - Parameter args: The list of arguments to use.
-	/// - Parameter env: The enviorment dictionary.
-	/// - Parameter stdoutHandler: Repeatedly called when new data is present in stdout.
-	/// - Parameter stderrHandler: Repeatedly called when new data is present in stderr.
-	/// - Parameter terminationHandler: Called when the process exits.
-	func launch(args: [String], env: [String : String]?, stdoutHandler: @escaping pipedDataHandler, stderrHandler: @escaping pipedDataHandler, terminationHandler: @escaping terminationHandler, qos: QualityOfService) throws {
-		partial = Data()
-		if resticLocation == nil {
-			do {
-				try setupFromDefaults()
-			} catch {
-				resticLocation = nil
-				throw error
-			}
-		}
-		readHandler = stdoutHandler
-		errHandler = stderrHandler
-		termHandler = terminationHandler
-		
-		let proc = Process()
-		let stdout = Pipe()
-		let stderr = Pipe()
-		proc.executableURL = resticLocation
-		proc.standardOutput = stdout
-		proc.standardError = stderr
-		proc.arguments = args
-		if env != nil {
-			proc.environment = env
-		}
-		logger.runCmd(path: resticLocation!, args: args)
-		
-		proc.qualityOfService = qos
-		
-		NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: stdout.fileHandleForReading, queue: nil) { (notif) in
-			let handle = notif.object as! FileHandle
-			self.read(handle.availableData)
-			handle.waitForDataInBackgroundAndNotify()
-		}
-		
-		NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: stderr.fileHandleForReading, queue: nil) { (notif) in
-			let handle = notif.object as! FileHandle
-			let data = handle.availableData
-			self.logger.stderr(String(data: data, encoding: .utf8)!)
-			stderrHandler(data)
-			handle.waitForDataInBackgroundAndNotify()
-		}
-		
-		proc.terminationHandler = exit(_:)
-		currentlyRunningProcess = proc
-		try proc.run()
-		stdout.fileHandleForReading.waitForDataInBackgroundAndNotify()
-		stderr.fileHandleForReading.waitForDataInBackgroundAndNotify()
-		proc.waitUntilExit()
-		currentlyRunningProcess = nil
 	}
 	
 }
