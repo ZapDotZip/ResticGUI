@@ -118,4 +118,12 @@ final class ResticController: NSObject {
 		}
 	}
 	
+	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
+		return try run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
+	}
+	
+	func getConfig(of repo: Repo) throws -> ResticResponse.RepoConfig {
+		return try run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
+	}
+	
 }

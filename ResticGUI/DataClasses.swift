@@ -196,7 +196,7 @@ final class Repo: Codable {
 	/// Sets & returns the repository's ID, if it can.
 	func loadID() -> String? {
 		if id == nil {
-			id = try? ResticController.default.run(args: ["--json", "-r", path, "cat", "config"], env: getEnv(), returning: ResticResponse.RepoConfig.self).id
+			id = try? ResticController.default.getConfig(of: self).id
 			if id != nil {
 				try? ReposManager.default.save()
 			}

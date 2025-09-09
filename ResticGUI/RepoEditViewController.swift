@@ -6,9 +6,6 @@
 
 import AppKit
 import SwiftToolbox
-import SwiftProcessController
-
-
 
 class RepoEditViewController: NSViewController {
 	
@@ -90,7 +87,7 @@ class RepoEditViewController: NSViewController {
 		testRepoButton.isEnabled = false
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
-				let response = try ResticController.default.run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
+				let response = try ResticController.default.create(repo: repo)
 				DispatchQueue.main.async {
 					NSLog("Created repository response: \(response)")
 					self.controlTextDidChange(self)
@@ -107,13 +104,8 @@ class RepoEditViewController: NSViewController {
 	func asyncErrorHandler(_ error: Error, tryingTo: String) {
 		controlTextDidChange(self)
 		progressIndicator.stopAnimation(self)
-		if let err = error as? RGError {
-			NSLog("Couldn't create repository: \(error)")
-			STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: err.description, style: .critical)
-		} else {
-			NSLog("Couldn't create repository: \(error)")
-			STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: "The error was:\n\n\(error.localizedDescription)", style: .critical)
-		}
+		RGLogger.default.log("Couldn't \(tryingTo) repository: \(error)")
+		STBAlerts.alert(title: "An error occured trying to \(tryingTo) the repository.", message: nil, error: error, style: .critical)
 	}
 	
 	@IBAction func testRepo(_ sender: NSButton) {
@@ -124,7 +116,7 @@ class RepoEditViewController: NSViewController {
 		testRepoButton.isEnabled = false
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
-				let response = try ResticController.default.run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
+				let response = try ResticController.default.getConfig(of: repo)
 				guard response.version == 2 else {
 					throw RGError.unsupportedRepositoryVersion(version: response.version)
 				}
