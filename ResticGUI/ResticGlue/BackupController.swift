@@ -5,8 +5,9 @@
 
 import Foundation
 import SwiftToolbox
+import SwiftProcessController
 
-class BackupController {
+class BackupController: SPCProcessDecoderDelegate {
 	
 	enum BackupState {
 		case idle
@@ -15,14 +16,15 @@ class BackupController {
 	}
 	
 	let rc: ResticController = .default
-	let vc: ViewController
+	var process: SPCProcessControllerDecoder<ResticResponse.backupProgress>? = nil
+	let display: any ProgressDisplayer<ResticResponse.backupSummary>
 	var errOut = Data()
 	var didRecieveErrors = false
 	var state: BackupState = .idle
 	var lastBackupSummary: ResticResponse.backupSummary?
 	
-	init(viewController: ViewController) {
-		vc = viewController
+	init(display: any ProgressDisplayer<ResticResponse.backupSummary>) {
+		self.display = display
 	}
 	
 	private var QoS: QualityOfService {
@@ -129,45 +131,48 @@ class BackupController {
 	}
 	
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) throws {
-		let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
-		state = .inProgress
-		rc.dq.async { [self] in
-			do {
-				try rc.launch(args: args, env: repo.getEnv(), stdoutHandler: progressHandler(_:), stderrHandler: stderrHandler(_:), terminationHandler: terminationHandler(_:), qos: QoS)
-			} catch {
-				NSLog(error.localizedDescription)
-			}
+		do {
+			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
+			let p = try SPCProcessControllerDecoder(executableURL: rc.getResticURL(), delegate: self, decoderType: .JSON)
+			p.env = try repo.getEnv()
+			p.qualityOfService = QoS
+			state = .inProgress
+			try p.launch(args: args)
+			process = p
+		} catch {
+			NSLog("Failed to start backup: \(error)")
+			throw error
 		}
 	}
-	
-	func progressHandler(_ data: Data) {
-		if let progress = try? rc.jsonDecoder.decode(ResticResponse.backupProgress.self, from: data) {
-			DispatchQueue.main.async {
-				self.vc.displayProgress(progress.current_files?.first, progress.percent_done)
-			}
-		} else if let error = try? rc.jsonDecoder.decode(ResticResponse.error.self, from: data) {
-			print(error.message_type)
-			DispatchQueue.main.async {
-				STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
-			}
-		} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: data) {
-			var sum: String = ""
-			dump(summary, to: &sum)
-			RGLogger.default.log(sum)
-			lastBackupSummary = summary
-		} else {
-			let str: String = String(data: data, encoding: .utf8) ?? "Error decoding output."
-			let errMsg: String = {
-				if str.count != 0 {
-					RGLogger.default.stdout(str)
-					return str
+	func stdoutHandler(_ output: SwiftProcessController.SPCStreamingResult<ResticResponse.backupProgress>) {
+		switch output {
+			case .object(let progress):
+				self.display.updateProgress(to: progress.percent_done, infoText: progress.current_files?.first)
+			case .error(let rawData, _):
+				if let error = try? rc.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
+					print(error.message_type)
+					DispatchQueue.main.async {
+						STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
+					}
+				} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
+					var sum: String = ""
+					dump(summary, to: &sum)
+					RGLogger.default.log(sum)
+					lastBackupSummary = summary
 				} else {
-					return getStderr()
+					let errMsg: String = {
+						let str: String = String(data: rawData, encoding: .utf8) ?? "Error decoding output."
+						if str.count != 0 {
+							RGLogger.default.stdout(str)
+							return str
+						} else {
+							return getStderr()
+						}
+					}()
+					DispatchQueue.main.async {
+						STBAlerts.alert(title: "An unkown error occured trying to back up.", message: "Recieved this error from restic:\n\n\(errMsg)", style: .critical)
+					}
 				}
-			}()
-			DispatchQueue.main.async {
-				STBAlerts.alert(title: "An unkown error occured trying to back up.", message: "Recieved this error from restic:\n\n\(errMsg)", style: .critical)
-			}
 		}
 	}
 	
@@ -180,24 +185,24 @@ class BackupController {
 		return String.init(data: errOut, encoding: .utf8) ?? "Error decoding output."
 	}
 	
-	func terminationHandler(_ exitCode: Int32) {
+	func terminationHandler(exitCode: Int32) {
 		state = .idle
 		DispatchQueue.main.async {
-			self.vc.completedBackup(self.lastBackupSummary)
+			self.display.finish(summary: self.lastBackupSummary, with: nil)
 		}
 	}
 	
 	func cancel() {
-		if let p = rc.currentlyRunningProcess {
-			p.interrupt()
+		if let process {
+			process.interrupt()
 		}
 	}
 	
 	/// Pauses the running backup.
 	/// - Returns: True if the process is suspended.
 	func pause() -> Bool {
-		if state != .suspended, let p = rc.currentlyRunningProcess {
-			if p.suspend() {
+		if state != .suspended, let process {
+			if process.suspend() {
 				state = .suspended
 			}
 		}
@@ -207,8 +212,8 @@ class BackupController {
 	/// Resumes the running backup.
 	/// - Returns: True if the process was resumed.
 	func resume() -> Bool {
-		if state == .suspended, let p = rc.currentlyRunningProcess {
-			if p.resume() {
+		if state == .suspended, let process {
+			if process.resume() {
 				state = .inProgress
 			}
 		}
