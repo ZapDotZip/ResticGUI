@@ -81,7 +81,7 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 		}
 	}
 	
-	func stdoutHandler(_ response: SPCStreamingResult<D>) {
+	func stdoutHandler(_ response: SPCDecodedResult<D>) {
 		switch response {
 			case .object(output: let output):
 				if let progress = output.percent_done {

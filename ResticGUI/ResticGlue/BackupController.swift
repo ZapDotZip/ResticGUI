@@ -144,7 +144,8 @@ class BackupController: SPCProcessDecoderDelegate {
 			throw error
 		}
 	}
-	func stdoutHandler(_ output: SwiftProcessController.SPCStreamingResult<ResticResponse.backupProgress>) {
+	
+	func stdoutHandler(_ output: SwiftProcessController.SPCDecodedResult<ResticResponse.backupProgress>) {
 		switch output {
 			case .object(let progress):
 				self.display.updateProgress(to: progress.percent_done, infoText: progress.current_files?.first)

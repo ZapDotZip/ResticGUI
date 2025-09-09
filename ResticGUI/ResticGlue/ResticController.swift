@@ -44,27 +44,33 @@ final class ResticController: NSObject {
 	func setupFromDefaults() throws {
 		resticLocation = nil
 		versionInfo = nil
-		if let userSel = UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) {
-			switch userSel {
-				case "MacPorts":
-					return try testVersion(ResticController.autoURLs[0])
-				case "Homebrew":
-					return try homebrew()
-				case "Automatic":
-					return try automatic()
-				default:
-					return try testVersion(URL(localPathExpandingTilde: userSel))
-			}
+		guard let userSel = UserDefaults.standard.string(forKey: DefaultsKeys.resticLocation) else {
+			return try automatic()
 		}
-		return try automatic()
+		switch userSel {
+			case "MacPorts":
+				return try testVersion(ResticController.autoURLs[0])
+			case "Homebrew":
+				return try homebrew()
+			case "Automatic":
+				return try automatic()
+			default:
+				return try testVersion(URL(localPathExpandingTilde: userSel))
+		}
 	}
 	
 	/// Tests to see if the path points to a valid Restic binary by checking its version.
 	/// - Parameter path: The path to restic, will be set if the command runs successfully.
 	func testVersion(_ path: URL) throws {
-		let vers = try SPCProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.Version.self, decodingWith: .JSON)
-		resticLocation = path
-		versionInfo = vers.output
+		let result = try SPCProcessRunner(executableURL: path).run(args: ["--json", "version"], returning: ResticResponse.Version.self, decodingWith: .JSON)
+		switch result.output {
+			case .object(let output):
+				versionInfo = output
+				resticLocation = path
+			case .error(let rawData, let decodingError):
+				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
+		}
+		
 	}
 	
 	/// Finds a restic install automatically. Prefers MacPorts over Homebrew and arm over x64.
@@ -111,7 +117,7 @@ final class ResticController: NSObject {
 		let result = try pr.run(args: args)
 		if let output = try? jsonDecoder.decode(D.self, from: result.output) {
 			return output
-		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.error) {
+		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.stdError) {
 			throw RGError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
 		} else {
 			throw RGError.couldNotDecodeOutput(nil)
@@ -119,7 +125,15 @@ final class ResticController: NSObject {
 	}
 	
 	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
-		return try run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
+		let pc = SPCProcessRunner(executableURL: try getResticURL())
+		pc.env = try repo.getEnv()
+		let result = try pc.run(args: ["--json", "-r", repo.path, "init"], returning: ResticResponse.RepoInitResponse.self, decodingWith: .JSON)
+		switch result.output {
+			case .object(let output):
+				return output
+			case .error(let rawData, let decodingError):
+				throw RGError.init(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
+		}
 	}
 	
 	func getConfig(of repo: Repo) throws -> ResticResponse.RepoConfig {
