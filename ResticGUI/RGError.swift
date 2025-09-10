@@ -18,7 +18,7 @@ enum RGError: Error, CustomStringConvertible {
 		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
 	}
 	
-	/// Decodes from a failed `SPCProcessResultDecoded`
+	/// Decodes from a failed ``SPCResultDecoded``
 	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32) {
 		let err = stderr
 		let out = String(data: rawData, encoding: .utf8)

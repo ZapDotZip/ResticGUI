@@ -7,7 +7,7 @@ import Foundation
 import SwiftToolbox
 import SwiftProcessController
 
-class BackupController: SPCProcessDecoderDelegate {
+class BackupController: SPCDecoderDelegate {
 	
 	enum BackupState {
 		case idle
@@ -16,7 +16,7 @@ class BackupController: SPCProcessDecoderDelegate {
 	}
 	
 	let rc: ResticController = .default
-	var process: SPCProcessControllerDecoder<ResticResponse.backupProgress>? = nil
+	var process: SPCControllerDecoder<ResticResponse.backupProgress>? = nil
 	let display: any ProgressDisplayer<ResticResponse.backupSummary>
 	var errOut = Data()
 	var didRecieveErrors = false
@@ -133,7 +133,7 @@ class BackupController: SPCProcessDecoderDelegate {
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) throws {
 		do {
 			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
-			let p = try SPCProcessControllerDecoder(executableURL: rc.getResticURL(), delegate: self, decoderType: .JSON)
+			let p = try SPCControllerDecoder(executableURL: rc.getResticURL(), delegate: self, decoderType: .JSON)
 			p.env = try repo.getEnv()
 			p.qualityOfService = QoS
 			state = .inProgress

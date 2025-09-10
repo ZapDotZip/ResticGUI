@@ -24,7 +24,7 @@ struct RestorePlan {
 	
 }
 
-class RestoreCoordinator: SPCProcessDecoderDelegate {
+class RestoreCoordinator: SPCDecoderDelegate {
 	typealias D = ResticResponse.RestoreProgress
 	
 	private static let rc = ResticController.default
@@ -33,7 +33,7 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 	
 	private let jsonDec = JSONDecoder()
 	
-	private var proc: SPCProcessControllerDecoder<D>?
+	private var proc: SPCControllerDecoder<D>?
 	private var summary: ResticResponse.RestoreProgress?
 	
 	init(plan: RestorePlan, reportingTo display: any ProgressDisplayer<String>) {
@@ -71,7 +71,7 @@ class RestoreCoordinator: SPCProcessDecoderDelegate {
 	
 	func restore() {
 		do {
-			proc = try SPCProcessControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
+			proc = try SPCControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
 			proc!.env = try plan.repo.getEnv()
 			let args: [String] = try argsFromPlan()
 			RGLogger.default.run(process: proc!, args: args)
