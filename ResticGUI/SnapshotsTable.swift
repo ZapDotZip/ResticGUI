@@ -51,16 +51,17 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 	
 	@IBAction func reloadButton(_ sender: NSButton) {
-		if let selectedRepo = repoManager.getSelectedRepo(), let selectedProfile = viewCon.selectedProfile {
-			reloadButton.isEnabled = false
-			progressIndicator.startAnimation(self)
-			DispatchQueue.global(qos: .userInitiated).async {
-				do {
-					try self.load(selectedRepo, selectedProfile)
-					DispatchQueue.main.async { self.afterLoad() }
-				} catch {
-					DispatchQueue.main.async { self.loadError(error) }
-				}
+		guard let selectedRepo = repoManager.getSelectedRepo(), let selectedProfile = viewCon.selectedProfile else {
+			return
+		}
+		reloadButton.isEnabled = false
+		progressIndicator.startAnimation(self)
+		DispatchQueue.global(qos: .userInitiated).async {
+			do {
+				try self.load(selectedRepo, selectedProfile)
+				DispatchQueue.main.async { self.afterLoad() }
+			} catch {
+				DispatchQueue.main.async { self.loadError(error) }
 			}
 		}
 	}
@@ -69,11 +70,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		NSLog("Couldn't load snapshots: \(error)")
 		progressIndicator.stopAnimation(self)
 		reloadButton.isEnabled = true
-		if let err = error as? RGError {
-			STBAlerts.alert(title: "Unable to load snapshots", message: err.description, style: .critical)
-		} else {
-			STBAlerts.alert(title: "Unable to load snapshots", message: "An error occured trying to load the snapshots: \(error.localizedDescription)", style: .critical)
-		}
+		STBAlerts.alert(title: "Unable to load snapshots", message: nil, error: error, style: .critical)
 	}
 		
 	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
@@ -91,13 +88,11 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-		guard let cell = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else {
+		guard let column = tableColumn,
+				let cell = tableView.makeView(withIdentifier: column.identifier, owner: self) as? NSTableCellView else {
+			NSLog("\(#function) cell with \(tableColumn?.identifier.rawValue ?? "nil") couldn't be made.")
 			return nil
 		}
-		guard let column = tableColumn else {
-			return nil
-		}
-		
 		switch column.identifier.rawValue {
 			case "Date & Time":
 				cell.textField!.stringValue = df.string(from: snapshots[row].date)
@@ -106,6 +101,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 			case "Size":
 				cell.textField!.stringValue = byteFmt.string(fromByteCount: Int64(snapshots[row].summary.data_added_packed))
 			default:
+				NSLog("\(#function) recieved unknown identifier \(column.identifier)")
 				cell.textField!.stringValue = "Unknown Error"
 		}
 		return cell
@@ -145,40 +141,41 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 	}
 	
-	
+	private func getSnapshotCacheURL(_ caller: String = #function) -> URL? {
+		if let repoID = repoManager.getSelectedRepo()?.id {
+			return SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
+		} else {
+			RGLogger.default.log("\(caller) was unable to get the repo ID.")
+			return nil
+		}
+	}
 	
 	func loadIfCached() {
-		if let repoID = repoManager.getSelectedRepo()?.id {
-			let snapshotCacheURL: URL = SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
-			if FileManager.default.fileExists(atPath: snapshotCacheURL.path) {
-				do {
-					let data = try Data.init(contentsOf: snapshotCacheURL)
-					snapshots = try decoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
-						return snap.tags?.contains(viewCon!.selectedProfile?.name ?? "") ?? false
-					})
-					reload()
-					return
-				} catch {
-					NSLog("Couldn't load snapshot cache: \(error)")
-				}
-			}
+		guard let sc = getSnapshotCacheURL(), let profile = viewCon.selectedProfile?.name,
+				FileManager.default.fileExists(atPath: sc.path) else {
+			snapshots = []
+			reload()
+			return
 		}
-		snapshots = []
-		reload()
+		do {
+			let data = try Data.init(contentsOf: sc)
+			snapshots = try decoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
+				return snap.tags?.contains(profile) ?? false
+			})
+			reload()
+		} catch {
+			RGLogger.default.log("\(#function) was unable to load the snapshot cache \(error)")
+		}
 	}
 	
 	func saveToCache(_ repo: Repo) {
-		if let repoID = repo.loadID() {
-			let snapshotCacheURL: URL = SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
-			if let data = try? encoder.encode(snapshots) {
-				do {
-					try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
-					try data.write(to: snapshotCacheURL)
-					NSLog("Saved snapshot cache to \(snapshotCacheURL)")
-				} catch {
-					NSLog("Couldn't save cache \(error)")
-				}
-			}
+		guard let sc = getSnapshotCacheURL() else {	return }
+		do {
+			let data = try encoder.encode(snapshots)
+			try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+			try data.write(to: sc)
+		} catch {
+			RGLogger.default.log("\(#function) was unable to save the snapshot cache \(error)")
 		}
 	}
 	
