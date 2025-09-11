@@ -51,7 +51,7 @@ class BackupController: SPCDecoderDelegate {
 		}
 	}
 	
-	private func arguments(from profile: Profile, and repo: Repo, scanAhead: Bool = true) throws -> [String] {
+	private func arguments(from profile: Profile, and repo: Repo, scanAhead: Bool) throws -> [String] {
 		// setup
 		var args: [String] = ["--json", "-r", repo.path, "backup", "--tag", profile.name]
 		for i in profile.tags {

@@ -10,7 +10,6 @@ import SwiftToolbox
 class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var table: NSTableView!
 	@IBOutlet var deleteButton: NSButton!
-	var viewCon: ViewController!
 	
 // MARK: data source/delegate implementation
 	var selectedProfile: Profile?

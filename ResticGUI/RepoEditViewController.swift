@@ -11,13 +11,9 @@ class RepoEditViewController: NSViewController {
 	
 	let repoManager = ReposManager.default!
 	var selectedRepo: Repo?
-	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
-	lazy var resticController = ResticController.default
 	
 	@IBOutlet var pathField: NSTextField!
-	private var pathFilled = false
 	@IBOutlet var passwordField: NSSecureTextField!
-	private var passFilled = false
 	@IBOutlet var saveButton: NSButton!
 	@IBOutlet var createRepoButton: NSButton!
 	@IBOutlet var testRepoButton: NSButton!

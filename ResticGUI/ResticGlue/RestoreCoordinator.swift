@@ -27,7 +27,6 @@ struct RestorePlan {
 class RestoreCoordinator: SPCDecoderDelegate {
 	typealias D = ResticResponse.RestoreProgress
 	
-	private static let rc = ResticController.default
 	private var plan: RestorePlan
 	private var display: any ProgressDisplayer<String>
 	

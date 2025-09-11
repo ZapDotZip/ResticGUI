@@ -8,8 +8,6 @@ import SwiftToolbox
 import SwiftProcessController
 
 class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
-	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
-	private lazy var resticController = ResticController.default
 	@IBOutlet var repoManager: ReposManager!
 	@IBOutlet var viewCon: ViewController!
 	
@@ -18,12 +16,11 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var progressIndicator: NSProgressIndicator!
 	
 	var snapshots: [ResticResponse.Snapshot] = []
-	let df: DateFormatter = DateFormatter()
+	let df = DateFormatter()
 	let byteFmt = ByteCountFormatter()
 	
 	private let encoder = PropertyListEncoder.init()
 	private let decoder = PropertyListDecoder.init()
-	private let jsonDecoder = JSONDecoder.init()
 
 	private static let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
 	

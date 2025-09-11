@@ -26,7 +26,6 @@ class EnviormentTableView: NSView {
 
 class EnviormentTable: NSTableView, NSTableViewDataSource, NSTableViewDelegate, NSTextFieldDelegate {
 	private static let columnIndexes = IndexSet(integersIn: 0..<2)
-	private let appDel: AppDelegate = (NSApplication.shared.delegate as! AppDelegate)
 	@IBOutlet var deleteButton: NSButton!
 	
 	required init?(coder: NSCoder) {

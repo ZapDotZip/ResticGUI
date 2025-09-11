@@ -10,7 +10,6 @@ import SwiftToolbox
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	private var viewCon: ViewController!
-	private lazy var resticController = ResticController.default
 	var backupController: BackupController!
 	
 	let appVersion: String
