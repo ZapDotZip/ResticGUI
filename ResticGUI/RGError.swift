@@ -15,17 +15,21 @@ enum RGError: Error, CustomStringConvertible {
 	case osError(message: String, description: String)
 	
 	init(from rError: ResticResponse.error) {
-		self = .resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: nil)
+		self = .resticErrorMessage(message: rError.getMessage(), code: rError.code, stderr: nil)
 	}
 	
 	/// Decodes from a failed ``SPCResultDecoded``
 	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32) {
-		let err = stderr
-		let out = String(data: rawData, encoding: .utf8)
-		if err != nil || out != nil {
-			self = .resticErrorMessage(message: out, code: Int(exitCode), stderr: err)
+		if let resticErrMessage = try? JSONDecoder().decode(ResticResponse.error.self, from: rawData) {
+			self.init(from: resticErrMessage)
 		} else {
-			self = .couldNotDecodeOutput(decodingError)
+			let err = stderr
+			let out = String(data: rawData, encoding: .utf8)
+			if err != nil || out != nil {
+				self = .resticErrorMessage(message: out, code: Int(exitCode), stderr: err)
+			} else {
+				self = .couldNotDecodeOutput(decodingError)
+			}
 		}
 	}
 	
@@ -39,6 +43,8 @@ enum RGError: Error, CustomStringConvertible {
 		self = .osError(message: message, description: err.localizedDescription)
 	}
 	
+	/// Creates an error from Restic's exit status.
+	/// - Parameter exitCode: Restic's exit status.
 	init?(exitCode: Int32) {
 		switch exitCode {
 			case 0: return nil

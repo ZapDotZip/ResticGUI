@@ -58,7 +58,7 @@ final class ResticResponse {
 		let item: String?
 		let code: Int?
 		let message: String?
-		var getMessage: String? {
+		func getMessage() -> String? {
 			return message ?? error?.message
 		}
 	}
