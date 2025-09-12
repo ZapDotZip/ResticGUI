@@ -74,8 +74,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	}
 		
 	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
-		snapshots = try ResticController.default.run(args: ["-r", selectedRepo.path, "snapshots", "--json"], env: try selectedRepo.getEnv(), returning: [ResticResponse.Snapshot].self)
-		snapshots = snapshots.filter({ (snap) -> Bool in
+		snapshots = try ResticController.default.getSnapshots(for: selectedRepo).filter({ (snap) -> Bool in
 			return snap.tags?.contains(selectedProfile.name) ?? false
 		})
 		saveToCache(selectedRepo)

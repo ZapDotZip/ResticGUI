@@ -73,7 +73,7 @@ final class ResticController: NSObject {
 	}
 	
 	/// Finds a restic install automatically. Prefers MacPorts over Homebrew and arm over x64.
-	func automatic() throws {
+	private func automatic() throws {
 		for u in ResticController.autoURLs {
 			if let rv = try? testVersion(u) {
 				return rv
@@ -83,7 +83,7 @@ final class ResticController: NSObject {
 		throw RGError.noResticInstallationsFound("ResticGUI was unable to automatically find an install of Restic on your computer.")
 	}
 		
-	func homebrew() throws {
+	private func homebrew() throws {
 		for u in ResticController.autoURLs[1...] {
 			resticLocation = u
 			if let rv = try? testVersion(u) {
@@ -109,34 +109,29 @@ final class ResticController: NSObject {
 		}
 	}
 	
-	func run<D: Decodable>(args: [String], env: [String : String], returning: D.Type) throws -> D {
-		let pr = SPCRunner(executableURL: try getResticURL())
-		pr.env = env
-		pr.qualityOfService = .userInitiated
-		let result = try pr.run(args: args)
-		if let output = try? jsonDecoder.decode(D.self, from: result.output) {
-			return output
-		} else if let rError = try? jsonDecoder.decode(ResticResponse.error.self, from: result.stdError) {
-			throw RGError.resticErrorMessage(message: rError.getMessage, code: rError.code, stderr: result.errorString())
-		} else {
-			throw RGError.couldNotDecodeOutput(nil)
-		}
-	}
-	
-	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
-		let pc = SPCRunner(executableURL: try getResticURL())
-		pc.env = try repo.getEnv()
-		let result = try pc.run(args: ["--json", "-r", repo.path, "init"], returning: ResticResponse.RepoInitResponse.self, decodingWith: .JSON)
+	func run<D: Decodable>(args: [String], env: [String : String], returning: D.Type, qos: QualityOfService = .userInitiated) throws -> D {
+		let restic = SPCRunner(executableURL: try getResticURL())
+		restic.env = env
+		restic.qualityOfService = qos
+		let result = try restic.run(args: args, returning: D.self, decodingWith: .JSON)
 		switch result.output {
 			case .object(let output):
 				return output
 			case .error(let rawData, let decodingError):
-				throw RGError.init(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
+				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
 		}
+	}
+	
+	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
+		return try run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
 	}
 	
 	func getConfig(of repo: Repo) throws -> ResticResponse.RepoConfig {
 		return try run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
+	}
+	
+	func getSnapshots(for repo: Repo) throws -> [ResticResponse.Snapshot] {
+		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try repo.getEnv(), returning: [ResticResponse.Snapshot].self)
 	}
 	
 }
