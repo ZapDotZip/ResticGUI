@@ -30,7 +30,7 @@ class InteractiveResticBase<D: Decodable, C> {
 			RGLogger.default.stderr("(decoded json): \(rErr)")
 			display.displayError(RGError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
-			if processIsBeingTerminated || errStr.contains("terminated received, cleaning up") {
+			if processIsBeingTerminated || errStr.contains("received, cleaning up") {
 				return // do not display an error message when the user terminates the restore.
 			} else {
 				RGLogger.default.stderr(errStr)
