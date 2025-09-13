@@ -35,7 +35,13 @@ final class ResticResponse {
 		let id: String
 		let short_id: String
 		
-		lazy var date: Date = ResticResponse.df.date(from: time) ?? Date.init(timeIntervalSince1970: 0)
+		lazy var date: Date = {
+			let d = ResticResponse.df.date(from: time)
+			if d == nil {
+				RGLogger.default.log("Unable to convert restic-provided date: \(time)")
+			}
+			return d ?? Date.init(timeIntervalSince1970: 0)
+		}()
 	}
 	
 	struct backupProgress: Decodable {
@@ -110,16 +116,12 @@ final class ResticResponse {
 		let bytes_skipped: Int?
 		
 		private func bcfOrNil(_ val: Int64?) -> String {
-			guard let val else {
-				return "???"
-			}
+			guard let val else { return "???" }
 			return bcf.string(fromByteCount: val)
 		}
 		
 		private func numOrNil(_ val: Int?) -> String {
-			guard let val else {
-				return "???"
-			}
+			guard let val else { return "???" }
 			return "\(val)"
 		}
 		
