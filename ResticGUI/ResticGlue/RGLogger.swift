@@ -66,14 +66,8 @@ final class RGLogger {
 		write("\(date()): \(rErr)\n")
 	}
 	
-	/// Logs the string by prepending the date before it.
-	/// - Parameter str: The string to write.
-	public func runCmd(path: URL, args: [String]) {
-		write("\(date()): Running \(path.path) \(args)\n")
-	}
-	
 	public func run(process: _SPCBase, args: [String]) {
-		write("\(date()): Running \(process.executableURL.localPath) \(args)\n with env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
+		write("\(date()): Running \(process.executableURL.localPath) \(args)\n\twith env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
 	}
 	
 	/// Logs Standard Error from restic.

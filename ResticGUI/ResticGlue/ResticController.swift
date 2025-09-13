@@ -18,7 +18,6 @@ final class ResticController: NSObject {
 		URL(localPath: "/opt/homebrew/bin/restic"),
 		URL(localPath: "/usr/local/bin/restic")
 	]
-// MARK: Setup
 	let dq: DispatchQueue
 	let jsonDecoder = JSONDecoder()
 	var resticLocation: URL?
@@ -31,6 +30,7 @@ final class ResticController: NSObject {
 		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.resticLocation, options: .new, context: nil)
 	}
 	
+// MARK: Restic location-finding
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if keyPath == DefaultsKeys.resticLocation {
 			dq.async(qos: .background) {
@@ -109,10 +109,12 @@ final class ResticController: NSObject {
 		}
 	}
 	
+// MARK: Restic controlling
 	func run<D: Decodable>(args: [String], env: [String : String], returning: D.Type, qos: QualityOfService = .userInitiated) throws -> D {
 		let restic = SPCRunner(executableURL: try getResticURL())
 		restic.env = env
 		restic.qualityOfService = qos
+		RGLogger.default.run(process: restic, args: args)
 		let result = try restic.run(args: args, returning: D.self, decodingWith: .JSON)
 		switch result.output {
 			case .object(let output):
@@ -131,7 +133,7 @@ final class ResticController: NSObject {
 	}
 	
 	func getSnapshots(for repo: Repo) throws -> [ResticResponse.Snapshot] {
-		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try repo.getEnv(), returning: [ResticResponse.Snapshot].self)
+		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try repo.getEnv(), returning: [ResticResponse.Snapshot].self, qos: .utility)
 	}
 	
 }
