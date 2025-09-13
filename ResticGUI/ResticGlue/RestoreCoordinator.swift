@@ -24,20 +24,16 @@ struct RestorePlan {
 	
 }
 
-class RestoreCoordinator: SPCDecoderDelegate {
+class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, String>, SPCDecoderDelegate {
 	typealias D = ResticResponse.RestoreProgress
 	
 	private var plan: RestorePlan
-	private var display: any ProgressDisplayer<String>
 	
-	private let jsonDec = JSONDecoder()
-	
-	private var proc: SPCControllerDecoder<D>?
 	private var summary: ResticResponse.RestoreProgress?
 	
 	init(plan: RestorePlan, reportingTo display: any ProgressDisplayer<String>) {
 		self.plan = plan
-		self.display = display
+		super.init(display: display)
 	}
 	
 	func argsFromPlan() throws -> [String] {
@@ -70,11 +66,12 @@ class RestoreCoordinator: SPCDecoderDelegate {
 	
 	func restore() {
 		do {
-			proc = try SPCControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
-			proc!.env = try plan.repo.getEnv()
+			let p = try SPCControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
+			p.env = try plan.repo.getEnv()
 			let args: [String] = try argsFromPlan()
-			RGLogger.default.run(process: proc!, args: args)
-			try proc!.launch(args: args)
+			RGLogger.default.run(process: p, args: args)
+			try p.launch(args: args)
+			process = p
 		} catch {
 			display.displayError(error, isFatal: true)
 		}
@@ -102,22 +99,6 @@ class RestoreCoordinator: SPCDecoderDelegate {
 		} else {
 			display.finish(summary: "No summary available.", with: exitError)
 		}
-	}
-	
-	func terminate() {
-		proc?.terminate()
-	}
-	
-	func pause() {
-		_ = proc?.suspend()
-	}
-	
-	func resume() {
-		_ = proc?.resume()
-	}
-	
-	var isSuspended: Bool {
-		return proc?.processState == .suspended
 	}
 	
 }
