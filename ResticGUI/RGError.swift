@@ -19,14 +19,17 @@ enum RGError: Error, CustomStringConvertible {
 	}
 	
 	/// Decodes from a failed ``SPCResultDecoded``
-	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32) {
+	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32?) {
 		if let resticErrMessage = try? JSONDecoder().decode(ResticResponse.error.self, from: rawData) {
 			self.init(from: resticErrMessage)
 		} else {
-			let err = stderr
 			let out = String(data: rawData, encoding: .utf8)
-			if err != nil || out != nil {
-				self = .resticErrorMessage(message: out, code: Int(exitCode), stderr: err)
+			if stderr != nil || out != nil {
+				let ec: Int? = {
+					guard let exitCode else { return nil }
+					return Int(exitCode)
+				}()
+				self = .resticErrorMessage(message: out, code: ec, stderr: stderr)
 			} else {
 				self = .couldNotDecodeOutput(decodingError)
 			}
