@@ -112,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 		viewCon.saveQuit()
-		if backupController.state != .idle {
+		if backupController.state != .notRunning {
 			if !STBAlerts.destructiveAlert(title: "Are you sure you want to quit?", message: "A backup is in progress. If you choose to quit, the backup will be stopped.", style: .informational, destructiveButtonText: "Quit") {
 				return .terminateCancel
 			}
@@ -138,7 +138,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@IBAction func menuItemPauseBackup(_ sender: NSMenuItem) {
-		if backupController.state == .inProgress {
+		if backupController.state == .running {
 			if backupController.pause() {
 				sender.title = "Resume Backup"
 				viewCon.viewState = .backupPaused

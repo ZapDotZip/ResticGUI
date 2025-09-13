@@ -326,7 +326,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			if backupController.resume() {
 				viewState = .backupInProgress
 			}
-		} else if backupController.state == .inProgress {
+		} else if backupController.state == .running {
 			backupController.cancel()
 			viewState = .noBackupInProgress
 		} else {
