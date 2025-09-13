@@ -7,25 +7,10 @@ import Foundation
 import SwiftToolbox
 import SwiftProcessController
 
-class BackupController: SPCDecoderDelegate {
+class BackupController: InteractiveResticBase<ResticResponse.backupProgress, ResticResponse.backupSummary>, SPCDecoderDelegate {
 	
-	enum BackupState {
-		case idle
-		case inProgress
-		case suspended
-	}
-	
-	let rc: ResticController = .default
-	var process: SPCControllerDecoder<ResticResponse.backupProgress>? = nil
-	let display: any ProgressDisplayer<ResticResponse.backupSummary>
 	var errOut = Data()
-	var didRecieveErrors = false
-	var state: BackupState = .idle
 	var lastBackupSummary: ResticResponse.backupSummary?
-	
-	init(display: any ProgressDisplayer<ResticResponse.backupSummary>) {
-		self.display = display
-	}
 	
 	private var QoS: QualityOfService {
 		get {
@@ -68,7 +53,7 @@ class BackupController: SPCDecoderDelegate {
 				exclusions.append(e)
 			}
 			if profile.excludesTMUser {
-				exclusions.append(self.getTMUserExclusions().joined(separator: "\n"))
+				exclusions.append(try self.getTMUserExclusions().joined(separator: "\n"))
 			}
 			if profile.excludesTMDefault {
 				exclusions.append(self.getTMDefaultTMExclusions().joined(separator: "\n"))
@@ -133,10 +118,10 @@ class BackupController: SPCDecoderDelegate {
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) throws {
 		do {
 			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
-			let p = try SPCControllerDecoder(executableURL: rc.getResticURL(), delegate: self, decoderType: .JSON)
+			let p = try SPCControllerDecoder(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
 			p.env = try repo.getEnv()
+			RGLogger.default.run(process: p, args: args)
 			p.qualityOfService = QoS
-			state = .inProgress
 			try p.launch(args: args)
 			process = p
 		} catch {
@@ -150,12 +135,12 @@ class BackupController: SPCDecoderDelegate {
 			case .object(let progress):
 				self.display.updateProgress(to: progress.percent_done, infoText: progress.current_files?.first)
 			case .error(let rawData, _):
-				if let error = try? rc.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
+				if let error = try? jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
 					print(error.message_type)
 					DispatchQueue.main.async {
 						STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
 					}
-				} else if let summary = try? rc.jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
+				} else if let summary = try? jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
 					var sum: String = ""
 					dump(summary, to: &sum)
 					RGLogger.default.log(sum)
@@ -177,17 +162,11 @@ class BackupController: SPCDecoderDelegate {
 		}
 	}
 	
-	func stderrHandler(_ data: Data) {
-		errOut.append(data)
-		didRecieveErrors = true
-	}
-	
 	func getStderr() -> String {
 		return String.init(data: errOut, encoding: .utf8) ?? "Error decoding output."
 	}
 	
 	func terminationHandler(exitCode: Int32) {
-		state = .idle
 		DispatchQueue.main.async {
 			self.display.finish(summary: self.lastBackupSummary, with: nil)
 		}
@@ -199,41 +178,19 @@ class BackupController: SPCDecoderDelegate {
 		}
 	}
 	
-	/// Pauses the running backup.
-	/// - Returns: True if the process is suspended.
-	func pause() -> Bool {
-		if state != .suspended, let process {
-			if process.suspend() {
-				state = .suspended
-			}
-		}
-		return state == .suspended
-	}
-	
-	/// Resumes the running backup.
-	/// - Returns: True if the process was resumed.
-	func resume() -> Bool {
-		if state == .suspended, let process {
-			if process.resume() {
-				state = .inProgress
-			}
-		}
-		return state == .inProgress
-	}
-	
 	private struct TMPrefs: Decodable {
 		let ExcludeByPath: [String]
 		let SkipPaths: [String]
 	}
 	private let decoder = PropertyListDecoder.init()
-	private func getTMUserExclusions() -> [String] {
+	private func getTMUserExclusions() throws -> [String] {
 		do {
 			let tmPrefs = try decoder.decode(TMPrefs.self, from: Data.init(contentsOf: URL(localPath: "/Library/Preferences/com.apple.TimeMachine.plist")))
 			return tmPrefs.ExcludeByPath + tmPrefs.SkipPaths
 		} catch {
 			NSLog("Error getting TM User Exclusions: \(error)")
+			throw RGError(from: error, message: "Could not load Time Machine User Exclusions.")
 		}
-		return []
 	}
 	
 	private struct TMDefault: Decodable {
