@@ -88,31 +88,10 @@ class RestoreCoordinator: SPCDecoderDelegate {
 				} else {
 					summary = output
 				}
-			case .error(rawData: let rawData, decodingError: _):
-				if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: rawData) {
-					RGLogger.default.log("stdout (decoded json): \(rErr)")
-					display.displayError(RGError.init(from: rErr), isFatal: false)
-				} else if let errStr = String.init(data: rawData, encoding: .utf8) {
-					display.displayError(RGError.unknownError(message: errStr), isFatal: false)
-				} else {
-					display.displayError(RGError.unknownError(message: "Restic returned undecodable data."), isFatal: false)
-				}
-		}
-	}
-	
-	func stderrHandler(_ errData: Data) {
-		if let rErr = try? jsonDec.decode(ResticResponse.error.self, from: errData) {
-			RGLogger.default.stderr("(decoded json): \(rErr)")
-			display.displayError(RGError.init(from: rErr), isFatal: false)
-		} else if let errStr = String.init(data: errData, encoding: .utf8) {
-			if errStr.contains("terminated received, cleaning up") {
-				return
-			} else {
-				RGLogger.default.stderr(errStr)
-				display.displayError(RGError.unknownError(message: errStr), isFatal: false)
-			}
-		} else {
-			RGLogger.default.log("Undecodable stderr data received from Restic")
+			case .error(rawData: let rawData, decodingError: let decodingError):
+				let error = RGError.init(decodingError: decodingError, rawData: rawData, stderr: nil, exitCode: nil)
+				RGLogger.default.log(error)
+				display.displayError(error, isFatal: false)
 		}
 	}
 	
