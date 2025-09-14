@@ -25,9 +25,14 @@ class InteractiveResticBase<D: Decodable, C> {
 		self.display = display
 	}
 	
+	var isQuittingIntentionally = false
 	func stderrHandler(_ errData: Data) {
 		if let rErr = try? jsonDecoder.decode(ResticResponse.error.self, from: errData) {
 			RGLogger.default.stderr("(decoded json): \(rErr)")
+			guard !isQuittingIntentionally && rErr.message == "exit_error" else {
+				isQuittingIntentionally = false
+				return
+			}
 			display.displayError(RGError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
 			if processIsBeingTerminated || errStr.contains("received, cleaning up") {

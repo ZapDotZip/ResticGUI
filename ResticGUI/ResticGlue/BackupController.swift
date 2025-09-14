@@ -174,6 +174,7 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 	
 	func cancel() {
 		if let process {
+			isQuittingIntentionally = true
 			process.interrupt()
 		}
 	}
