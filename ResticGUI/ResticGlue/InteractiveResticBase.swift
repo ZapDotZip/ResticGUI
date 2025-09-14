@@ -35,7 +35,8 @@ class InteractiveResticBase<D: Decodable, C> {
 			}
 			display.displayError(RGError.init(from: rErr), isFatal: false)
 		} else if let errStr = String.init(data: errData, encoding: .utf8) {
-			if processIsBeingTerminated || errStr.contains("received, cleaning up") {
+			if isQuittingIntentionally && errStr.contains("received, cleaning up") {
+				isQuittingIntentionally = false
 				return // do not display an error message when the user terminates the restore.
 			} else {
 				RGLogger.default.stderr(errStr)
@@ -46,10 +47,18 @@ class InteractiveResticBase<D: Decodable, C> {
 		}
 	}
 	
-	private var processIsBeingTerminated = false
 	func terminate() {
-		processIsBeingTerminated = true
-		process?.terminate()
+		if let process {
+			isQuittingIntentionally = true
+			process.terminate()
+		}
+	}
+	
+	func cancel() {
+		if let process {
+			isQuittingIntentionally = true
+			process.interrupt()
+		}
 	}
 	
 	func pause() -> Bool {

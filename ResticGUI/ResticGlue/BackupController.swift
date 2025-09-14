@@ -172,13 +172,6 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 		}
 	}
 	
-	func cancel() {
-		if let process {
-			isQuittingIntentionally = true
-			process.interrupt()
-		}
-	}
-	
 	private struct TMPrefs: Decodable {
 		let ExcludeByPath: [String]
 		let SkipPaths: [String]
