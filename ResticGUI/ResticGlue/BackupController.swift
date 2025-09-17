@@ -166,7 +166,8 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 		return String.init(data: errOut, encoding: .utf8) ?? "Error decoding output."
 	}
 	
-	func terminationHandler(exitCode: Int32) {
+	override func terminationHandler(exitCode: Int32) {
+		process = nil
 		DispatchQueue.main.async {
 			self.display.finish(summary: self.lastBackupSummary, with: nil)
 		}
