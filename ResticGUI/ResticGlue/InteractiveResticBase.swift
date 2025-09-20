@@ -8,7 +8,6 @@ import SwiftProcessController
 
 protocol RGIRSummary: Decodable {
 	var message_type: String { get }
-	func summaryReport() -> String
 }
 
 /// Holds implementation for both ``BackupController`` and ``RestoreCoordinator``.

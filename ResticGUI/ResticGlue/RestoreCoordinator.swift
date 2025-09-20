@@ -24,14 +24,12 @@ struct RestorePlan {
 	
 }
 
-class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, String>, SPCDecoderDelegate {
+class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, ResticResponse.RestoreProgress>, SPCDecoderDelegate {
 	typealias D = ResticResponse.RestoreProgress
 	
 	private var plan: RestorePlan
 	
-	private var summary: ResticResponse.RestoreProgress?
-	
-	init(plan: RestorePlan, reportingTo display: any ProgressDisplayer<String>) {
+	init(plan: RestorePlan, reportingTo display: any ProgressDisplayer<ResticResponse.RestoreProgress>) {
 		self.plan = plan
 		super.init(display: display)
 	}
@@ -81,7 +79,7 @@ class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, 
 		switch response {
 			case .object(output: let output):
 				if let progress = output.percent_done {
-					display.updateProgress(to: progress, infoText: output.progressReport)
+					display.updateProgress(to: progress, infoText: output.progressReport())
 				} else {
 					summary = output
 				}
@@ -89,15 +87,6 @@ class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, 
 				let error = RGError.init(decodingError: decodingError, rawData: rawData, stderr: nil, exitCode: nil)
 				RGLogger.default.log(error)
 				display.displayError(error, isFatal: false)
-		}
-	}
-	
-	func terminationHandler(exitCode: Int32) {
-		let exitError = RGError(exitCode: exitCode)
-		if let sum = summary?.summaryReport {
-			display.finish(summary: sum, with: exitError)
-		} else {
-			display.finish(summary: "No summary available.", with: exitError)
 		}
 	}
 	

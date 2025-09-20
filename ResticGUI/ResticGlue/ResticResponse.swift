@@ -73,8 +73,8 @@ final class ResticResponse {
 		let message: String?
 	}
 	
-	struct backupSummary: Codable {
-		let message_type: String?
+	struct backupSummary: Codable, RGIRSummary {
+		let message_type: String
 		let files_new: Int
 		let files_changed: Int
 		let files_unmodified: Int
@@ -103,7 +103,7 @@ final class ResticResponse {
 		let repository: String
 	}
 	
-	struct RestoreProgress: Decodable {
+	struct RestoreProgress: Decodable, RGIRSummary {
 		let message_type: String
 		let seconds_elapsed: Int?
 		let percent_done: Double? // nil if backup complete
@@ -125,7 +125,7 @@ final class ResticResponse {
 			return "\(val)"
 		}
 		
-		var progressReport: String {
+		func progressReport() -> String {
 			return """
 				\(bcf.string(fromByteCount: bytes_restored ?? 0))/\(bcfOrNil(total_bytes)) restored
 				\(files_restored ?? 0)/\(numOrNil(total_files)) files restored
@@ -133,7 +133,7 @@ final class ResticResponse {
 			"""
 		}
 		
-		var summaryReport: String {
+		func summaryReport() -> String {
 			return "Restored \(numOrNil(total_files)) files, \(bcfOrNil(total_bytes)) in \(dcf.string(from: TimeInterval(seconds_elapsed ?? 0)) ?? "\(seconds_elapsed ?? 0) seconds")"
 		}
 		
