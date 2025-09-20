@@ -127,13 +127,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	@IBAction func menuItemStartBackup(_ sender: NSMenuItem) {
 		if viewCon.viewState == .noBackupInProgress {
-			viewCon.runBackup(sender)
+			viewCon.backupButton(sender)
 		}
 	}
 	
 	@IBAction func menuItemStopBackup(_ sender: NSMenuItem) {
 		if viewCon.viewState == .backupInProgress {
-			viewCon.runBackup(sender)
+			viewCon.backupButton(sender)
 		}
 	}
 	

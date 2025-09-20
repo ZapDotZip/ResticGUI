@@ -115,7 +115,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				return true
 			}
 			outline.removeItems(at: [index], inParent: nil)
-//			outline.reloadData()
 			if profileSidebarList.count == 1 {
 				performSegue(withIdentifier: "NewProfile", sender: sender)
 			} else {
@@ -173,7 +172,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	
 	
-// OutlineDataSource
+// MARK: OutlineDataSource
 	var profileSidebarList: [ProfileOrHeader] = []
 	
 	func append(profile: Profile) {
@@ -207,7 +206,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		profileSidebarList.count
 	}
 	
-// OutlineDelegate
+// MARK: OutlineDelegate
 	func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
 		var profilesCellView: NSTableCellView
 		if (item as! ProfileOrHeader).isHeader {
@@ -321,33 +320,35 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBOutlet weak var scanAhead: NSButton!
 	
 	
-	@IBAction func runBackup(_ sender: Any) {
-		if backupController.state == .suspended {
-			if backupController.resume() {
-				viewState = .backupInProgress
-			}
-		} else if backupController.state == .running {
-			backupController.cancel()
-			viewState = .noBackupInProgress
-		} else {
-			if let profile = selectedProfile {
-				saveSelectedProfile()
-				if let repo = repoManager.getSelectedRepo() {
-					viewState = .backupStarting
-					progressBar.isIndeterminate = scanAhead.state == .off
-					do {
-						try backupController.backup(profile: profile, repo: repo, scanAhead: scanAhead.state == .on)
-					} catch {
-						displayError(error, isFatal: false)
-						return
-					}
+	@IBAction func backupButton(_ sender: Any) {
+		switch backupController.state {
+			case .notRunning:
+				startBackup()
+			case .running:
+				backupController.cancel()
+			case .suspended:
+				if backupController.resume() {
 					viewState = .backupInProgress
-				} else {
-					STBAlerts.alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
 				}
-			} else {
-				STBAlerts.alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
-			}
+		}
+	}
+	
+	private func startBackup() {
+		guard let selectedProfile else {
+			STBAlerts.alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
+			return
+		}
+		saveSelectedProfile()
+		guard let repo = repoManager.getSelectedRepo() else {
+			STBAlerts.alert(title: "Please select a repository.", message: "You need to select a repository to back up to.", style: .informational)
+			return
+		}
+		viewState = .backupStarting
+		do {
+			try backupController.backup(profile: selectedProfile, repo: repo, scanAhead: scanAhead.state == .on)
+		} catch {
+			displayError(error, isFatal: false)
+			return
 		}
 	}
 	
@@ -370,9 +371,18 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 					runBackupButton.isEnabled = true
 				case .backupStarting:
 					progressBar.doubleValue = 0.0
+					progressBar.isIndeterminate = true
+					progressBar.startAnimation(self)
 					progressLabel.stringValue = ""
 					runBackupButton.isEnabled = false
 				case .backupInProgress:
+					if scanAhead.state == .on {
+						progressBar.stopAnimation(self)
+						progressBar.isIndeterminate = false
+					} else {
+						progressBar.isIndeterminate = true
+						progressBar.startAnimation(self)
+					}
 					runBackupButton.title = "Cancel"
 					runBackupButton.isEnabled = true
 				case .backupPaused:
@@ -446,6 +456,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	func setIndeterminate(_ isIndeterminate: Bool) {
 		DispatchQueue.main.async {
 			self.progressBar.isIndeterminate = isIndeterminate
+			self.progressBar.startAnimation(self)
 		}
 	}
 	
@@ -458,15 +469,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
-	func setMessage(_ text: String) {
-		progressLabel.stringValue = text
-	}
-	
-	func setMessageButtonEnable(_ text: String, _ enabled: Bool) {
-		progressLabel.stringValue = text
-		runBackupButton.isEnabled = enabled
-	}
-	
 	func setProgressBar(to value: Double, max: Double) {
 		DispatchQueue.main.async { [self] in
 			progressBar.doubleValue = value
@@ -476,7 +478,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	func updateProgress(to value: Double, infoText: String?) {
 		DispatchQueue.main.async { [self] in
-			progressBar.isIndeterminate = false
+			if viewState == .backupStarting {
+				viewState = .backupInProgress
+			}
 			progressBar.doubleValue = value
 			if let infoText {
 				progressLabel.stringValue = infoText
