@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum RGError: Error, CustomStringConvertible {
+enum RGError: Error, CustomStringConvertible, LocalizedError {
 	case couldNotDecodeOutput(Error?)
 	case noResticInstallationsFound(String)
 	case unsupportedRepositoryVersion(version: Int)
@@ -63,7 +63,7 @@ enum RGError: Error, CustomStringConvertible {
 		RGLogger.default.log("Restic returned exit code \(self)")
 	}
 	
-	var description: String {
+	public var description: String {
 		switch self {
 			case .couldNotDecodeOutput:
 				return "Could not decode output from Restic. Make sure you are using a supported version in ResticGUI's Preferences."
@@ -88,4 +88,9 @@ enum RGError: Error, CustomStringConvertible {
 				return "\(message):\n\n\(description)"
 		}
 	}
+	
+	public var errorDescription: String? {
+		return self.description
+	}
+	
 }
