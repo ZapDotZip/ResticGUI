@@ -116,6 +116,7 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 	}
 	
 	func backup(profile: Profile, repo: Repo, scanAhead: Bool = true) throws {
+		willStart()
 		do {
 			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
 			let p = try SPCControllerDecoder(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)

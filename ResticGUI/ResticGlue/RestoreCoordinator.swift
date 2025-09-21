@@ -63,6 +63,7 @@ class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, 
 	}
 	
 	func restore() {
+		willStart()
 		do {
 			let p = try SPCControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
 			p.env = try plan.repo.getEnv()
