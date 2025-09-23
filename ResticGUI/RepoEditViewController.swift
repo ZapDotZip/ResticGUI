@@ -35,7 +35,7 @@ class RepoEditViewController: NSViewController {
 			} catch {
 				passwordField.stringValue = ""
 				DispatchQueue.main.async {
-					STBAlerts.alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain:\n\n\(error.errorDescription ?? "")", style: .critical, buttons: [])
+					STBAlerts.alert(title: "Unable to get password from keychain", message: "The password could not be loaded from the keychain.", error: error)
 				}
 			}
 			cacheDirLabel.stringValue = r.cacheDir ?? ""
@@ -180,26 +180,26 @@ class RepoEditViewController: NSViewController {
 		} catch let error as STBKeychainError {
 			switch error {
 			case .itemNotFound:
-					STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error:\n\n\(error.localizedDescription)", style: .critical)
+					STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error", error: error)
 			case .duplicateItem:
 				if STBAlerts.destructiveAlert(title: "The password for this repository path already exists.", message: "Overwrite?", style: .warning, destructiveButtonText: "Overwrite") {
 					do {
 						try STBKeychain.delete(path: pathField.stringValue)
 						STBAlerts.alert(title: "Duplicate Entry Deleted", message: "The keychain item for this path has been deleted.\n\nPlease try saving again.", style: .informational)
 					} catch {
-						STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain: \n\n\(error.localizedDescription)", style: .critical)
+						STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain", error: error)
 					}
 				} else {
 					return
 				}
 			default:
-				STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain due to an error: \n\n\(error.localizedDescription)", style: .critical)
+				STBAlerts.alert(title: "The password could not be saved.", message: "The repository password could not be saved in the Keychain", error: error)
 				return
 			}
 			
 		} catch {
 			NSLog("Error saving the repository list: \(error)")
-			STBAlerts.alert(title: "An error occured trying to save repository list.", message: error.localizedDescription, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to save repository list.", message: nil, error: error)
 			return
 		}
 	}

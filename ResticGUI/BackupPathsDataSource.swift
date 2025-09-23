@@ -157,7 +157,7 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 					}
 				} catch {
 					NSLog("Failed to load user-selected paths file: \(error)")
-					STBAlerts.alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.\n\n\(error.localizedDescription)", style: .warning)
+					STBAlerts.alert(title: "Failed to load paths from file.", message: "The file \(url.path) couldn't be read.", error: error)
 				}
 			}
 			reload()

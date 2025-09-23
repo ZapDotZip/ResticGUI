@@ -47,7 +47,7 @@ class ProfileManager {
 			return p
 		} catch {
 			NSLog("Error loading profile: \(error)")
-			STBAlerts.alert(title: "An error occured trying to load the profile \"\(url.lastPathComponent)\".", message: error.localizedDescription, style: .critical)
+			STBAlerts.alert(title: "An error occured trying to load the profile \"\(url.lastPathComponent)\".", message: nil, error: error)
 		}
 		return nil
 	}

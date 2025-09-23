@@ -250,7 +250,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				try ProfileManager.save(p)
 			} catch {
 				NSLog("Couldn't save profile: \(error)")
-				STBAlerts.alert(title: "An error occured trying to save the current profile.", message: "The profile \"\(p.name)\" could not be saved:\n\n\(error.localizedDescription)", style: .critical)
+				STBAlerts.alert(title: "An error occured trying to save the current profile.", message: "The profile \"\(p.name)\" could not be saved", error: error)
 			}
 		}
 	}

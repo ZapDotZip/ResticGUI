@@ -27,7 +27,7 @@ class ReposManager: NSObject {
 				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: ReposManager.repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
-				STBAlerts.alert(title: "An error occured trying to load the list of repositories.", message: error.localizedDescription, style: .critical)
+				STBAlerts.alert(title: "An error occured trying to load the list of repositories.", message: nil, error: error)
 			}
 		}
 		ReposManager.default = self

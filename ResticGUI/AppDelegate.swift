@@ -83,14 +83,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			try FileManager.default.trashItem(at: ProfileManager.profileDir, resultingItemURL: nil)
 		} catch {
 			NSLog("error deleting app data: \(error)")
-			STBAlerts.alert(title: "An error occured.", message: "Could not trash the profiles directory: \(error.localizedDescription)\n\nThe file is located at \(ProfileManager.profileDir.relativePath).", style: .warning)
+			STBAlerts.alert(title: "An error occured.", message: "Could not trash the profiles directory. The file is located at \(ProfileManager.profileDir.relativePath).", error: error, style: .warning)
 		}
 		do {
 			try FileManager.default.trashItem(at: ReposManager.repolistFile, resultingItemURL: nil)
 			STBAlerts.alert(title: "Repositories Reset", message: "The repository list has been put in your trash.\n\nIf you want to delete passwords as well, open up Keychain Access and delete application passwords with the name \(Bundle.main.bundleIdentifier ?? "").", style: .informational)
 		} catch {
 			NSLog("error deleting app data: \(error)")
-			STBAlerts.alert(title: "An error occured.", message: "Could not trash the repository list: \(error.localizedDescription)\n\nThe file is located at \(ReposManager.repolistFile.relativePath).", style: .warning)
+			STBAlerts.alert(title: "An error occured.", message: "Could not trash the repository list. The file is located at \(ReposManager.repolistFile.relativePath).", error: error, style: .warning)
 		}
 		if deletePrefs {
 			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
