@@ -89,6 +89,28 @@ final class ResticResponse {
 		let total_bytes_processed: Int
 		let total_duration: Double?
 		let snapshot_id: String?
+		
+		init(from decoder: any Decoder) throws {
+			let container: KeyedDecodingContainer<backupSummary.CodingKeys> = try decoder.container(keyedBy: backupSummary.CodingKeys.self)
+			self.message_type = try container.decodeIfPresent(String.self, forKey: backupSummary.CodingKeys.message_type) ?? "summary"
+			guard message_type == "summary" else {
+				throw DecodingError.typeMismatch(backupSummary.self, .init(codingPath: container.codingPath, debugDescription: "backupSummary must have message_type of \"summary\""))
+			}
+			self.files_new = try container.decode(Int.self, forKey: backupSummary.CodingKeys.files_new)
+			self.files_changed = try container.decode(Int.self, forKey: backupSummary.CodingKeys.files_changed)
+			self.files_unmodified = try container.decode(Int.self, forKey: backupSummary.CodingKeys.files_unmodified)
+			self.dirs_new = try container.decode(Int.self, forKey: backupSummary.CodingKeys.dirs_new)
+			self.dirs_changed = try container.decode(Int.self, forKey: backupSummary.CodingKeys.dirs_changed)
+			self.dirs_unmodified = try container.decode(Int.self, forKey: backupSummary.CodingKeys.dirs_unmodified)
+			self.data_blobs = try container.decode(Int.self, forKey: backupSummary.CodingKeys.data_blobs)
+			self.tree_blobs = try container.decode(Int.self, forKey: backupSummary.CodingKeys.tree_blobs)
+			self.data_added = try container.decode(Int.self, forKey: backupSummary.CodingKeys.data_added)
+			self.data_added_packed = try container.decode(Int.self, forKey: backupSummary.CodingKeys.data_added_packed)
+			self.total_files_processed = try container.decode(Int.self, forKey: backupSummary.CodingKeys.total_files_processed)
+			self.total_bytes_processed = try container.decode(Int.self, forKey: backupSummary.CodingKeys.total_bytes_processed)
+			self.total_duration = try container.decodeIfPresent(Double.self, forKey: backupSummary.CodingKeys.total_duration)
+			self.snapshot_id = try container.decodeIfPresent(String.self, forKey: backupSummary.CodingKeys.snapshot_id)
+		}
 	}
 	
 	struct RepoConfig: Codable {
