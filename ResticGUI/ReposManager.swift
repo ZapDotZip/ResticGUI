@@ -102,10 +102,6 @@ class ReposManager: NSObject {
 		try save()
 	}
 	
-	func get(name: String) -> Repo? {
-		return repos[name]
-	}
-	
 	func getSelectedRepo() -> Repo? {
 		return repos[RepoMenu.titleOfSelectedItem ?? ""]
 	}
@@ -117,11 +113,10 @@ class ReposManager: NSObject {
 	}
 	
 	@IBAction func selectorDidChange(_ sender: NSPopUpButton) {
-		if let repoName = sender.titleOfSelectedItem {
-			profileEditor.setSelectedRepo(repoName)
-			if UserDefaults.standard.bool(forKey: DefaultsKeys.globalRepoSelection) {
-				UserDefaults.standard.set(repoName, forKey: DefaultsKeys.selectedRepo)
-			}
+		guard let selectedRepo = getSelectedRepo() else { return }
+		profileEditor.setSelectedRepo(selectedRepo)
+		if UserDefaults.standard.bool(forKey: DefaultsKeys.globalRepoSelection) {
+			UserDefaults.standard.set(selectedRepo.getName(), forKey: DefaultsKeys.selectedRepo)
 		}
 	}
 	

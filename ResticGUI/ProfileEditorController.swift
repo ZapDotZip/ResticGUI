@@ -73,13 +73,14 @@ class ProfileEditorController: NSView, NSTextViewDelegate, NSTabViewDelegate {
 		}
 		
 		TagField.objectValue = profile.tags
-		snapshotsTable.loadIfCached()
-		
+		guard let selectedRepo = repoManager.getSelectedRepo() else { return }
+		snapshotsTable.loadIfCached(for: profile, repo: selectedRepo)
 	}
 	
-	func setSelectedRepo(_ repo: String) {
-		viewCon.selectedProfile?.selectedRepo = repo
-		snapshotsTable.loadIfCached()
+	func setSelectedRepo(_ repo: Repo) {
+		guard let selectedProfile = viewCon.selectedProfile else { return }
+		selectedProfile.selectedRepo = repo.getName()
+		snapshotsTable.loadIfCached(for: selectedProfile, repo: repo)
 	}
 	
 	
