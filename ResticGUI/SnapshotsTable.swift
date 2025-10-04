@@ -37,14 +37,10 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private let df = DateFormatter()
 	private let byteFmt = ByteCountFormatter()
 	
-	private let encoder = PropertyListEncoder.init()
-	private let decoder = PropertyListDecoder.init()
-
 	private static let cacheDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appending(path: "ResticGUI", isDirectory: true).appending(path: "Snapshots", isDirectory: true)
 	
 	required init?(coder: NSCoder) {
 		df.locale = .autoupdatingCurrent
-		encoder.outputFormat = .binary
 		super.init(coder: coder)
 		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.snapshotDateFormat, options: .new, context: nil)
 	}
@@ -187,7 +183,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 		do {
 			let data = try Data.init(contentsOf: sc)
-			snapshots = try decoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
+			snapshots = try AppDelegate.plistDecoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
 				return snap.tags?.contains(profile.name) ?? false
 			})
 		} catch {
@@ -202,7 +198,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	private func saveToCache(_ list: [ResticResponse.Snapshot], for repo: Repo) {
 		guard let sc = getSnapshotCacheURL(repo: repo) else { return }
 		do {
-			let data = try encoder.encode(list)
+			let data = try AppDelegate.plistEncoderBinary.encode(list)
 			try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 			try data.write(to: sc)
 		} catch {

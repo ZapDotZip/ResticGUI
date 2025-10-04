@@ -16,22 +16,18 @@ class ReposManager: NSObject {
 	
 	static let repolistFile: URL = AppDelegate.appSupportDirectory.appending(path: "Repositories.plist", isDirectory: false)
 	
-	private let encoder = PropertyListEncoder.init()
-	private let decoder = PropertyListDecoder.init()
-	
 	static var `default`: ReposManager!
 	override init() {
 		super.init()
 		if FileManager.default.fileExists(atPath: ReposManager.repolistFile.path) {
 			do {
-				repos = try decoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: ReposManager.repolistFile))
+				repos = try AppDelegate.plistDecoder.decode(Dictionary<String, Repo>.self, from: Data.init(contentsOf: ReposManager.repolistFile))
 			} catch {
 				NSLog("Error loading profile: \(error)")
 				STBAlerts.alert(title: "An error occured trying to load the list of repositories.", message: nil, error: error)
 			}
 		}
 		ReposManager.default = self
-		encoder.outputFormat = .xml
 	}
 	
 	
@@ -53,7 +49,7 @@ class ReposManager: NSObject {
 	
 	/// Saves the repository list.
 	func save() throws {
-		let data = try encoder.encode(repos)
+		let data = try AppDelegate.plistEncoderXML.encode(repos)
 		try data.write(to: ReposManager.repolistFile)
 	}
 	

@@ -20,7 +20,7 @@ enum RGError: Error, CustomStringConvertible, LocalizedError {
 	
 	/// Decodes from a failed ``SPCResultDecoded``
 	init(decodingError: Error, rawData: Data, stderr: String?, exitCode: Int32?) {
-		if let resticErrMessage = try? JSONDecoder().decode(ResticResponse.error.self, from: rawData) {
+		if let resticErrMessage = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
 			self.init(from: resticErrMessage)
 		} else {
 			let out = String(data: rawData, encoding: .utf8)

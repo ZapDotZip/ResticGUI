@@ -9,6 +9,20 @@ import SwiftToolbox
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 	
+	static let plistEncoderXML = {
+		let ple = PropertyListEncoder()
+		ple.outputFormat = .xml
+		return ple
+	}()
+	static let plistEncoderBinary = {
+		let ple = PropertyListEncoder()
+		ple.outputFormat = .binary
+		return ple
+	}()
+	static let plistDecoder = PropertyListDecoder()
+	
+	static let jsonDecoder = JSONDecoder()
+	
 	private var viewCon: ViewController!
 	var backupController: BackupController!
 	

@@ -136,12 +136,12 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 			case .object(let progress):
 				self.display.updateProgress(to: progress.percent_done, infoText: progress.current_files?.first)
 			case .error(let rawData, _):
-				if let error = try? jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
+				if let error = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
 					print(error.message_type)
 					DispatchQueue.main.async {
 						STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
 					}
-				} else if let summary = try? jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
+				} else if let summary = try? AppDelegate.jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
 					var sum: String = ""
 					dump(summary, to: &sum)
 					RGLogger.default.log(sum)

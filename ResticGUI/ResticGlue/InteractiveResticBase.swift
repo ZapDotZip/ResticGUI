@@ -14,7 +14,6 @@ protocol RGIRSummary: Decodable {
 /// P: The progress type that is decoded and displayed during the process.
 /// S: The summary type that is displayed at the end of the process.
 class InteractiveResticBase<P: Decodable, S: RGIRSummary> {
-	let jsonDecoder = JSONDecoder()
 
 	let display: any ProgressDisplayer<S>
 	
@@ -37,7 +36,7 @@ class InteractiveResticBase<P: Decodable, S: RGIRSummary> {
 	}
 	
 	func stderrHandler(_ errData: Data) {
-		if let rErr = try? jsonDecoder.decode(ResticResponse.error.self, from: errData) {
+		if let rErr = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: errData) {
 			RGLogger.default.stderr("(decoded json): \(rErr)")
 			guard !isQuittingIntentionally && rErr.message != "exit_error" else { return } // don't show an error message when the user cancels the task
 			display.displayError(RGError.init(from: rErr), isFatal: false)

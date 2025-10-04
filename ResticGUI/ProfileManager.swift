@@ -13,13 +13,6 @@ class ProfileManager {
 	
 	static let profileDir: URL = AppDelegate.appSupportDirectory.appending(path: "Profiles", isDirectory: true)
 	
-	private static let encoder = {
-		let ple = PropertyListEncoder.init()
-		ple.outputFormat = .xml
-		return ple
-	}()
-	private static let decoder = PropertyListDecoder.init()
-	
 	/// Loads all saved profiles and returns an array of Profiles.
 	/// - Returns: an array of profiles, empty if there are none.
 	static func getProfilesList() -> [String] {
@@ -43,7 +36,7 @@ class ProfileManager {
 	static func load(_ url: URL) -> Profile? {
 		do {
 			let data = try Data.init(contentsOf: url)
-			let p = try decoder.decode(Profile.self, from: data)
+			let p = try AppDelegate.plistDecoder.decode(Profile.self, from: data)
 			return p
 		} catch {
 			NSLog("Error loading profile: \(error)")
@@ -62,7 +55,7 @@ class ProfileManager {
 	static func load(named: String) throws -> Profile {
 		let filePath: URL = getProfilePath(named)
 		let data = try Data.init(contentsOf: filePath)
-		let p = try decoder.decode(Profile.self, from: data)
+		let p = try AppDelegate.plistDecoder.decode(Profile.self, from: data)
 		return p
 	}
 
@@ -82,7 +75,7 @@ class ProfileManager {
 	/// Saves the provided profile to the specified directory., overwriting the existing profile if it exists.
 	/// - Parameter profile: the profile to save
 	static func save(_ profile: Profile, to filePath: URL) throws {
-		let data = try encoder.encode(profile)
+		let data = try AppDelegate.plistEncoderBinary.encode(profile)
 		try data.write(to: filePath)
 	}
 	

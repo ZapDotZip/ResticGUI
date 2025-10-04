@@ -47,7 +47,7 @@ class RestoreViewController: NSViewController {
 	}
 	
 	override func viewWillDisappear() {
-		if let size = view.window?.frame.size, let data = try? PropertyListEncoder().encode(size) {
+		if let size = view.window?.frame.size, let data = try? AppDelegate.plistEncoderBinary.encode(size) {
 			UserDefaults.standard.set(data, forKey: DefaultsKeys.viewSizeRestoreView)
 		}
 		super.viewWillDisappear()

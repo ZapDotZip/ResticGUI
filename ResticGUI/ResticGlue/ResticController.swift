@@ -19,7 +19,6 @@ final class ResticController: NSObject {
 		URL(localPath: "/usr/local/bin/restic")
 	]
 	let dq: DispatchQueue
-	let jsonDecoder = JSONDecoder()
 	var resticLocation: URL?
 	var versionInfo: ResticResponse.Version?
 	
