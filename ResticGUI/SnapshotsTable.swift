@@ -15,6 +15,24 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	@IBOutlet var reloadButton: NSButton!
 	@IBOutlet var progressIndicator: NSProgressIndicator!
 	
+	private enum State {
+		case notLoading
+		case loading
+	}
+	
+	private var loadState: State = .notLoading {
+		didSet {
+			switch loadState {
+			case .notLoading:
+				progressIndicator.stopAnimation(self)
+				reloadButton.isEnabled = true
+			case .loading:
+				reloadButton.isEnabled = false
+				progressIndicator.startAnimation(self)
+			}
+		}
+	}
+	
 	var snapshots: [ResticResponse.Snapshot] = []
 	let df = DateFormatter()
 	let byteFmt = ByteCountFormatter()
@@ -54,8 +72,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		guard let selectedRepo = repoManager.getSelectedRepo(), let selectedProfile = viewCon.selectedProfile else {
 			return
 		}
-		reloadButton.isEnabled = false
-		progressIndicator.startAnimation(self)
+		loadState = .loading
 		DispatchQueue.global(qos: .userInitiated).async {
 			do {
 				try self.load(selectedRepo, selectedProfile)
@@ -68,22 +85,21 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	func loadError(_ error: Error) {
 		NSLog("Couldn't load snapshots: \(error)")
-		progressIndicator.stopAnimation(self)
-		reloadButton.isEnabled = true
+		loadState = .notLoading
 		STBAlerts.alert(title: "Unable to load snapshots", message: nil, error: error, style: .critical)
 	}
 		
-	func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
-		snapshots = try ResticController.default.getSnapshots(for: selectedRepo).filter({ (snap) -> Bool in
+	private func load(_ selectedRepo: Repo, _ selectedProfile: Profile) throws {
+		let loaded = try ResticController.default.getSnapshots(for: selectedRepo)
+		saveToCache(loaded, for: selectedRepo)
+		snapshots = loaded.filter({ (snap) -> Bool in
 			return snap.tags?.contains(selectedProfile.name) ?? false
 		})
-		saveToCache(selectedRepo)
 	}
 	
 	func afterLoad() {
 		reload()
-		progressIndicator.stopAnimation(self)
-		reloadButton.isEnabled = true
+		loadState = .notLoading
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -140,37 +156,44 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		}
 	}
 	
-	private func getSnapshotCacheURL(_ caller: String = #function) -> URL? {
-		if let repoID = repoManager.getSelectedRepo()?.id {
-			return SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
-		} else {
-			RGLogger.default.log("\(caller) was unable to get the repo ID.")
+	private func getSnapshotCacheURL(repo: Repo) -> URL? {
+		guard let repoID = repo.id else {
+			RGLogger.default.log("Unable to load/save snapshot caches for repo \"\(repo.path)\" because it does not have an ID.")
 			return nil
+		}
+		return SnapshotsTable.cacheDirectory.appending(path: repoID, isDirectory: false)
+	}
+	
+	func loadIfCached(for profile: Profile, repo: Repo) {
+		loadState = .loading
+		DispatchQueue.global(qos: .utility).async {
+			self.loadFromFileCache(for: profile, repo: repo)
+			DispatchQueue.main.async {
+				self.reload()
+				self.loadState = .notLoading
+			}
 		}
 	}
 	
-	func loadIfCached() {
-		guard let sc = getSnapshotCacheURL(), let profile = viewCon.selectedProfile?.name,
-				FileManager.default.fileExists(atPath: sc.path) else {
+	private func loadFromFileCache(for profile: Profile, repo: Repo) {
+		guard let sc = getSnapshotCacheURL(repo: repo), FileManager.default.fileExists(atPath: sc.path) else {
 			snapshots = []
-			reload()
 			return
 		}
 		do {
 			let data = try Data.init(contentsOf: sc)
 			snapshots = try decoder.decode([ResticResponse.Snapshot].self, from: data).filter({ (snap) -> Bool in
-				return snap.tags?.contains(profile) ?? false
+				return snap.tags?.contains(profile.name) ?? false
 			})
-			reload()
 		} catch {
 			RGLogger.default.log("\(#function) was unable to load the snapshot cache \(error)")
 		}
 	}
 	
-	func saveToCache(_ repo: Repo) {
-		guard let sc = getSnapshotCacheURL() else {	return }
+	func saveToCache(_ list: [ResticResponse.Snapshot], for repo: Repo) {
+		guard let sc = getSnapshotCacheURL(repo: repo) else { return }
 		do {
-			let data = try encoder.encode(snapshots)
+			let data = try encoder.encode(list)
 			try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 			try data.write(to: sc)
 		} catch {
