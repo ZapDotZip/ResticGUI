@@ -333,6 +333,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		}
 	}
 	
+	func cancelBackup() {
+		backupController.cancel()
+	}
+	
 	private func startBackup() {
 		guard let selectedProfile else {
 			STBAlerts.alert(title: "Please select a profile.", message: "You need to select a profile to back up.", style: .informational)
@@ -364,35 +368,38 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	var viewState: ViewState = .noBackupInProgress {
 		didSet {
 			switch viewState {
-				case .noBackupInProgress:
-					progressBar.doubleValue = 0.0
-					progressBar.maxValue = 1.0
-					progressLabel.stringValue = ""
-					runBackupButton.isEnabled = true
-				case .backupStarting:
-					progressBar.doubleValue = 0.0
+			case .noBackupInProgress:
+				progressBar.doubleValue = 0.0
+				progressBar.maxValue = 1.0
+				progressLabel.stringValue = ""
+				runBackupButton.isEnabled = true
+			case .backupStarting:
+				progressBar.doubleValue = 0.0
+				progressBar.isIndeterminate = true
+				progressBar.startAnimation(self)
+				progressLabel.stringValue = ""
+				runBackupButton.isEnabled = false
+				completedBackupPopover = nil
+			case .backupInProgress:
+				if scanAhead.state == .on {
+					progressBar.stopAnimation(self)
+					progressBar.isIndeterminate = false
+				} else {
 					progressBar.isIndeterminate = true
 					progressBar.startAnimation(self)
-					progressLabel.stringValue = ""
-					runBackupButton.isEnabled = false
-				case .backupInProgress:
-					if scanAhead.state == .on {
-						progressBar.stopAnimation(self)
-						progressBar.isIndeterminate = false
-					} else {
-						progressBar.isIndeterminate = true
-						progressBar.startAnimation(self)
-					}
-					runBackupButton.title = "Cancel"
-					runBackupButton.isEnabled = true
-				case .backupPaused:
-					runBackupButton.title = "Resume"
-					runBackupButton.isEnabled = true
-				case .finishedBackup:
-					progressBar.doubleValue = 1.0
-					progressLabel.stringValue = ""
-					runBackupButton.isEnabled = true
+				}
+				runBackupButton.title = "Cancel"
+				runBackupButton.isEnabled = true
+			case .backupPaused:
+				runBackupButton.title = "Resume"
+				runBackupButton.isEnabled = true
+			case .finishedBackup:
+				progressBar.doubleValue = progressBar.maxValue
+				progressLabel.stringValue = "Backup finished."
+				runBackupButton.isEnabled = true
+				runBackupButton.title = "Start Backup"
 			}
+			appDel.setBackupState(viewState)
 		}
 	}
 	
@@ -408,10 +415,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 
 	func completedBackup(_ summary: ResticResponse.backupSummary?) {
-		progressBar.isIndeterminate = false
+		viewState = .finishedBackup
 		if let sum = summary {
-			progressBar.doubleValue = progressBar.maxValue
-			progressLabel.stringValue = "Backup finished."
 			completedBackupPopover = NSPopover()
 			let text = """
 			Files Processed: \(sum.total_files_processed)
@@ -446,11 +451,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 			])
 			completedBackupPopover!.show(relativeTo: progressBar.bounds, of: progressBar, preferredEdge: .maxY)
 		} else {
-			viewState = .noBackupInProgress
 			progressLabel.stringValue = "Summary details are unavailable for the last backup."
 			completedBackupPopover = nil
 		}
-		runBackupButton.title = "Start Backup"
 	}
 	
 	func setIndeterminate(_ isIndeterminate: Bool) {

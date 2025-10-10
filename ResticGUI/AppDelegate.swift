@@ -139,29 +139,56 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	
-	@IBAction func menuItemStartBackup(_ sender: NSMenuItem) {
-		if viewCon.viewState == .noBackupInProgress {
+	@IBOutlet weak var menuStartBackup: NSMenuItem!
+	@IBAction func menuStartBackupPressed(_ sender: NSMenuItem) {
+		if viewCon.viewState == .noBackupInProgress || viewCon.viewState == .finishedBackup {
 			viewCon.backupButton(sender)
 		}
 	}
 	
-	@IBAction func menuItemStopBackup(_ sender: NSMenuItem) {
-		if viewCon.viewState == .backupInProgress {
-			viewCon.backupButton(sender)
-		}
+	@IBOutlet weak var menuStopBackup: NSMenuItem!
+	@IBAction func menuStopBackupPressed(_ sender: NSMenuItem) {
+		viewCon.cancelBackup()
 	}
 	
-	@IBAction func menuItemPauseBackup(_ sender: NSMenuItem) {
+	@IBOutlet weak var menuPauseBackup: NSMenuItem!
+	@IBAction func menuPauseBackupPressed(_ sender: NSMenuItem) {
 		if backupController.state == .running {
 			if backupController.pause() {
-				sender.title = "Resume Backup"
 				viewCon.viewState = .backupPaused
 			}
 		} else if backupController.state == .suspended {
 			if backupController.resume() {
-				sender.title = "Pause Backup"
 				viewCon.viewState = .backupInProgress
 			}
+		}
+	}
+	
+	func setBackupState(_ state: ViewController.ViewState) {
+		switch state {
+		case .noBackupInProgress:
+			menuStartBackup.isEnabled = true
+			menuStopBackup.isEnabled = false
+			menuPauseBackup.isEnabled = false
+		case .backupStarting:
+			menuStartBackup.isEnabled = false
+			menuStopBackup.isEnabled = true
+			menuPauseBackup.isEnabled = false
+		case .backupInProgress:
+			menuStartBackup.isEnabled = false
+			menuStopBackup.isEnabled = true
+			menuPauseBackup.isEnabled = true
+			menuPauseBackup.title = "Pause Backup"
+		case .backupPaused:
+			menuStartBackup.isEnabled = false
+			menuStopBackup.isEnabled = true
+			menuPauseBackup.isEnabled = true
+			menuPauseBackup.title = "Resume Backup"
+		case .finishedBackup:
+			menuStartBackup.isEnabled = true
+			menuStopBackup.isEnabled = false
+			menuPauseBackup.isEnabled = false
+			menuPauseBackup.title = "Pause Backup"
 		}
 	}
 }
