@@ -9,30 +9,27 @@ import SwiftProcessController
 
 class BackupController: InteractiveResticBase<ResticResponse.backupProgress, ResticResponse.backupSummary>, SPCDecoderDelegate {
 	
-	var errOut = Data()
-	var lastBackupSummary: ResticResponse.backupSummary?
+	private var errOut = Data()
 	
 	private var QoS: QualityOfService {
 		get {
-			var qos: QualityOfService = .default
-			if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
-				if pref == "userInitiated" {
-					qos = .userInitiated
-				} else if pref == "utility" {
-					qos = .utility
-				} else if pref == "background" {
-					qos = .background
-				}
-			}
 			if #available(macOS 12.0, *) {
-				if UserDefaults.standard.bool(forKey: DefaultsKeys.lowPowerQoS) && ProcessInfo.processInfo.isLowPowerModeEnabled {
-					qos = .background
+				if ProcessInfo.processInfo.isLowPowerModeEnabled && UserDefaults.standard.bool(forKey: DefaultsKeys.lowPowerQoS) {
+					return .background
 				}
 			}
-			if UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) && STBMachine.isOnBattery() {
-				qos = .background
+			if STBMachine.isOnBattery() && UserDefaults.standard.bool(forKey: DefaultsKeys.batteryQoS) {
+				return .background
 			}
-			return qos
+			if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
+				switch pref {
+				case "userInitiated": return .userInitiated
+				case "utility": return .utility
+				case "background": return .background
+				default: return .default
+				}
+			}
+			return .default
 		}
 	}
 	
