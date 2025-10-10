@@ -136,16 +136,12 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 			case .object(let progress):
 				self.display.updateProgress(to: progress.percent_done, infoText: progress.current_files?.first)
 			case .error(let rawData, _):
-				if let error = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
-					print(error.message_type)
+				if let newSummary = try? AppDelegate.jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
+					summary = newSummary
+				} else if let error = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: rawData) {
 					DispatchQueue.main.async {
-						STBAlerts.alert(title: "An error occured while backing up.", message: "Restic:\n\n\(self.getStderr())", style: .critical)
+						STBAlerts.alert(title: "An error occured while backing up.", message: nil, error: error as! Error)
 					}
-				} else if let summary = try? AppDelegate.jsonDecoder.decode(ResticResponse.backupSummary.self, from: rawData) {
-					var sum: String = ""
-					dump(summary, to: &sum)
-					RGLogger.default.log(sum)
-					lastBackupSummary = summary
 				} else {
 					let errMsg: String = {
 						let str: String = String(data: rawData, encoding: .utf8) ?? "Error decoding output."
@@ -169,8 +165,15 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 	
 	override func terminationHandler(exitCode: Int32) {
 		process = nil
+		if let summary {
+			var sum: String = ""
+			dump(summary, to: &sum)
+			RGLogger.default.log(sum)
+		} else {
+			RGLogger.default.log("No summary available.")
+		}
 		DispatchQueue.main.async {
-			self.display.finish(summary: self.lastBackupSummary, with: nil)
+			self.display.finish(summary: self.summary, with: nil)
 		}
 	}
 	
