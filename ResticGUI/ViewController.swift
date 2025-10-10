@@ -60,19 +60,20 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
 		super.prepare(for: segue, sender: sender)
-		if segue.identifier == "NewProfile" {
+		switch segue.identifier {
+		case "NewProfile":
 			let vc = segue.destinationController as! NewProfileVC
 			vc.viewCon = self
-		} else if segue.identifier == "RepoEdit" {
+		case "RepoEdit":
 			let vc = segue.destinationController as! RepoEditViewController
 			if let selectedRepo = sender as? Repo {
 				vc.selectedRepo = selectedRepo
 			}
-		} else if segue.identifier == "Restore" {
+		case "Restore":
 			let vc = segue.destinationController as! RestoreViewController
 			vc.snapshotToRestore = snapshotsTable.selectedSnapshot
 			vc.repo = repoManager.getSelectedRepo()
-		} else {
+		default:
 			NSLog("Error: segue \"\(segue.identifier ?? "nil")\" not properly set up!")
 		}
 	}
@@ -153,21 +154,19 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	@IBAction func importProfile(_ sender: NSMenuItem) {
-		if let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) {
-			let newProfiles = urls.compactMap { url in
-				if let profile = ProfileManager.load(url) {
-					do {
-						try ProfileManager.save(profile)
-						return profile.name
-					} catch {
-						STBAlerts.alert(title: "Couldn't load profile", message: "Failed to load the profile located at \(url.localPath). Tge profile may be corrupt, or invalid.", error: error, style: .critical)
-					}
-				}
+		guard let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) else { return }
+		let newProfiles = urls.compactMap { url -> String? in
+			guard let profile = ProfileManager.load(url) else { return nil }
+			do {
+				try ProfileManager.save(profile)
+				return profile.name
+			} catch {
+				STBAlerts.alert(title: "Couldn't load profile", message: "Failed to load the profile located at \(url.localPath). The profile may be corrupt, or invalid.", error: error, style: .critical)
 				return nil
 			}
-			initSidebar(newProfiles)
-			outline.reloadData()
 		}
+		initSidebar(newProfiles)
+		outline.reloadData()
 	}
 	
 	
