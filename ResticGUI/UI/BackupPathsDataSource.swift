@@ -126,10 +126,6 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	
-	
-	
-	
-	
 	// MARK: Profile Tab: paths
 	@IBAction func addPath(_ sender: NSButton) {
 		if let urls = STBFilePanels.openPanel(message: "Select items you would like to back up.", canSelectMultipleItems: true, canCreateDirectories: true, selectableTypes: [.directories, .files()]) {
@@ -177,6 +173,4 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 		reload()
 	}
 
-	
 }
-

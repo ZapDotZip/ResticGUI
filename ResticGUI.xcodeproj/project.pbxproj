@@ -11,15 +11,19 @@
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
 		ED2591762E19A45600C068E4 /* RestoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */; };
 		ED3985072E5002320014CDB2 /* RGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3985012E50022F0014CDB2 /* RGError.swift */; };
+		ED45A4B32E6F91E4003B19ED /* ProgressDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED45A4B22E6F91E4003B19ED /* ProgressDisplayer.swift */; };
 		ED46EDED2E19E7F900DE8B77 /* SwiftProcessController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED46EDE82E19E7F300DE8B77 /* SwiftProcessController.framework */; };
 		ED46EDEE2E19E7F900DE8B77 /* SwiftProcessController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED46EDE82E19E7F300DE8B77 /* SwiftProcessController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED581FF52E0A11A700F2BE6F /* SwiftToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; };
 		ED581FF62E0A11A700F2BE6F /* SwiftToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */; };
 		ED73B1B52E247FC200038D68 /* DefaultTimeMachineExclusions.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED73B1B32E247FC200038D68 /* DefaultTimeMachineExclusions.plist */; };
-		ED73B1BB2E24803200038D68 /* NewProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73B1BA2E24803200038D68 /* NewProfileVC.swift */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
+		ED8B19FB2E9A033E0069E5B7 /* NewProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8B19F72E9A033E0069E5B7 /* NewProfileVC.swift */; };
+		ED8B19FC2E9A033E0069E5B7 /* ProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8B19F82E9A033E0069E5B7 /* ProfileEditorController.swift */; };
+		ED8B19FD2E9A033E0069E5B7 /* ProfileOrHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8B19F92E9A033E0069E5B7 /* ProfileOrHeader.swift */; };
+		ED8B19FF2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8B19FE2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift */; };
 		EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86BA72D260487004E8996 /* EnviormentTable.swift */; };
 		EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */; };
 		EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */; };
@@ -34,7 +38,6 @@
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
 		EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */; };
 		EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6F2D10C1390081E223 /* DataClasses.swift */; };
-		EDE0AA882D10C1390081E223 /* ProfileEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA732D10C1390081E223 /* ProfileEditorController.swift */; };
 		EDE0AA892D10C1390081E223 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA742D10C1390081E223 /* ProfileManager.swift */; };
 		EDE0AA8A2D10C1390081E223 /* RepoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */; };
 		EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA762D10C1390081E223 /* ReposManager.swift */; };
@@ -42,7 +45,9 @@
 		EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA792D10C1390081E223 /* ViewController.swift */; };
 		EDEA87012E2195F600474B04 /* DefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEA86FC2E2195F300474B04 /* DefaultsKeys.swift */; };
 		EDF0A5F72E149DA8003B3FFC /* PathTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF0A5F62E149DA8003B3FFC /* PathTable.swift */; };
+		EDF30B952E52D95A001109D1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = EDF30B942E52D95A001109D1 /* Credits.rtf */; };
 		EDF660AD2D54323200BD3998 /* RepoEditView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */; };
+		EDF742982E7502DE003BE29E /* InteractiveResticBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF742972E7502DE003BE29E /* InteractiveResticBase.swift */; };
 		EDFB37A22E12EDB60006CC2C /* Restore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDFB379F2E12EDB60006CC2C /* Restore.storyboard */; };
 		EDFB37A32E12EDB60006CC2C /* RestoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB37A02E12EDB60006CC2C /* RestoreViewController.swift */; };
 /* End PBXBuildFile section */
@@ -143,15 +148,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
+		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/UI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
 		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
 		ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCoordinator.swift; sourceTree = "<group>"; };
 		ED3985012E50022F0014CDB2 /* RGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGError.swift; sourceTree = "<group>"; };
+		ED45A4B22E6F91E4003B19ED /* ProgressDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDisplayer.swift; sourceTree = "<group>"; };
 		ED46EDE02E19E7F200DE8B77 /* SwiftProcessController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftProcessController.xcodeproj; path = ../SwiftProcessController/SwiftProcessController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftToolbox.xcodeproj; path = ../SwiftToolbox/SwiftToolbox.xcodeproj; sourceTree = "<group>"; };
 		ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticResponse.swift; sourceTree = "<group>"; };
 		ED73B1B32E247FC200038D68 /* DefaultTimeMachineExclusions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DefaultTimeMachineExclusions.plist; sourceTree = "<group>"; };
-		ED73B1BA2E24803200038D68 /* NewProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileVC.swift; sourceTree = "<group>"; };
 		ED75B9242C43212600EB9E39 /* ResticGUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResticGUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9362C43212700EB9E39 /* ResticGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUITests.swift; sourceTree = "<group>"; };
@@ -159,6 +164,10 @@
 		ED75B9412C43212700EB9E39 /* ResticGUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUIUITests.swift; sourceTree = "<group>"; };
 		ED75B9472C43212700EB9E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED8B19F72E9A033E0069E5B7 /* NewProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProfileVC.swift; sourceTree = "<group>"; };
+		ED8B19F82E9A033E0069E5B7 /* ProfileEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorController.swift; sourceTree = "<group>"; };
+		ED8B19F92E9A033E0069E5B7 /* ProfileOrHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileOrHeader.swift; sourceTree = "<group>"; };
+		ED8B19FE2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveProgressBar.swift; sourceTree = "<group>"; };
 		EDA86BA72D260487004E8996 /* EnviormentTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnviormentTable.swift; sourceTree = "<group>"; };
 		EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabGeneral.swift; sourceTree = "<group>"; };
 		EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabEnvVars.swift; sourceTree = "<group>"; };
@@ -174,7 +183,6 @@
 		EDE0AA6F2D10C1390081E223 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
 		EDE0AA702D10C1390081E223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE0AA712D10C1390081E223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		EDE0AA732D10C1390081E223 /* ProfileEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorController.swift; sourceTree = "<group>"; };
 		EDE0AA742D10C1390081E223 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
 		EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoEditViewController.swift; sourceTree = "<group>"; };
 		EDE0AA762D10C1390081E223 /* ReposManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposManager.swift; sourceTree = "<group>"; };
@@ -183,7 +191,9 @@
 		EDE0AA792D10C1390081E223 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EDEA86FC2E2195F300474B04 /* DefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKeys.swift; sourceTree = "<group>"; };
 		EDF0A5F62E149DA8003B3FFC /* PathTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathTable.swift; sourceTree = "<group>"; };
+		EDF30B942E52D95A001109D1 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RepoEditView.storyboard; sourceTree = "<group>"; };
+		EDF742972E7502DE003BE29E /* InteractiveResticBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveResticBase.swift; sourceTree = "<group>"; };
 		EDFB379F2E12EDB60006CC2C /* Restore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Restore.storyboard; sourceTree = "<group>"; };
 		EDFB37A02E12EDB60006CC2C /* RestoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -249,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				ED73B1B32E247FC200038D68 /* DefaultTimeMachineExclusions.plist */,
+				EDF30B942E52D95A001109D1 /* Credits.rtf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -293,6 +304,23 @@
 			path = ResticGUIUITests;
 			sourceTree = "<group>";
 		};
+		ED8B19FA2E9A033E0069E5B7 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				ED8B19F92E9A033E0069E5B7 /* ProfileOrHeader.swift */,
+				ED8B19FE2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift */,
+				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
+				ED8B19F72E9A033E0069E5B7 /* NewProfileVC.swift */,
+				ED8B19F82E9A033E0069E5B7 /* ProfileEditorController.swift */,
+				EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */,
+				EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */,
+				EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */,
+				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
+				ED06377F2D63E971004E26BC /* EnviormentTableView.xib */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		EDE0AA662D10C1390081E223 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,10 +338,12 @@
 			isa = PBXGroup;
 			children = (
 				EDE0AA692D10C1390081E223 /* ResticController.swift */,
+				EDF742972E7502DE003BE29E /* InteractiveResticBase.swift */,
 				ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */,
 				ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */,
 				EDE0AA6A2D10C1390081E223 /* RGLogger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
+				ED45A4B22E6F91E4003B19ED /* ProgressDisplayer.swift */,
 			);
 			path = ResticGlue;
 			sourceTree = "<group>";
@@ -324,17 +354,10 @@
 				EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */,
 				EDE0AA6F2D10C1390081E223 /* DataClasses.swift */,
 				EDE0AA742D10C1390081E223 /* ProfileManager.swift */,
-				EDE0AA722D10C1390081E223 /* Main.storyboard */,
-				EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */,
-				EDE0AA792D10C1390081E223 /* ViewController.swift */,
-				ED73B1BA2E24803200038D68 /* NewProfileVC.swift */,
-				EDE0AA732D10C1390081E223 /* ProfileEditorController.swift */,
 				EDE0AA762D10C1390081E223 /* ReposManager.swift */,
-				EDF660AC2D54323200BD3998 /* RepoEditView.storyboard */,
-				EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */,
-				EDE0AA782D10C1390081E223 /* SnapshotsTable.swift */,
-				EDA86BA72D260487004E8996 /* EnviormentTable.swift */,
-				ED06377F2D63E971004E26BC /* EnviormentTableView.xib */,
+				EDE0AA722D10C1390081E223 /* Main.storyboard */,
+				EDE0AA792D10C1390081E223 /* ViewController.swift */,
+				ED8B19FA2E9A033E0069E5B7 /* UI */,
 				ED3985012E50022F0014CDB2 /* RGError.swift */,
 				EDFB37A12E12EDB60006CC2C /* Restore */,
 				EDE0AA6B2D10C1390081E223 /* ResticGlue */,
@@ -531,6 +554,7 @@
 				EDF660AD2D54323200BD3998 /* RepoEditView.storyboard in Resources */,
 				ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */,
 				EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */,
+				EDF30B952E52D95A001109D1 /* Credits.rtf in Resources */,
 				EDE0AA7E2D10C1390081E223 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,20 +590,24 @@
 				ED3985072E5002320014CDB2 /* RGError.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
+				ED45A4B32E6F91E4003B19ED /* ProgressDisplayer.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* RGLogger.swift in Sources */,
 				ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */,
 				EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,
 				EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */,
 				EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */,
-				EDE0AA882D10C1390081E223 /* ProfileEditorController.swift in Sources */,
 				EDE0AA892D10C1390081E223 /* ProfileManager.swift in Sources */,
 				EDE0AA8A2D10C1390081E223 /* RepoEditViewController.swift in Sources */,
 				EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */,
-				ED73B1BB2E24803200038D68 /* NewProfileVC.swift in Sources */,
 				EDE0AA8C2D10C1390081E223 /* SnapshotsTable.swift in Sources */,
 				EDB975562E2C810F0062909C /* RestoreProgressController.swift in Sources */,
 				EDE0AA8D2D10C1390081E223 /* ViewController.swift in Sources */,
+				ED8B19FF2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift in Sources */,
+				EDF742982E7502DE003BE29E /* InteractiveResticBase.swift in Sources */,
+				ED8B19FB2E9A033E0069E5B7 /* NewProfileVC.swift in Sources */,
+				ED8B19FC2E9A033E0069E5B7 /* ProfileEditorController.swift in Sources */,
+				ED8B19FD2E9A033E0069E5B7 /* ProfileOrHeader.swift in Sources */,
 				EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,6 +789,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 8;
+				EAGER_LINKING = YES;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -783,6 +812,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 8;
+				EAGER_LINKING = YES;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
