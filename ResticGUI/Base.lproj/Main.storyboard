@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -609,21 +610,21 @@
                             </menuItem>
                             <menuItem title="Backup" id="tLU-Zb-eh0">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Backup" id="k4V-Fe-yVC">
+                                <menu key="submenu" title="Backup" autoenablesItems="NO" id="k4V-Fe-yVC">
                                     <items>
                                         <menuItem title="Start Backup" keyEquivalent="b" id="l5K-aI-rMI">
                                             <connections>
-                                                <action selector="menuItemStartBackup:" target="Ady-hI-5gd" id="K2S-SY-fI5"/>
+                                                <action selector="menuStartBackupPressed:" target="Ady-hI-5gd" id="K2S-SY-fI5"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Stop Backup" keyEquivalent="B" id="oaP-NT-cKN">
                                             <connections>
-                                                <action selector="menuItemStopBackup:" target="Ady-hI-5gd" id="xG2-lH-WOe"/>
+                                                <action selector="menuStopBackupPressed:" target="Ady-hI-5gd" id="xG2-lH-WOe"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Pause Backup" keyEquivalent="p" id="xUv-il-DDZ">
                                             <connections>
-                                                <action selector="menuItemPauseBackup:" target="Ady-hI-5gd" id="wTH-Hd-ysL"/>
+                                                <action selector="menuPauseBackupPressed:" target="Ady-hI-5gd" id="wTH-Hd-ysL"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -704,7 +705,13 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ResticGUI" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ResticGUI" customModuleProvider="target">
+                    <connections>
+                        <outlet property="menuPauseBackup" destination="xUv-il-DDZ" id="B73-LB-qnP"/>
+                        <outlet property="menuStartBackup" destination="l5K-aI-rMI" id="9Np-Pi-Z7v"/>
+                        <outlet property="menuStopBackup" destination="oaP-NT-cKN" id="gk3-fe-Gdg"/>
+                    </connections>
+                </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -755,7 +762,7 @@
                                                 <rect key="frame" x="-1" y="26" width="208" height="496"/>
                                                 <clipView key="contentView" drawsBackground="NO" id="kbc-0v-Or9">
                                                     <rect key="frame" x="1" y="1" width="206" height="494"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="t9O-WT-kYv" id="nN4-Bd-kyN">
                                                             <rect key="frame" x="0.0" y="0.0" width="206" height="494"/>
@@ -950,7 +957,7 @@
                                                                     <rect key="frame" x="16" y="40" width="511" height="338"/>
                                                                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="H86-0r-Zjb">
                                                                         <rect key="frame" x="1" y="1" width="509" height="336"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <tableView verticalHuggingPriority="750" ambiguous="YES" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="VQh-7L-SL1">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="509" height="336"/>
@@ -972,7 +979,7 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView id="gGW-Pg-Gr5">
-                                                                                                <rect key="frame" x="11" y="1" width="448" height="17"/>
+                                                                                                <rect key="frame" x="1" y="1" width="448" height="17"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="9Ij-Kv-fjb">
@@ -1827,7 +1834,7 @@
                                 <rect key="frame" x="2" y="2" width="225" height="121"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="VGU-ef-VQB">
                                     <rect key="frame" x="0.0" y="0.0" width="225" height="121"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="Idi-fS-V47">
                                             <rect key="frame" x="0.0" y="0.0" width="225" height="121"/>
