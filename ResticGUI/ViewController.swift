@@ -156,7 +156,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	@IBAction func importProfile(_ sender: NSMenuItem) {
 		guard let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) else { return }
 		let newProfiles = urls.compactMap { url -> String? in
+			
 			guard let profile = ProfileManager.load(url) else { return nil }
+			
+			if ProfileManager.alreadyExists(profile) {
+				let overwrite = STBAlerts.destructiveAlert(title: "Profile already exists",
+					message: "A profile with the name \(profile.name) already exists. Do you want to overwrite it?",
+					style: .warning, destructiveButtonText: "Overwrite")
+				guard overwrite else { return nil }
+			}
+			
 			do {
 				try ProfileManager.save(profile)
 				return profile.name
@@ -164,9 +173,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				STBAlerts.alert(title: "Couldn't load profile", message: "Failed to load the profile located at \(url.localPath). The profile may be corrupt, or invalid.", error: error, style: .critical)
 				return nil
 			}
+			
 		}
 		initSidebar(newProfiles)
-		outline.reloadData()
 	}
 	
 	
@@ -186,10 +195,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	func initSidebar(_ newProfiles: [String]) {
-		profileSidebarList.reserveCapacity(profileSidebarList.count + newProfiles.count)
-		for i in newProfiles {
-			profileSidebarList.append(ProfileOrHeader.init(profile: i))
-		}
+		profileSidebarList.appendIfNew(contentsOf: newProfiles.map({ ProfileOrHeader.init(profile: $0) }))
 		outline.reloadData()
 	}
 	

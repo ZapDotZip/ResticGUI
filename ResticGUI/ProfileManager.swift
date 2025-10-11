@@ -79,6 +79,10 @@ class ProfileManager {
 		try data.write(to: filePath)
 	}
 	
+	static func alreadyExists(_ profile: Profile) -> Bool {
+		return FileManager.default.fileExists(atPath: getProfilePath(profile.name).localPath)
+	}
+	
 	static func delete(_ profileName: String) {
 		let filePath = getProfilePath(profileName)
 		if FileManager.default.fileExists(atPath: filePath.path) {
@@ -107,7 +111,7 @@ class ProfileManager {
 
 
 /// This class is a wrapper for Profiles and the header found in the sidebar.
-class ProfileOrHeader {
+class ProfileOrHeader : Equatable {
 	let isHeader: Bool
 	var header: String?
 	var profile: String?
@@ -121,4 +125,16 @@ class ProfileOrHeader {
 		self.isHeader = false
 		self.profile = profile
 	}
+	
+	static func == (lhs: ProfileOrHeader, rhs: ProfileOrHeader) -> Bool {
+		guard lhs.isHeader == rhs.isHeader else { return false }
+		if let lp = lhs.profile, let rp = rhs.profile {
+			return lp == rp
+		}
+		if let lh = lhs.header, let rh = rhs.header {
+			return lh == rh
+		}
+		return false
+	}
+
 }
