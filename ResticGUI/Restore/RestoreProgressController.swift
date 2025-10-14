@@ -72,7 +72,7 @@ class RestoreProgressController: NSViewController, ProgressDisplayer {
 				displayError(error, isFatal: false)
 			}
 			if let summary {
-				STBAlerts.alert(title: "Restore finished", message: "The restore has finished:\n\n\(summary)", style: .informational)
+				STBAlerts.alert(title: "Restore finished", message: "The restore has finished:\n\n\(summary.summaryReport())", style: .informational)
 			}
 			dismiss(self)
 		}
