@@ -12,6 +12,7 @@ struct DefaultsKeys {
 	public static let limitBackgroundCoreCount = "Limit Background Core Count"
 	public static let batteryQoS = "QoS Background on Battery"
 	public static let lowPowerQoS = "QoS Background on Low Power"
+	public static let storageQoS = "Storage QoS"
 	
 	public static let snapshotDateFormat = "Snapshot Date Format"
 	
@@ -28,4 +29,5 @@ struct DefaultsKeys {
 	public static let profileEditorTab = "ProfileEditorTabIndex"
 	public static let selectedRepo = "Selected Repo"
 	public static let viewSizeRestoreView = "RestoreViewSheet View Size"
+	public static let prefWindowLastTab = "PrefWindowLastSelectedTab"
 }

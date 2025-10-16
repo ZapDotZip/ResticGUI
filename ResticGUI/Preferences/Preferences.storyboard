@@ -9,12 +9,13 @@
         <!--Window Controller-->
         <scene sceneID="Xzy-iD-gHz">
             <objects>
-                <windowController storyboardIdentifier="PreferencesWindow" showSeguePresentationStyle="single" id="cvb-5t-gwj" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="c7f-Sf-TxX">
+                <windowController storyboardIdentifier="PreferencesWindowController" showSeguePresentationStyle="single" id="cvb-5t-gwj" sceneMemberID="viewController">
+                    <window key="window" identifier="PreferencesWindow" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingIdentifier="PreferencesWindow" id="c7f-Sf-TxX">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="294" y="313" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <accessibility identifier="PreferencesWindow"/>
                         <connections>
                             <outlet property="delegate" destination="cvb-5t-gwj" id="09R-pl-Sb0"/>
                         </connections>
@@ -30,11 +31,12 @@
         <!--Preferences Tab Controller-->
         <scene sceneID="zd3-TG-92l">
             <objects>
-                <tabViewController showSeguePresentationStyle="single" tabStyle="toolbar" id="fNP-H9-uPR" customClass="PreferencesTabController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
+                <tabViewController identifier="PrefTabs" storyboardIdentifier="PrefTabs" showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="fNP-H9-uPR" customClass="PreferencesTabController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem identifier="" image="NSPreferencesGeneral" id="LvY-1l-cqH"/>
                         <tabViewItem identifier="" id="P3Y-Pu-6xt"/>
-                        <tabViewItem identifier="" image="NSAdvanced" id="c7F-bv-pli"/>
+                        <tabViewItem image="NSAdvanced" id="mFw-2B-3ch"/>
+                        <tabViewItem identifier="" id="c7F-bv-pli"/>
                     </tabViewItems>
                     <viewControllerTransitionOptions key="transitionOptions" allowUserInteraction="YES"/>
                     <tabView key="tabView" type="noTabsNoBorder" id="Isa-0H-4hM">
@@ -49,6 +51,7 @@
                         <outlet property="tabView" destination="Isa-0H-4hM" id="2sA-Iy-tto"/>
                         <segue destination="sRf-u7-kqE" kind="relationship" relationship="tabItems" id="zTf-An-bAA"/>
                         <segue destination="YTT-cd-nyU" kind="relationship" relationship="tabItems" id="vcZ-yJ-rlk"/>
+                        <segue destination="THJ-5G-T9t" kind="relationship" relationship="tabItems" id="iUB-Od-wuL"/>
                         <segue destination="bVM-zo-Fo2" kind="relationship" relationship="tabItems" id="ICD-Pu-TEu"/>
                     </connections>
                 </tabViewController>
@@ -62,17 +65,16 @@
                 <customObject id="Pqj-Ih-vl5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController title="General" showSeguePresentationStyle="single" id="sRf-u7-kqE" customClass="PrefTabGeneral" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="reP-FH-FgS">
-                        <rect key="frame" x="0.0" y="0.0" width="553" height="238"/>
+                        <rect key="frame" x="0.0" y="0.0" width="553" height="146"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <gridView horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" xPlacement="leading" yPlacement="center" rowAlignment="none" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FFJ-v4-qcG">
-                                <rect key="frame" x="20" y="20" width="513" height="198"/>
+                                <rect key="frame" x="20" y="20" width="513" height="106"/>
                                 <rows>
                                     <gridRow bottomPadding="8" id="Meu-g5-Alh"/>
                                     <gridRow id="ltt-h6-gbF"/>
                                     <gridRow id="rjc-K0-3In"/>
                                     <gridRow id="r28-0S-GDb"/>
-                                    <gridRow id="RQF-1n-3Op"/>
                                 </rows>
                                 <columns>
                                     <gridColumn xPlacement="trailing" width="105" id="zuO-dL-6rU"/>
@@ -81,7 +83,7 @@
                                 <gridCells>
                                     <gridCell row="Meu-g5-Alh" column="zuO-dL-6rU" xPlacement="trailing" id="lbf-nZ-J5V">
                                         <textField key="contentView" focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lBx-iz-0aS">
-                                            <rect key="frame" x="52" y="182" width="55" height="16"/>
+                                            <rect key="frame" x="52" y="90" width="55" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="General:" id="6fJ-bX-GN9">
                                                 <font key="font" usesAppearanceFont="YES"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -91,7 +93,7 @@
                                     </gridCell>
                                     <gridCell row="Meu-g5-Alh" column="HRf-nh-b2B" xPlacement="leading" id="3VP-th-KD7">
                                         <button key="contentView" toolTip="When deselected, each Profile will remember its own selected repository." translatesAutoresizingMaskIntoConstraints="NO" id="aXl-mK-0fb">
-                                            <rect key="frame" x="111" y="181" width="402" height="18"/>
+                                            <rect key="frame" x="111" y="89" width="402" height="18"/>
                                             <buttonCell key="cell" type="check" title="Repository selector applies globally" bezelStyle="regularSquare" imagePosition="left" inset="2" id="fzV-5J-mKJ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -103,7 +105,7 @@
                                     </gridCell>
                                     <gridCell row="ltt-h6-gbF" column="zuO-dL-6rU" id="9pD-kN-KOV">
                                         <textField key="contentView" focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6xP-6H-L1S">
-                                            <rect key="frame" x="20" y="150" width="87" height="16"/>
+                                            <rect key="frame" x="20" y="58" width="87" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Restic Binary:" id="WGL-XV-xYv">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -113,7 +115,7 @@
                                     </gridCell>
                                     <gridCell row="ltt-h6-gbF" column="HRf-nh-b2B" id="iQt-3J-3HF">
                                         <popUpButton key="contentView" toolTip="Choose the location of the Restic binary." horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="kZf-9s-zoH">
-                                            <rect key="frame" x="110" y="144" width="105" height="25"/>
+                                            <rect key="frame" x="110" y="52" width="105" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Automatic" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="hLj-yb-TIJ" id="g4q-Cs-go3">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="message"/>
@@ -135,7 +137,7 @@
                                     <gridCell row="rjc-K0-3In" column="zuO-dL-6rU" id="A9b-uE-yMJ"/>
                                     <gridCell row="rjc-K0-3In" column="HRf-nh-b2B" id="TT2-5d-7Tu">
                                         <customView key="contentView" horizontalCompressionResistancePriority="100" verticalCompressionResistancePriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="li8-Pv-4Fz">
-                                            <rect key="frame" x="113" y="120" width="400" height="22"/>
+                                            <rect key="frame" x="113" y="28" width="400" height="22"/>
                                             <subviews>
                                                 <button toolTip="Click to view the version, or see errors." horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="2bb-yV-Gcx">
                                                     <rect key="frame" x="87" y="3" width="16" height="16"/>
@@ -170,7 +172,7 @@
                                     </gridCell>
                                     <gridCell row="r28-0S-GDb" column="zuO-dL-6rU" yPlacement="center" id="ych-HF-PIl">
                                         <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SKj-qd-hwn">
-                                            <rect key="frame" x="3" y="92" width="104" height="22"/>
+                                            <rect key="frame" x="3" y="0.0" width="104" height="22"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Snapshot Dates:" id="iJm-lh-vE1">
                                                 <font key="font" usesAppearanceFont="YES"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -180,7 +182,7 @@
                                     </gridCell>
                                     <gridCell row="r28-0S-GDb" column="HRf-nh-b2B" id="UMy-6w-LdI">
                                         <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="dvY-fj-CFg">
-                                            <rect key="frame" x="113" y="92" width="400" height="22"/>
+                                            <rect key="frame" x="113" y="0.0" width="400" height="22"/>
                                             <subviews>
                                                 <textField toolTip="Customize the format for the date column in the Snapshots table. Uses the NSDateFormatter format." focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BPq-2Y-AbE">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="22"/>
@@ -209,85 +211,6 @@
                                             </constraints>
                                         </customView>
                                     </gridCell>
-                                    <gridCell row="RQF-1n-3Op" column="zuO-dL-6rU" id="Oqj-lD-gYL">
-                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gN7-95-eUp">
-                                            <rect key="frame" x="24" y="0.0" width="83" height="86"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Backup QoS:" id="CU9-fj-G08">
-                                                <font key="font" usesAppearanceFont="YES"/>
-                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                    </gridCell>
-                                    <gridCell row="RQF-1n-3Op" column="HRf-nh-b2B" id="QKY-9V-wdM">
-                                        <stackView key="contentView" distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q6R-BT-Bdf">
-                                            <rect key="frame" x="113" y="0.0" width="400" height="86"/>
-                                            <subviews>
-                                                <popUpButton verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="D8x-j0-0wf">
-                                                    <rect key="frame" x="-3" y="62" width="251" height="25"/>
-                                                    <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1NZ-Qi-SbU" id="CkF-eL-7sk">
-                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="message"/>
-                                                        <menu key="menu" id="jb6-Ij-rKu">
-                                                            <items>
-                                                                <menuItem title="High Priority" identifier="userInitiated" id="srv-ZV-uhf"/>
-                                                                <menuItem title="Default" state="on" identifier="default" id="1NZ-Qi-SbU"/>
-                                                                <menuItem title="Utility" identifier="utility" id="K7n-Nc-1oT"/>
-                                                                <menuItem title="Background (Efficiency cores only)" identifier="background" id="jLI-AB-mYe">
-                                                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                                                </menuItem>
-                                                            </items>
-                                                        </menu>
-                                                    </popUpButtonCell>
-                                                    <connections>
-                                                        <action selector="backupQoSDidChange:" target="sRf-u7-kqE" id="ybN-PG-fO2"/>
-                                                    </connections>
-                                                </popUpButton>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nOM-T0-Pdc">
-                                                    <rect key="frame" x="-2" y="43" width="370" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Limit read concurrency when running on efficiency cores" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="gZU-Tc-zFq">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.Limit Background Core Count" id="sVL-lY-vvj"/>
-                                                    </connections>
-                                                </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lgC-cV-2sw">
-                                                    <rect key="frame" x="-2" y="21" width="259" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Always use efficiency cores on battery" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="A7g-Aq-dUu">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Battery" id="XyQ-L5-GQB"/>
-                                                    </connections>
-                                                </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wFc-m5-F9g">
-                                                    <rect key="frame" x="-2" y="-1" width="319" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Always use efficiency cores on Low Power mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="eUO-bH-hcv">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Low Power" id="lBI-MY-195"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <visibilityPriorities>
-                                                <integer value="1000"/>
-                                                <integer value="1000"/>
-                                                <integer value="1000"/>
-                                                <integer value="1000"/>
-                                            </visibilityPriorities>
-                                            <customSpacing>
-                                                <real value="3.4028234663852886e+38"/>
-                                                <real value="3.4028234663852886e+38"/>
-                                                <real value="3.4028234663852886e+38"/>
-                                                <real value="3.4028234663852886e+38"/>
-                                            </customSpacing>
-                                        </stackView>
-                                    </gridCell>
                                 </gridCells>
                             </gridView>
                         </subviews>
@@ -299,7 +222,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backupQoS" destination="D8x-j0-0wf" id="c4v-HW-Ufz"/>
                         <outlet property="binLocationSelector" destination="kZf-9s-zoH" id="6do-zq-qNk"/>
                         <outlet property="binPath" destination="iDg-5o-EbR" id="bku-g3-Wbi"/>
                         <outlet property="binPathSIL" destination="2bb-yV-Gcx" id="ro3-Mx-XQm"/>
@@ -307,7 +229,7 @@
                 </viewController>
                 <userDefaultsController representsSharedInstance="YES" id="irW-e7-OOq"/>
             </objects>
-            <point key="canvasLocation" x="-1861.5" y="654"/>
+            <point key="canvasLocation" x="-2024" y="449"/>
         </scene>
         <!--Exclusions-->
         <scene sceneID="Kqq-JN-SMe">
@@ -445,7 +367,7 @@
                 <customObject id="4z6-kl-dU3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController id="OTQ-gz-Ufp"/>
             </objects>
-            <point key="canvasLocation" x="-1272" y="626"/>
+            <point key="canvasLocation" x="-1480" y="466"/>
         </scene>
         <!--Enviorment Variables-->
         <scene sceneID="lnm-Wh-kMX">
@@ -461,7 +383,190 @@
                 </viewController>
                 <customObject id="5vO-B3-bzh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-759" y="668.5"/>
+            <point key="canvasLocation" x="-439" y="466"/>
+        </scene>
+        <!--Performance-->
+        <scene sceneID="2DB-Ov-PlU">
+            <objects>
+                <viewController title="Performance" id="THJ-5G-T9t" customClass="PrefTabPerformance" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="9St-Op-6ZX">
+                        <rect key="frame" x="0.0" y="0.0" width="550" height="252"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <gridView horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" xPlacement="leading" yPlacement="center" rowAlignment="none" rowSpacing="10" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fWd-v9-hkW">
+                                <rect key="frame" x="20" y="20" width="510" height="212"/>
+                                <rows>
+                                    <gridRow id="RRb-Nc-8ug"/>
+                                    <gridRow id="x7b-KJ-quh"/>
+                                </rows>
+                                <columns>
+                                    <gridColumn xPlacement="trailing" width="115" id="GnG-kI-LDh"/>
+                                    <gridColumn xPlacement="leading" id="5ub-hI-CgZ"/>
+                                </columns>
+                                <gridCells>
+                                    <gridCell row="RRb-Nc-8ug" column="GnG-kI-LDh" yPlacement="top" id="Bei-72-PMW">
+                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="RKV-9r-SY5">
+                                            <rect key="frame" x="52" y="78" width="65" height="134"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="CPU QoS:" id="acS-09-tu3">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                    <gridCell row="RRb-Nc-8ug" column="5ub-hI-CgZ" id="oTS-8Y-EAm">
+                                        <stackView key="contentView" distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bes-uZ-EYQ">
+                                            <rect key="frame" x="123" y="78" width="387" height="134"/>
+                                            <subviews>
+                                                <popUpButton verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="jKO-q7-6wX">
+                                                    <rect key="frame" x="-3" y="110" width="251" height="25"/>
+                                                    <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Fx5-K0-Vj3" id="GF3-us-bnZ">
+                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="message"/>
+                                                        <menu key="menu" id="53o-ld-8v8">
+                                                            <items>
+                                                                <menuItem title="High Priority" identifier="userInitiated" id="Wv2-Kv-HjU"/>
+                                                                <menuItem title="Default" state="on" identifier="default" id="Fx5-K0-Vj3"/>
+                                                                <menuItem title="Utility" identifier="utility" id="dzR-wH-rBh"/>
+                                                                <menuItem title="Background (Efficiency cores only)" identifier="background" id="9SQ-mO-2nb">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="backupQoSDidChange:" target="THJ-5G-T9t" id="sxX-T4-IjA"/>
+                                                    </connections>
+                                                </popUpButton>
+                                                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="0MW-IM-hZ8">
+                                                    <rect key="frame" x="-2" y="66" width="391" height="42"/>
+                                                    <textFieldCell key="cell" controlSize="small" selectable="YES" id="DiY-lm-eKF">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <string key="title">CPU QoS limits how much CPU Restic will use. A lower value will let macOS prioritize other applications. Using 'Background' will limit Restic to using Apple Silicon efficiency cores, like Time Machine.</string>
+                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <button toolTip="Prevents restic from reading more files at once than you have efficiency cores." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fxS-fK-zks">
+                                                    <rect key="frame" x="-2" y="43" width="370" height="18"/>
+                                                    <buttonCell key="cell" type="check" title="Limit read concurrency when running on efficiency cores" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="EgN-i1-z4j">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.Limit Background Core Count" id="uUa-eU-Q8b"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I1Z-Ig-p7A">
+                                                    <rect key="frame" x="-2" y="21" width="259" height="18"/>
+                                                    <buttonCell key="cell" type="check" title="Always use efficiency cores on battery" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VgL-Ej-tu6">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Battery" id="94X-dd-mOa"/>
+                                                    </connections>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hnn-SE-MyE">
+                                                    <rect key="frame" x="-2" y="-1" width="319" height="18"/>
+                                                    <buttonCell key="cell" type="check" title="Always use efficiency cores on Low Power mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3Ao-TI-di9">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Low Power" id="mQY-l6-nyw"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </gridCell>
+                                    <gridCell row="x7b-KJ-quh" column="GnG-kI-LDh" yPlacement="top" id="SUl-E0-hfZ">
+                                        <textField key="contentView" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6vi-LY-lLd">
+                                            <rect key="frame" x="32" y="52" width="85" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Storage QoS:" id="GQs-EC-bqg">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                    <gridCell row="x7b-KJ-quh" column="5ub-hI-CgZ" id="Atr-oy-JFe">
+                                        <stackView key="contentView" distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tsx-KE-CLP">
+                                            <rect key="frame" x="123" y="0.0" width="387" height="68"/>
+                                            <subviews>
+                                                <popUpButton verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ry5-Zc-EJS">
+                                                    <rect key="frame" x="-3" y="44" width="99" height="25"/>
+                                                    <popUpButtonCell key="cell" type="push" title="Standard" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="pZS-Q6-yWS" id="eCe-2d-j5q">
+                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="message"/>
+                                                        <menu key="menu" id="gPz-pc-NTe">
+                                                            <items>
+                                                                <menuItem title="Important" identifier="important" id="hbl-hM-lOv"/>
+                                                                <menuItem title="Standard" state="on" identifier="standard" id="pZS-Q6-yWS"/>
+                                                                <menuItem title="Utility" identifier="utility" id="jpR-2Z-uHu">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                </menuItem>
+                                                                <menuItem title="Throttle" identifier="throttle" id="Psp-kq-BYu"/>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="storageQoSDidChange:" target="THJ-5G-T9t" id="Mal-lg-Y9C"/>
+                                                    </connections>
+                                                </popUpButton>
+                                                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="0fp-l6-9OJ">
+                                                    <rect key="frame" x="-2" y="0.0" width="391" height="42"/>
+                                                    <textFieldCell key="cell" controlSize="small" selectable="YES" id="QC2-hM-JZp">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <string key="title">Storage QoS limits how macOS handles disk access for Restic. A lower priority will let higher priority applications access disk resource quicker. Time Machine uses 'Throttle' by default.</string>
+                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </gridCell>
+                                </gridCells>
+                            </gridView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="fWd-v9-hkW" firstAttribute="top" secondItem="9St-Op-6ZX" secondAttribute="top" constant="20" symbolic="YES" id="l6H-NR-RFn"/>
+                            <constraint firstItem="fWd-v9-hkW" firstAttribute="leading" secondItem="9St-Op-6ZX" secondAttribute="leading" constant="20" symbolic="YES" id="pu0-al-Tf4"/>
+                            <constraint firstAttribute="trailing" secondItem="fWd-v9-hkW" secondAttribute="trailing" constant="20" symbolic="YES" id="s7z-qu-a3n"/>
+                            <constraint firstAttribute="bottom" secondItem="fWd-v9-hkW" secondAttribute="bottom" constant="20" symbolic="YES" id="usa-fN-LbQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backupQoS" destination="jKO-q7-6wX" id="8zQ-wa-PnR"/>
+                        <outlet property="storageQoS" destination="ry5-Zc-EJS" id="kuX-ZG-e7A"/>
+                    </connections>
+                </viewController>
+                <customObject id="a83-9h-EIH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="BET-nI-q4B"/>
+            </objects>
+            <point key="canvasLocation" x="-964" y="475"/>
         </scene>
     </scenes>
     <resources>

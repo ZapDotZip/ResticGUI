@@ -28,6 +28,7 @@
 		EDB652722DE91C480052CBF4 /* PrefTabGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */; };
 		EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */; };
 		EDB975562E2C810F0062909C /* RestoreProgressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB975552E2C810F0062909C /* RestoreProgressController.swift */; };
+		EDDDC1982EA18D900042B482 /* PrefTabPerformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDDC1972EA18D900042B482 /* PrefTabPerformance.swift */; };
 		EDE0AA7B2D10C1390081E223 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA632D10C1390081E223 /* Preferences.storyboard */; };
 		EDE0AA7E2D10C1390081E223 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDE0AA722D10C1390081E223 /* Main.storyboard */; };
 		EDE0AA7F2D10C1390081E223 /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA642D10C1390081E223 /* PreferencesController.swift */; };
@@ -172,6 +173,7 @@
 		EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabGeneral.swift; sourceTree = "<group>"; };
 		EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabEnvVars.swift; sourceTree = "<group>"; };
 		EDB975552E2C810F0062909C /* RestoreProgressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreProgressController.swift; sourceTree = "<group>"; };
+		EDDDC1972EA18D900042B482 /* PrefTabPerformance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabPerformance.swift; sourceTree = "<group>"; };
 		EDE0AA632D10C1390081E223 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		EDE0AA642D10C1390081E223 /* PreferencesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefTabExclusions.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				EDE0AA642D10C1390081E223 /* PreferencesController.swift */,
 				EDB652732DE923EE0052CBF4 /* PrefTabEnvVars.swift */,
 				EDB652712DE91C430052CBF4 /* PrefTabGeneral.swift */,
+				EDDDC1972EA18D900042B482 /* PrefTabPerformance.swift */,
 				EDE0AA652D10C1390081E223 /* PrefTabExclusions.swift */,
 				EDE0AA632D10C1390081E223 /* Preferences.storyboard */,
 			);
@@ -589,6 +592,7 @@
 				EDE0AA802D10C1390081E223 /* PrefTabExclusions.swift in Sources */,
 				ED3985072E5002320014CDB2 /* RGError.swift in Sources */,
 				EDE0AA812D10C1390081E223 /* BackupController.swift in Sources */,
+				EDDDC1982EA18D900042B482 /* PrefTabPerformance.swift in Sources */,
 				EDE0AA832D10C1390081E223 /* ResticController.swift in Sources */,
 				ED45A4B32E6F91E4003B19ED /* ProgressDisplayer.swift in Sources */,
 				EDE0AA842D10C1390081E223 /* RGLogger.swift in Sources */,

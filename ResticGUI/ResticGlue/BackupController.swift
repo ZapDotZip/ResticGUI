@@ -118,8 +118,17 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
 			let p = try SPCControllerDecoder(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
 			p.env = try repo.getEnv()
-			RGLogger.default.run(process: p, args: args)
 			p.qualityOfService = QoS
+			if let ioPolicyPref = UserDefaults.standard.string(forKey: DefaultsKeys.storageQoS) {
+				switch ioPolicyPref {
+				case "important": p.ioPolicy = .important
+				case "standard": p.ioPolicy = .standard
+				case "utility": p.ioPolicy = .utility
+				case "throttle": p.ioPolicy = .throttle
+				default: p.ioPolicy = .standard
+				}
+			}
+			RGLogger.default.run(process: p, args: args)
 			try p.launch(args: args)
 			process = p
 		} catch {

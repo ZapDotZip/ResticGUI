@@ -10,7 +10,6 @@ class PrefTabGeneral: NSViewController {
 	@IBOutlet weak var binLocationSelector: NSPopUpButton!
 	@IBOutlet weak var binPath: NSPathControl!
 	@IBOutlet weak var binPathSIL: NSButton!
-	@IBOutlet weak var backupQoS: NSPopUpButton!
 	
 	private lazy var appDel = NSApplication.shared.delegate as! AppDelegate
 	private lazy var resticController = ResticController.default
@@ -35,19 +34,6 @@ class PrefTabGeneral: NSViewController {
 		super.viewDidLoad()
 		setSelectorUserPref()
 		checkBinPath()
-		if let pref = UserDefaults.standard.string(forKey: DefaultsKeys.backupQoS) {
-			if pref == "userInitiated" {
-				backupQoS.selectItem(at: 0)
-			} else if pref == "utility" {
-				backupQoS.selectItem(at: 2)
-			} else if pref == "background" {
-				backupQoS.selectItem(at: 3)
-			}
-		}
-	}
-	
-	override func viewDidAppear() {
-		super.viewDidAppear()
 	}
 	
 	/// Checks to see if the selected path is valid. If not, displays an error message to the user. Otherwise, displays where the selected binary is.
@@ -135,10 +121,6 @@ class PrefTabGeneral: NSViewController {
 		binPath.url = path
 		binPathSIL.image = NSImage(named: status)
 		silMessage = silText
-	}
-	
-	@IBAction func backupQoSDidChange(_ sender: NSPopUpButton) {
-		UserDefaults.standard.set(sender.selectedItem?.identifier, forKey: DefaultsKeys.backupQoS)
 	}
 	
 }

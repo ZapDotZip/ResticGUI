@@ -717,10 +717,10 @@
             </objects>
             <point key="canvasLocation" x="-353" y="-38"/>
         </scene>
-        <!--PreferencesWindow-->
+        <!--PreferencesWindowController-->
         <scene sceneID="voe-lC-oT5">
             <objects>
-                <controllerPlaceholder storyboardName="Preferences" referencedIdentifier="PreferencesWindow" id="crj-vW-8cG" sceneMemberID="viewController"/>
+                <controllerPlaceholder storyboardName="Preferences" referencedIdentifier="PreferencesWindowController" id="crj-vW-8cG" sceneMemberID="viewController"/>
                 <customObject id="zNB-jM-CT1" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-719" y="146"/>
