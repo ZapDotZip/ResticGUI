@@ -11,7 +11,7 @@
             <objects>
                 <viewController identifier="restoreView" id="bU7-R8-ocO" customClass="RestoreViewController" customModule="ResticGUI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" translatesAutoresizingMaskIntoConstraints="NO" id="tOy-S4-hL0">
-                        <rect key="frame" x="0.0" y="0.0" width="478" height="305"/>
+                        <rect key="frame" x="0.0" y="0.0" width="478" height="379"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q2k-C0-sD0">
                                 <rect key="frame" x="18" y="135" width="178" height="18"/>
@@ -64,7 +64,7 @@ Gw
                                 </connections>
                             </button>
                             <button identifier="restoreEntireSnapshot" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ga0-82-dfw">
-                                <rect key="frame" x="18" y="268" width="171" height="18"/>
+                                <rect key="frame" x="18" y="342" width="171" height="18"/>
                                 <buttonCell key="cell" type="radio" title="Restore entire snapshot" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="L4k-6e-QvU">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -74,7 +74,7 @@ Gw
                                 </connections>
                             </button>
                             <button identifier="restoreSelectedFiles" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-LN-puf">
-                                <rect key="frame" x="18" y="246" width="232" height="18"/>
+                                <rect key="frame" x="18" y="320" width="232" height="18"/>
                                 <buttonCell key="cell" type="radio" title="Restore selected files and folders:" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="JND-ZD-7kH">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -93,22 +93,32 @@ Gw
                                 <rect key="frame" x="0.0" y="158" width="478" height="5"/>
                             </box>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="9qS-lJ-1Cq" customClass="STBPathListView" customModule="SwiftToolbox">
-                                <rect key="frame" x="20" y="169" width="438" height="70"/>
+                                <rect key="frame" x="20" y="205" width="438" height="108"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="VuY-4J-Xh1"/>
                                 </constraints>
                             </customView>
+                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="h6o-ri-O4y">
+                                <rect key="frame" x="18" y="169" width="442" height="28"/>
+                                <textFieldCell key="cell" controlSize="small" selectable="YES" title="Drag and drop files and folder to restore, or secondary-click inside the table for more options." id="eTu-PU-IGP">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="DDA-LN-puf" firstAttribute="top" secondItem="ga0-82-dfw" secondAttribute="bottom" constant="6" symbolic="YES" id="0cM-nZ-WMN"/>
                             <constraint firstItem="q2k-C0-sD0" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="5Qe-O4-pnM"/>
                             <constraint firstItem="75S-jy-Jdf" firstAttribute="top" secondItem="9pQ-iZ-2Sl" secondAttribute="bottom" constant="8" symbolic="YES" id="67R-Mg-FqT"/>
+                            <constraint firstAttribute="trailing" secondItem="h6o-ri-O4y" secondAttribute="trailing" constant="20" symbolic="YES" id="7dA-RU-6kQ"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="75S-jy-Jdf" secondAttribute="trailing" constant="20" symbolic="YES" id="EUI-HK-sLK"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ga0-82-dfw" secondAttribute="trailing" constant="20" symbolic="YES" id="Ijq-Zp-h0P"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9pQ-iZ-2Sl" secondAttribute="trailing" constant="20" symbolic="YES" id="NuU-hx-LBA"/>
                             <constraint firstItem="BgO-lt-jcn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rCn-Ld-ZVF" secondAttribute="trailing" constant="12" symbolic="YES" id="PBH-zC-knM"/>
                             <constraint firstItem="xjz-w1-dMQ" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" id="PXY-3S-yxk"/>
                             <constraint firstItem="9pQ-iZ-2Sl" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="50" id="Plk-gb-8NJ"/>
+                            <constraint firstItem="h6o-ri-O4y" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="Q6Y-i5-VOu"/>
                             <constraint firstItem="6Ae-eh-v73" firstAttribute="top" secondItem="75S-jy-Jdf" secondAttribute="bottom" constant="4" id="RNc-Up-Ury"/>
                             <constraint firstAttribute="bottom" secondItem="rCn-Ld-ZVF" secondAttribute="bottom" constant="20" symbolic="YES" id="S6X-Oa-6yZ"/>
                             <constraint firstItem="rCn-Ld-ZVF" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="WNI-Fj-Acm"/>
@@ -124,9 +134,10 @@ Gw
                             <constraint firstAttribute="bottom" secondItem="BgO-lt-jcn" secondAttribute="bottom" constant="20" symbolic="YES" id="hbE-hg-fNm"/>
                             <constraint firstAttribute="trailing" secondItem="6Ae-eh-v73" secondAttribute="trailing" constant="20" symbolic="YES" id="i4L-Sb-A49"/>
                             <constraint firstItem="9qS-lJ-1Cq" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="iGw-wK-oc9"/>
-                            <constraint firstItem="xjz-w1-dMQ" firstAttribute="top" secondItem="9qS-lJ-1Cq" secondAttribute="bottom" constant="8" symbolic="YES" id="kaz-NA-NyV"/>
+                            <constraint firstItem="xjz-w1-dMQ" firstAttribute="top" secondItem="h6o-ri-O4y" secondAttribute="bottom" constant="8" symbolic="YES" id="jph-TU-ke4"/>
                             <constraint firstAttribute="trailing" secondItem="9qS-lJ-1Cq" secondAttribute="trailing" constant="20" symbolic="YES" id="mEn-nQ-xrB"/>
                             <constraint firstItem="ga0-82-dfw" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="pX4-y4-2eM"/>
+                            <constraint firstItem="h6o-ri-O4y" firstAttribute="top" secondItem="9qS-lJ-1Cq" secondAttribute="bottom" constant="8" symbolic="YES" id="scW-37-aME"/>
                             <constraint firstItem="9pQ-iZ-2Sl" firstAttribute="top" secondItem="q2k-C0-sD0" secondAttribute="bottom" constant="8" symbolic="YES" id="sev-cq-WIG"/>
                             <constraint firstItem="75S-jy-Jdf" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" constant="20" symbolic="YES" id="tmI-DQ-YS5"/>
                             <constraint firstAttribute="trailing" secondItem="BgO-lt-jcn" secondAttribute="trailing" constant="20" symbolic="YES" id="uhw-D9-oLH"/>
@@ -146,7 +157,7 @@ Gw
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="152.5"/>
+            <point key="canvasLocation" x="132" y="189.5"/>
         </scene>
         <!--Restore Progress Controller-->
         <scene sceneID="3hy-wu-ksm">

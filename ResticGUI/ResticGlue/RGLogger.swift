@@ -66,6 +66,10 @@ final class RGLogger {
 		write("\(date()): \(rErr)\n")
 	}
 	
+	/// Logs information about the process before it runs.
+	/// - Parameters:
+	///   - process: The process that will be run.
+	///   - args: The arguments that will be passed to the process.
 	public func run(process: _SPCBase, args: [String]) {
 		write("\(date()): Running \(process.executableURL.localPath) \(args)\n\twith env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
 	}

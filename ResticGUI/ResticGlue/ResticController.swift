@@ -66,7 +66,7 @@ final class ResticController: NSObject {
 				versionInfo = output
 				resticLocation = path
 			case .error(let rawData, let decodingError):
-				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
+				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdError, exitCode: result.exitStatus)
 		}
 		
 	}
