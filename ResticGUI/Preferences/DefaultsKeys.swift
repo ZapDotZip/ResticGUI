@@ -30,4 +30,8 @@ struct DefaultsKeys {
 	public static let selectedRepo = "Selected Repo"
 	public static let viewSizeRestoreView = "RestoreViewSheet View Size"
 	public static let prefWindowLastTab = "PrefWindowLastSelectedTab"
+	
+	// Error Suppression
+	public static let suppressPermissionErrors = "ShouldSuppressPermissionErrors"
+	public static let suppressWarningUnreadable = "ShouldSuppressWarningUnreadable"
 }

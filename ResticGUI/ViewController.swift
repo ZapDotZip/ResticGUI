@@ -470,10 +470,26 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	
 	func displayError(_ error: any Error, isFatal: Bool) {
 		DispatchQueue.main.async {
-			STBAlerts.alert(title: "An error occured while trying to back up.", message: nil, error: error, style: .critical)
-			if isFatal {
-				self.viewState = .noBackupInProgress
+			let isPermissionsError = (error as? RGError)?.description.contains("permission denied") ?? false
+			let isWarningUnreadable = (error as? RGError)?.description.contains("Warning: at least one source file could not be read") ?? false
+			if UserDefaults.standard.bool(forKey: DefaultsKeys.suppressPermissionErrors) && isPermissionsError {
+				
+			} else if UserDefaults.standard.bool(forKey: DefaultsKeys.suppressWarningUnreadable) && isWarningUnreadable {
+				
+			} else {
+				let (_, shouldSuppress) = STBAlerts.alert(title: "An error occured while trying to back up.", message: nil, error: error, style: .critical, showsSuppressionButton: true)
+				if shouldSuppress {
+					if isPermissionsError {
+						UserDefaults.standard.set(true, forKey: DefaultsKeys.suppressPermissionErrors)
+					}
+					if isWarningUnreadable {
+						UserDefaults.standard.set(true, forKey: DefaultsKeys.suppressWarningUnreadable)
+					}
+				}
 			}
+		}
+		if isFatal {
+			self.viewState = .noBackupInProgress
 		}
 	}
 	
