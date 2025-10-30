@@ -36,17 +36,26 @@ class InteractiveResticBase<P: Decodable, S: RGIRSummary> {
 	}
 	
 	func stderrHandler(_ errData: Data) {
-		if let rErr = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: errData) {
-			RGLogger.default.stderr("(decoded json): \(rErr)")
-			guard !isQuittingIntentionally && rErr.message != "exit_error" else { return } // don't show an error message when the user cancels the task
-			display.displayError(RGError.init(from: rErr), isFatal: false)
-		} else if let errStr = String.init(data: errData, encoding: .utf8) {
-			guard !errStr.isEmpty else { return } // ignore spurious EOF data
-			RGLogger.default.stderr(errStr)
-			guard !isQuittingIntentionally && !errStr.contains("received, cleaning up") else { return } // don't show an error message when the user cancels the task
-			display.displayError(RGError.unknownError(message: errStr), isFatal: false)
-		} else {
-			RGLogger.default.log("Undecodable stderr data received from Restic")
+		var wasJSON = false
+		for line in errData.split(separator: SPCController.separatorNewLine) {
+			if let rErr = try? AppDelegate.jsonDecoder.decode(ResticResponse.error.self, from: line) {
+				wasJSON = true
+				RGLogger.default.stderr("(decoded json): \(rErr)")
+				guard !isQuittingIntentionally && rErr.message != "exit_error" else { return } // don't show an error message when the user cancels the task
+				display.displayError(RGError.init(from: rErr), isFatal: false)
+			} else if let errStr = String(data: line, encoding: .utf8) {
+				RGLogger.default.stderr("Unhandled non-json was found after json stderr data: \(errStr)")
+			}
+		}
+		if !wasJSON {
+			if let errStr = String.init(data: errData, encoding: .utf8) {
+				guard !errStr.isEmpty else { return } // ignore spurious EOF data
+				RGLogger.default.stderr(errStr)
+				guard !isQuittingIntentionally && !errStr.contains("received, cleaning up") else { return } // don't show an error message when the user cancels the task
+				display.displayError(RGError.unknownError(message: errStr), isFatal: false)
+			} else {
+				RGLogger.default.log("Undecodable stderr data received from Restic")
+			}
 		}
 	}
 	
