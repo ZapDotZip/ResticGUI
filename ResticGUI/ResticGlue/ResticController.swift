@@ -110,6 +110,9 @@ final class ResticController: NSObject {
 	
 	func env(for repo: Repo) throws -> [String: String] {
 		var env = ProcessInfo.processInfo.environment
+		if let globalEnv = UserDefaults.standard.dictionary(forKey: DefaultsKeys.globalEnvTable) as? [String: String] {
+			env.merge(globalEnv, uniquingKeysWith: { (_, new) in new })
+		}
 		env.merge(try repo.getEnv(), uniquingKeysWith: { (_, new) in new })
 		return env
 	}
