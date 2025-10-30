@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ED0637802D63E971004E26BC /* EnviormentTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED06377F2D63E971004E26BC /* EnviormentTableView.xib */; };
+		ED0996972EB19BC0004F40BB /* MountCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0996962EB19BC0004F40BB /* MountCoordinator.swift */; };
 		ED228D232CE963EA00502614 /* JSONDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED228D222CE963EA00502614 /* JSONDecodingTests.swift */; };
 		ED2591762E19A45600C068E4 /* RestoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */; };
 		ED3985072E5002320014CDB2 /* RGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3985012E50022F0014CDB2 /* RGError.swift */; };
@@ -150,6 +151,7 @@
 
 /* Begin PBXFileReference section */
 		ED06377F2D63E971004E26BC /* EnviormentTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EnviormentTableView.xib; path = ResticGUI/UI/EnviormentTableView.xib; sourceTree = SOURCE_ROOT; };
+		ED0996962EB19BC0004F40BB /* MountCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MountCoordinator.swift; sourceTree = "<group>"; };
 		ED228D222CE963EA00502614 /* JSONDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecodingTests.swift; path = ResticGUITests/JSONDecodingTests.swift; sourceTree = SOURCE_ROOT; };
 		ED2591752E19A45600C068E4 /* RestoreCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreCoordinator.swift; sourceTree = "<group>"; };
 		ED3985012E50022F0014CDB2 /* RGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGError.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				EDE0AA6A2D10C1390081E223 /* RGLogger.swift */,
 				EDE0AA672D10C1390081E223 /* BackupController.swift */,
 				ED45A4B22E6F91E4003B19ED /* ProgressDisplayer.swift */,
+				ED0996962EB19BC0004F40BB /* MountCoordinator.swift */,
 			);
 			path = ResticGlue;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				ED8B19FF2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift in Sources */,
 				EDF742982E7502DE003BE29E /* InteractiveResticBase.swift in Sources */,
 				ED8B19FB2E9A033E0069E5B7 /* NewProfileVC.swift in Sources */,
+				ED0996972EB19BC0004F40BB /* MountCoordinator.swift in Sources */,
 				ED8B19FC2E9A033E0069E5B7 /* ProfileEditorController.swift in Sources */,
 				ED8B19FD2E9A033E0069E5B7 /* ProfileOrHeader.swift in Sources */,
 				EDA86BA82D260487004E8996 /* EnviormentTable.swift in Sources */,

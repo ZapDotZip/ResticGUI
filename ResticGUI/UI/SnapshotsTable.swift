@@ -20,16 +20,17 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		case loading
 	}
 	
+	
 	private var loadState: State = .notLoading {
 		didSet {
 			switch loadState {
 			case .notLoading:
 				progressIndicator.stopAnimation(self)
-				reloadButton.isEnabled = true
 			case .loading:
-				reloadButton.isEnabled = false
 				progressIndicator.startAnimation(self)
 			}
+			reloadButton.isEnabled = loadState == .notLoading
+			mountButton.isEnabled = loadState == .notLoading
 		}
 	}
 	
@@ -120,9 +121,71 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	@IBOutlet var restoreButton: NSButton!
 	
+	private var mc: MountCoordinator?
+	
 	@IBOutlet var mountButton: NSButton!
 	@IBAction func mountButton(_ sender: NSButton) {
+		guard mc == nil else {
+			if let mc {
+				loadState = .loading
+				ResticController.default.dq.async {
+					mc.eject()
+				}
+			} else {
+				STBAlerts.alert(title: "Repository is already mounted", message: "An unknown error occurred.", style: .informational)
+			}
+			return
+		}
+		guard let repo = repoManager.getSelectedRepo() else {
+			NSLog("Unable to setup mount because repo was nil!")
+			return
+		}
+		guard let mountPoint = STBFilePanels.openPanel(message: "Select a directory to mount the repository at.", canSelectMultipleItems: false, canCreateDirectories: true, selectableTypes: [.directories])?.first else { return }
 		
+		loadState = .loading
+		mc = MountCoordinator()
+		guard let mc else { return }
+		mc.ui = self
+		ResticController.default.dq.async { [self] in
+			do {
+				try mc.mount(repo: repo, to: mountPoint)
+			} catch {
+				DispatchQueue.main.async { [self] in
+					STBAlerts.alert(title: "Unable to mount repository", message: "Could not run restic to mount the repository.", error: error, style: .warning)
+					loadState = .notLoading
+				}
+			}
+		}
+	}
+	
+	func mountPointDidMount() {
+		DispatchQueue.main.async { [self] in
+			loadState = .notLoading
+			mountButton.title = "Unmount repository"
+			if let mp = mc?.mountPoint {
+				NSWorkspace.shared.open(mp)
+			}
+		}
+	}
+	
+	func mountPointError(msg: String) {
+		DispatchQueue.main.async { [self] in
+			loadState = .notLoading
+			mountButton.isEnabled = true
+			mountButton.title = "Mount repository..."
+		}
+	}
+	
+	func mountPointExited(with error: RGError? = nil) {
+		DispatchQueue.main.async { [self] in
+			if let error {
+				STBAlerts.alert(title: "Failed to mount repository", message: "Restic returned an error trying to mount the repository.", error: error, style: .warning)
+			}
+			mountButton.isEnabled = true
+			mountButton.title = "Mount repository..."
+			loadState = .notLoading
+			mc = nil
+		}
 	}
 	
 	@IBOutlet var deleteButton: NSButton!
@@ -134,15 +197,12 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		if table.selectedRowIndexes.count == 0 {
 			restoreButton.isEnabled = false
 			deleteButton.isEnabled = false
-			mountButton.isEnabled = false
 		} else if table.selectedRowIndexes.count == 1 {
 			restoreButton.isEnabled = true
 			deleteButton.isEnabled = true
-			mountButton.isEnabled = true
 		} else {
 			restoreButton.isEnabled = false
 			deleteButton.isEnabled = true
-			mountButton.isEnabled = false
 		}
 	}
 	
