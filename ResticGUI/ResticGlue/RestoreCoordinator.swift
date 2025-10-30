@@ -66,7 +66,7 @@ class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, 
 		willStart()
 		do {
 			let p = try SPCControllerDecoder<D>.init(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
-			p.env = try plan.repo.getEnv()
+			p.env = try ResticController.default.env(for: plan.repo)
 			let args: [String] = try argsFromPlan()
 			RGLogger.default.run(process: p, args: args)
 			try p.launch(args: args)

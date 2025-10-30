@@ -108,6 +108,12 @@ final class ResticController: NSObject {
 		}
 	}
 	
+	func env(for repo: Repo) throws -> [String: String] {
+		var env = ProcessInfo.processInfo.environment
+		env.merge(try repo.getEnv(), uniquingKeysWith: { (_, new) in new })
+		return env
+	}
+	
 // MARK: Restic controlling
 	func run<D: Decodable>(args: [String], env: [String : String], returning: D.Type, qos: QualityOfService = .userInitiated) throws -> D {
 		let restic = SPCRunner(executableURL: try getResticURL())
@@ -124,15 +130,15 @@ final class ResticController: NSObject {
 	}
 	
 	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
-		return try run(args: ["--json", "-r", repo.path, "init"], env: try repo.getEnv(), returning: ResticResponse.RepoInitResponse.self)
+		return try run(args: ["--json", "-r", repo.path, "init"], env: try env(for: repo), returning: ResticResponse.RepoInitResponse.self)
 	}
 	
 	func getConfig(of repo: Repo) throws -> ResticResponse.RepoConfig {
-		return try run(args: ["--json", "-r", repo.path, "cat", "config"], env: try repo.getEnv(), returning: ResticResponse.RepoConfig.self)
+		return try run(args: ["--json", "-r", repo.path, "cat", "config"], env: try env(for: repo), returning: ResticResponse.RepoConfig.self)
 	}
 	
 	func getSnapshots(for repo: Repo) throws -> [ResticResponse.Snapshot] {
-		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try repo.getEnv(), returning: [ResticResponse.Snapshot].self, qos: .utility)
+		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try env(for: repo), returning: [ResticResponse.Snapshot].self, qos: .utility)
 	}
 	
 }

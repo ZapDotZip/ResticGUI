@@ -18,7 +18,7 @@ class MountCoordinator: SPCDelegate {
 	func mount(repo: Repo, to mountPoint: URL) throws {
 		self.mountPoint = mountPoint
 		let restic = SPCController(executableURL: try ResticController.default.getResticURL(), delegate: self)
-		restic.env = try repo.getEnv()
+		restic.env = try ResticController.default.env(for: repo)
 		restic.qualityOfService = .default
 		let args = ["mount", mountPoint.localPath, "--time-template", goDF]
 		RGLogger.default.run(process: restic, args: args)

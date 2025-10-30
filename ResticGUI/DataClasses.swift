@@ -186,6 +186,7 @@ final class Repo: Codable {
 		var newEnv = env ?? [String : String]()
 		newEnv["HOME"] = ProcessInfo.processInfo.environment["HOME"]
 		newEnv["RESTIC_PASSWORD"] = try getPassword()
+		newEnv["RESTIC_REPOSITORY"] = self.path
 		if let cd = cacheDir {
 			newEnv["RESTIC_CACHE_DIR"] = cd
 		}

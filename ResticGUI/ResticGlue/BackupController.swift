@@ -117,7 +117,7 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 		do {
 			let args = try arguments(from: profile, and: repo, scanAhead: scanAhead)
 			let p = try SPCControllerDecoder(executableURL: ResticController.default.getResticURL(), delegate: self, decoderType: .JSON)
-			p.env = try repo.getEnv()
+			p.env = try ResticController.default.env(for: repo)
 			p.qualityOfService = QoS
 			if let ioPolicyPref = UserDefaults.standard.string(forKey: DefaultsKeys.storageQoS) {
 				switch ioPolicyPref {
