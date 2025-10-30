@@ -119,7 +119,7 @@ final class ResticController: NSObject {
 			case .object(let output):
 				return output
 			case .error(let rawData, let decodingError):
-				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdErrorString(), exitCode: result.exitStatus)
+				throw RGError(decodingError: decodingError, rawData: rawData, stderr: result.stdError, exitCode: result.exitStatus)
 		}
 	}
 	

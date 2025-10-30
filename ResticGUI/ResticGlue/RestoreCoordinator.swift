@@ -85,7 +85,7 @@ class RestoreCoordinator: InteractiveResticBase<ResticResponse.RestoreProgress, 
 					summary = output
 				}
 			case .error(rawData: let rawData, decodingError: let decodingError):
-				let error = RGError.init(decodingError: decodingError, rawData: rawData, stderr: nil, exitCode: nil)
+				let error = RGError.init(decodingError: decodingError, rawData: rawData, stderr: Data(), exitCode: nil)
 				RGLogger.default.log(error)
 				display.displayError(error, isFatal: false)
 		}
