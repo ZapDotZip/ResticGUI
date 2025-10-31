@@ -256,7 +256,8 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	///   - list: The snapshot list to save.
 	///   - repo: The repo to save the cache for.
 	private func saveToCache(_ list: [ResticResponse.Snapshot], for repo: Repo) {
-		guard let sc = getSnapshotCacheURL(repo: repo) else { return }
+		guard let id = repo.loadID() else { return }
+		let sc = SnapshotsTable.cacheDirectory.appending(path: id, isDirectory: false)
 		do {
 			let data = try AppDelegate.plistEncoderBinary.encode(list)
 			try FileManager.default.createDirectory(at: SnapshotsTable.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
