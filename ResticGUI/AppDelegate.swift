@@ -164,6 +164,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		}
 	}
 	
+	@IBAction func menuRepositoryUnlockPressed(_ sender: NSMenuItem) {
+		guard let selectedRepo = ReposManager.default.getSelectedRepo() else { return }
+		STBAlerts.destructiveAlert(title: "Unlock Repository?", message: "Are you sure you want to unlock the repository \"\(selectedRepo.getName())\"? This may result in corruption if another process is using this repository.", style: .warning, destructiveButtonText: "Force Unlock")
+		do {
+			try ResticController.default.unlockRepository(selectedRepo)
+			STBAlerts.alert(title: "Repository unlocked", message: "The repository has been unlocked.", style: .informational)
+		} catch {
+			STBAlerts.alert(title: "An error occured", message: "An error occured while trying to unlock the repository.", error: error)
+		}
+	}
+	
 	func setBackupState(_ state: ViewController.ViewState) {
 		switch state {
 		case .noBackupInProgress:

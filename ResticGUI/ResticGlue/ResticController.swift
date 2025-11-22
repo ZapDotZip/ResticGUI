@@ -144,4 +144,16 @@ final class ResticController: NSObject {
 		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try env(for: repo), returning: [ResticResponse.Snapshot].self, qos: .utility)
 	}
 	
+	func unlockRepository(_ repo: Repo) throws {
+		let args = ["--json", "unlock"] // Currently there is no json output, but passing it suppresses user-level output.
+		let restic = SPCRunner(executableURL: try getResticURL())
+		restic.env = try env(for: repo)
+		restic.qualityOfService = .userInitiated
+		RGLogger.default.run(process: restic, args: args)
+		let result = try restic.run(args: args)
+		if let err = result.errorString(), !err.isEmpty {
+			throw RGError.resticErrorMessage(message: result.outputString(), code: Int(result.exitStatus), stderr: err)
+		}
+	}
+	
 }

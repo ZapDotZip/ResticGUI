@@ -630,6 +630,19 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Repository" id="qa3-Tp-NEd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Repository" autoenablesItems="NO" id="M68-2V-OJe">
+                                    <items>
+                                        <menuItem title="Force Unlock Repository" id="ywG-9g-T9t">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="menuRepositoryUnlockPressed:" target="Ady-hI-5gd" id="whf-SO-B26"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="View" id="H8h-7b-M4v">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
@@ -899,7 +912,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ROV-Bb-moK" secondAttribute="bottom" constant="1" id="udN-hb-Ef9"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
+                                    <customView id="c99-ze-Uce" customClass="ProfileEditorController" customModule="ResticGUI" customModuleProvider="target">
                                         <rect key="frame" x="197" y="0.0" width="582" height="521"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -1091,7 +1104,7 @@
                                                                     <rect key="frame" x="16" y="204" width="511" height="149"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="y73-fz-MSI">
                                                                         <rect key="frame" x="1" y="1" width="509" height="147"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" id="NMX-2X-1oj">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="509" height="147"/>
@@ -1456,13 +1469,13 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <scrollView horizontalHuggingPriority="100" verticalHuggingPriority="100" borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ba-4P-Vqk" customClass="SnapshotsTable" customModule="ResticGUI" customModuleProvider="target">
-                                                                    <rect key="frame" x="8" y="236" width="527" height="137"/>
+                                                                    <rect key="frame" x="8" y="261" width="527" height="112"/>
                                                                     <clipView key="contentView" id="eUB-Qr-Dy3">
-                                                                        <rect key="frame" x="1" y="1" width="525" height="135"/>
+                                                                        <rect key="frame" x="1" y="1" width="525" height="110"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" autosaveName="SnapshotsTable" rowSizeStyle="automatic" headerView="Yme-Qu-Smp" viewBased="YES" id="3id-wy-VkW">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="525" height="110"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="525" height="85"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1617,7 +1630,7 @@
                                                                     </connections>
                                                                 </scrollView>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xcw-10-6Th">
-                                                                    <rect key="frame" x="1" y="1" width="92" height="232"/>
+                                                                    <rect key="frame" x="1" y="1" width="92" height="257"/>
                                                                     <buttonCell key="cell" type="push" title="Restore..." bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="de3-LL-ahd">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1627,7 +1640,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xu5-EE-5lb">
-                                                                    <rect key="frame" x="87" y="201" width="74" height="32"/>
+                                                                    <rect key="frame" x="87" y="226" width="74" height="32"/>
                                                                     <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ewm-00-Fiu">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1637,7 +1650,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bYv-oh-qh8">
-                                                                    <rect key="frame" x="520" y="111" width="15" height="15"/>
+                                                                    <rect key="frame" x="520" y="123" width="15" height="15"/>
                                                                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRefreshFreestandingTemplate" imagePosition="only" alignment="center" inset="2" id="LRB-Go-Aty">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -1647,10 +1660,10 @@
                                                                     </connections>
                                                                 </button>
                                                                 <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Kvw-Nb-jIC">
-                                                                    <rect key="frame" x="496" y="110" width="16" height="16"/>
+                                                                    <rect key="frame" x="496" y="123" width="16" height="16"/>
                                                                 </progressIndicator>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bc8-Vs-6be">
-                                                                    <rect key="frame" x="163" y="1" width="148" height="232"/>
+                                                                    <rect key="frame" x="163" y="1" width="148" height="257"/>
                                                                     <buttonCell key="cell" type="push" title="Mount repository..." bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TBv-TX-JP7">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
