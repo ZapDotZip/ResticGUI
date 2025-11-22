@@ -36,11 +36,12 @@ final class ResticResponse {
 		let short_id: String
 		
 		lazy var date: Date = {
-			let d = ResticResponse.df.date(from: time)
-			if d == nil {
+			if let d = ResticResponse.df.date(from: time) {
+				return d
+			} else {
 				RGLogger.default.log("Unable to convert restic-provided date: \(time)")
+				return Date.init(timeIntervalSince1970: 0)
 			}
-			return d ?? Date.init(timeIntervalSince1970: 0)
 		}()
 	}
 	
