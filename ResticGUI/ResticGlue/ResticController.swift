@@ -157,6 +157,12 @@ final class ResticController: NSObject {
 		return try run(args: ["-r", repo.path, "snapshots", "--json"], env: try env(for: repo), returning: [ResticResponse.Snapshot].self, qos: .utility)
 	}
 	
+	func deleteSnapshots(_ snapshots: [ResticResponse.Snapshot], repo: Repo) throws {
+		var args = ["--json", "forget"]
+		args.append(contentsOf: snapshots.map({ $0.id }))
+		try run(args: args, env: try env(for: repo), qos: .utility)
+	}
+	
 	func unlockRepository(_ repo: Repo) throws {
 		// Currently there is no json output, but passing it suppresses user-level output.
 		try run(args: ["--json", "unlock"], env: try env(for: repo))

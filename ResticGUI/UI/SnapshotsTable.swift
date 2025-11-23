@@ -190,7 +190,32 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	@IBOutlet var deleteButton: NSButton!
 	@IBAction func deleteButton(_ sender: NSButton) {
-		
+		let snapshots = selectedSnapshots
+		guard snapshots.count >= 1 else {
+			STBAlerts.alert(title: "Please select a snapshot", message: "You must select one or more snapshots to delete.", style: .informational)
+			return
+		}
+		guard let selectedRepo = repoManager.getSelectedRepo() else {
+			STBAlerts.alert(title: "Please select a repository", message: "You must select a repository before you can delete a snapshot.", style: .informational)
+			return
+		}
+		let dates = snapshots.map { df.string(from: $0.date) }.joined(separator: "\n")
+		guard STBAlerts.destructiveAlert(title: "Delete snapshot(s)?", message: "Are you sure you want to delete the selected snapshot(s):\n\(dates)", style: .warning, destructiveButtonText: "Delete") else { return }
+		loadState = .loading
+		ResticController.default.dq.async {
+			do {
+				try ResticController.default.deleteSnapshots(snapshots, repo: selectedRepo)
+				DispatchQueue.main.async {
+					self.loadState = .notLoading
+					STBAlerts.alert(title: "Deleted snapshots", message: "Deleted the snapshots:\n\(dates)", style: .informational)
+				}
+			} catch {
+				DispatchQueue.main.async {
+					self.loadState = .notLoading
+					STBAlerts.alert(title: "Couldn't delete snapshot.", message: "An error occured trying to delete the snapshot.", error: error)
+				}
+			}
+		}
 	}
 	
 	func tableViewSelectionDidChange(_ notification: Notification) {
@@ -208,6 +233,13 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 	
 	/// The currently selected snapshot in the table.
 	public var selectedSnapshot: ResticResponse.Snapshot? { return snapshots[table.selectedRow] }
+	public var selectedSnapshots: [ResticResponse.Snapshot] {
+		return table.selectedRowIndexes.compactMap { index in
+			guard index < snapshots.count else { return nil }
+			return snapshots[index]
+		}
+		
+	}
 	
 	/// Returns the full URL path for the repository snapshot cache.
 	private func getSnapshotCacheURL(repo: Repo) -> URL? {
