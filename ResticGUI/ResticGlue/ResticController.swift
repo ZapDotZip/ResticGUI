@@ -132,6 +132,19 @@ final class ResticController: NSObject {
 		}
 	}
 	
+	/// Runner intended for when the restic command should not normally return anything.
+	func run(args: [String], env: [String : String], qos: QualityOfService = .userInitiated) throws {
+		let restic = SPCRunner(executableURL: try getResticURL())
+		restic.env = env
+		restic.qualityOfService = qos
+		RGLogger.default.run(process: restic, args: args)
+		let result = try restic.run(args: args)
+		if let err = result.errorString(), !err.isEmpty {
+			throw RGError.resticErrorMessage(message: result.outputString(), code: Int(result.exitStatus), stderr: err)
+		}
+
+	}
+	
 	func create(repo: Repo) throws -> ResticResponse.RepoInitResponse {
 		return try run(args: ["--json", "-r", repo.path, "init"], env: try env(for: repo), returning: ResticResponse.RepoInitResponse.self)
 	}
@@ -145,15 +158,8 @@ final class ResticController: NSObject {
 	}
 	
 	func unlockRepository(_ repo: Repo) throws {
-		let args = ["--json", "unlock"] // Currently there is no json output, but passing it suppresses user-level output.
-		let restic = SPCRunner(executableURL: try getResticURL())
-		restic.env = try env(for: repo)
-		restic.qualityOfService = .userInitiated
-		RGLogger.default.run(process: restic, args: args)
-		let result = try restic.run(args: args)
-		if let err = result.errorString(), !err.isEmpty {
-			throw RGError.resticErrorMessage(message: result.outputString(), code: Int(result.exitStatus), stderr: err)
-		}
+		// Currently there is no json output, but passing it suppresses user-level output.
+		try run(args: ["--json", "unlock"], env: try env(for: repo))
 	}
 	
 }
