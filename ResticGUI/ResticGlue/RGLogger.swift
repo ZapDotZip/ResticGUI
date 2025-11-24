@@ -47,7 +47,11 @@ final class RGLogger {
 			print(str)
 		#endif
 		dq.async {
-			self.logfile.write(Data(str.utf8))
+			if #available(macOS 10.15.4, *) {
+				try? self.logfile.write(contentsOf: Data(str.utf8))
+			} else {
+				self.logfile.write(Data(str.utf8))
+			}
 		}
 	}
 	
@@ -71,7 +75,13 @@ final class RGLogger {
 	///   - process: The process that will be run.
 	///   - args: The arguments that will be passed to the process.
 	public func run(process: _SPCBase, args: [String]) {
-		write("\(date()): Running \(process.executableURL.localPath) \(args)\n\twith env: \(process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:])\n")
+		let env = (process.env?.filter { !$0.key.lowercased().contains("password") } ?? [:]).map { (key: String, value: String) in
+			return "\(key)='\(value)'"
+		}.joined(separator: " \\\n\t")
+		
+		let arguments = args.map({ "'\($0)'" }).joined(separator: " ")
+		
+		write("\(date()): Running:\n\t\(env) \(process.executableURL.localPath) \(arguments)\n")
 	}
 	
 	/// Logs Standard Error from restic.
