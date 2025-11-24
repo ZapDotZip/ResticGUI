@@ -168,4 +168,9 @@ final class ResticController: NSObject {
 		try run(args: ["--json", "unlock"], env: try env(for: repo))
 	}
 	
+	func pruneRepository(_ repo: Repo) throws {
+		// Currently there is no json output, but passing it suppresses user-level output.
+		try run(args: ["--json", "prune"], env: try env(for: repo))
+	}
+	
 }

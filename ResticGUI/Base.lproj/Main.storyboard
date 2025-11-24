@@ -634,10 +634,16 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Repository" autoenablesItems="NO" id="M68-2V-OJe">
                                     <items>
-                                        <menuItem title="Force Unlock Repository" id="ywG-9g-T9t">
+                                        <menuItem title="Prune..." id="ywG-9g-T9t">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="menuRepositoryUnlockPressed:" target="Ady-hI-5gd" id="whf-SO-B26"/>
+                                                <action selector="menuRepositoryPrune:" target="Ady-hI-5gd" id="x2H-xC-k9E"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Force Unlock Repository" id="XZP-hv-rTd">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="menuRepositoryUnlockPressed:" target="Ady-hI-5gd" id="TQT-rp-7ae"/>
                                             </connections>
                                         </menuItem>
                                     </items>

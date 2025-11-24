@@ -175,6 +175,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		}
 	}
 	
+	@IBAction func menuRepositoryPrune(_ sender: NSMenuItem) {
+		guard let selectedRepo = ReposManager.default.getSelectedRepo() else { return }
+		let res = STBAlerts.alert(title: "Prune Repository?", message: "Pruning checks the repository and removes data that is not referenced and therefore not needed any more.", style: .informational, buttons: ["Ok", "Cancel"])
+		if res == .alertFirstButtonReturn {
+			do {
+				try ResticController.default.pruneRepository(selectedRepo)
+				STBAlerts.alert(title: "Repository unlocked", message: "The repository has been pruned.", style: .informational)
+			} catch {
+				STBAlerts.alert(title: "An error occured", message: "An error occured while trying to prune the repository.", error: error)
+			}
+		}
+	}
+	
 	func setBackupState(_ state: ViewController.ViewState) {
 		switch state {
 		case .noBackupInProgress:
