@@ -138,16 +138,34 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 	}
 	
 	@IBAction @objc func exportProfile(_ sender: NSMenuItem) {
-		guard let selected = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile,
-				let profile = try? ProfileManager.load(named: selected) else {
+		saveProfile(sender)
+		guard let selectedProfileName = (outline.item(atRow: outline.selectedRow) as? ProfileOrHeader)?.profile,
+				let profile = try? ProfileManager.load(named: selectedProfileName) else {
 			return
 		}
-		STBFilePanels.savePanelModal(for: self.view.window!, nameFieldLabel: "Export As", nameField: selected + ".plist", isExtensionHidden: true, allowedFileExtensions: ["plist"], completionHandler: { url in
-			if let url {
+		let panel = STBFilePanels.createSavePanel(nameFieldLabel: "Export As", nameField: selectedProfileName + ".plist", isExtensionHidden: true, allowedFileExtensions: ["plist"])
+		
+		let storeRepoInfoCbox = NSButton(checkboxWithTitle: "Save currently selected repository information, including password", target: nil, action: nil)
+		storeRepoInfoCbox.state = .off
+		
+		let stack = NSStackView()
+		stack.orientation = .vertical
+		stack.addView(storeRepoInfoCbox, in: .top)
+		stack.edgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
+		panel.accessoryView = stack
+		panel.beginSheetModal(for: self.view.window!, completionHandler: { response in
+			panel.orderOut(nil)
+			if response == .OK, let url = panel.url {
 				do {
-					try ProfileManager.save(profile, to: url)
+					if storeRepoInfoCbox.state == .on, let repo = self.repoManager.getSelectedRepo() {
+						let data = try AppDelegate.plistEncoderXML.encode(ExportedProfile(profile: profile, repo: repo))
+						try data.write(to: url)
+					} else {
+						let data = try AppDelegate.plistEncoderXML.encode(profile)
+						try data.write(to: url)
+					}
 				} catch {
-					STBAlerts.alert(title: "Couldn't export profile.", message: "An error occured while trying to export the profile named \"\(selected)\"", error: error, style: .critical)
+					STBAlerts.alert(title: "Couldn't export profile.", message: "An error occured while trying to export the profile named \"\(selectedProfileName)\"", error: error, style: .critical)
 				}
 			}
 		})
@@ -157,7 +175,22 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		guard let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) else { return }
 		let newProfiles = urls.compactMap { url -> String? in
 			
-			guard let profile = ProfileManager.load(url) else { return nil }
+			guard let profile = { () -> Profile? in
+				if let ep = try? AppDelegate.plistDecoder.decode(ExportedProfile.self, from: .init(contentsOf: url)) {
+					try? repoManager.importRepo(ep.repo)
+					return ep.profile
+				} else if let profile = ProfileManager.load(url) {
+					return profile
+				} else {
+					return nil
+				}
+				
+			}() else {
+				STBAlerts.alert(title: "Unable to import profile.", message: "The profile at \(url.localPath) couldn't be loaded.", style: .warning)
+				return nil
+			}
+			
+			
 			
 			if ProfileManager.alreadyExists(profile) {
 				let overwrite = STBAlerts.destructiveAlert(title: "Profile already exists",
