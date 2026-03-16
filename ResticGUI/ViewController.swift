@@ -179,18 +179,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				if let ep = try? AppDelegate.plistDecoder.decode(ExportedProfile.self, from: .init(contentsOf: url)) {
 					try? repoManager.importRepo(ep.repo)
 					return ep.profile
-				} else if let profile = ProfileManager.load(url) {
-					return profile
 				} else {
-					return nil
+					return ProfileManager.load(url)
 				}
-				
 			}() else {
 				STBAlerts.alert(title: "Unable to import profile.", message: "The profile at \(url.localPath) couldn't be loaded.", style: .warning)
 				return nil
 			}
-			
-			
 			
 			if ProfileManager.alreadyExists(profile) {
 				let overwrite = STBAlerts.destructiveAlert(title: "Profile already exists",
@@ -203,7 +198,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 				try ProfileManager.save(profile)
 				return profile.name
 			} catch {
-				STBAlerts.alert(title: "Couldn't load profile", message: "Failed to load the profile located at \(url.localPath). The profile may be corrupt, or invalid.", error: error, style: .critical)
+				STBAlerts.alert(title: "Couldn't save profile", message: "Failed to save the profile located at \(url.localPath). The profile may be corrupt, or invalid.", error: error, style: .critical)
 				return nil
 			}
 			
