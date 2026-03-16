@@ -206,3 +206,8 @@ final class Repo: Codable {
 	}
 
 }
+
+struct ExportedProfile: Codable {
+	let profile: Profile
+	let repo: Repo
+}
