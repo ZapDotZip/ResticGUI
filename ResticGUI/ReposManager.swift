@@ -65,13 +65,13 @@ class ReposManager: NSObject {
 		repoEditControl.setEnabled(true, forSegment: 2)
 	}
 	
-	/// Adds a new repo to the repo list. Does save keychain passwords. Does not update the UI.
+	/// Adds a new repo to the repo list. SAves keychain password and updates the UI.
 	/// - Parameter repo: The repo to add to the list.
 	func importRepo(_ repo: Repo) throws {
 		let name = repo.getName()
 		repos[name] = repo
-		RepoMenu.addItem(withTitle: name)
 		try save()
+		RepoMenu.addItem(withTitle: name)
 	}
 	
 	func exists(_ repoName: String) -> Bool {
