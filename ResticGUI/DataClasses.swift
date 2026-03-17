@@ -27,6 +27,10 @@ final class Profile: Codable, Equatable {
 	var uuid: UUID
 	var profileVersion: Int
 	
+	static func decodeFrom(_ url: URL) throws -> Self {
+		return try AppDelegate.plistDecoder.decode(Self.self, from: .init(contentsOf: url))
+	}
+	
 	init(name: String) {
 		self.name = name
 		self.uuid = UUID()
@@ -210,4 +214,8 @@ final class Repo: Codable {
 struct ExportedProfile: Codable {
 	let profile: Profile
 	let repo: Repo
+	
+	static func decodeFrom(_ url: URL) throws -> Self {
+		return try AppDelegate.plistDecoder.decode(Self.self, from: .init(contentsOf: url))
+	}
 }
