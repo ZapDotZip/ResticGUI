@@ -74,6 +74,14 @@ class ReposManager: NSObject {
 		try save()
 	}
 	
+	func exists(_ repoName: String) -> Bool {
+		return repos[repoName] != nil
+	}
+	
+	func exists(_ repo: Repo) -> Bool {
+		return repos[repo.getName()] != nil
+	}
+	
 	/// Updates an existing repository.
 	/// - Parameters:
 	///   - oldRepoName: The repo name before the update.
