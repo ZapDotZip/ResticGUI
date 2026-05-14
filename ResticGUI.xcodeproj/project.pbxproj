@@ -796,7 +796,7 @@
 				CODE_SIGN_ENTITLEMENTS = ResticGUI/ResticGUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				EAGER_LINKING = YES;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -804,7 +804,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
@@ -819,7 +819,7 @@
 				CODE_SIGN_ENTITLEMENTS = ResticGUI/ResticGUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				EAGER_LINKING = YES;
 				INFOPLIST_FILE = ResticGUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -827,7 +827,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = zap.zip.ResticGUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
