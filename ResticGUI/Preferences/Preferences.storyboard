@@ -365,7 +365,7 @@
                     </connections>
                 </viewController>
                 <customObject id="4z6-kl-dU3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <userDefaultsController id="OTQ-gz-Ufp"/>
+                <userDefaultsController representsSharedInstance="YES" id="OTQ-gz-Ufp"/>
             </objects>
             <point key="canvasLocation" x="-1480" y="466"/>
         </scene>
@@ -454,7 +454,11 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.Limit Background Core Count" id="uUa-eU-Q8b"/>
+                                                        <binding destination="ReJ-m6-UTS" name="value" keyPath="values.Limit Background Core Count" id="jE8-xv-jPA">
+                                                            <dictionary key="options">
+                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                            </dictionary>
+                                                        </binding>
                                                     </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I1Z-Ig-p7A">
@@ -464,7 +468,11 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Battery" id="94X-dd-mOa"/>
+                                                        <binding destination="ReJ-m6-UTS" name="value" keyPath="values.QoS Background on Battery" id="MiV-Hs-3A1">
+                                                            <dictionary key="options">
+                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                            </dictionary>
+                                                        </binding>
                                                     </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hnn-SE-MyE">
@@ -474,7 +482,11 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <binding destination="irW-e7-OOq" name="value" keyPath="values.QoS Background on Low Power" id="mQY-l6-nyw"/>
+                                                        <binding destination="ReJ-m6-UTS" name="value" keyPath="values.QoS Background on Low Power" id="1Nv-hg-QLw">
+                                                            <dictionary key="options">
+                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                            </dictionary>
+                                                        </binding>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -564,7 +576,7 @@
                     </connections>
                 </viewController>
                 <customObject id="a83-9h-EIH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <userDefaultsController id="BET-nI-q4B"/>
+                <userDefaultsController representsSharedInstance="YES" id="ReJ-m6-UTS"/>
             </objects>
             <point key="canvasLocation" x="-964" y="475"/>
         </scene>
