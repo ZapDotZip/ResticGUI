@@ -62,7 +62,7 @@ class ResticGUIUITests: XCTestCase {
 		
 		// Store current values
 		let initialQoS = app.popUpButtons["CPU QoS Selector"].value as! String
-		let initialConcurrency = app.checkBoxes["Limit read concurrency when running on efficiency cores"].isSelected
+		let initialConcurrency = app.checkBoxes["Limit read concurrency when running on efficiency cores"].value as! Bool
 		let initialBattery = app.checkBoxes["Always use efficiency cores on battery"].value as! Bool
 		let initialLowPower = app.checkBoxes["Always use efficiency cores on Low Power mode"].value as! Bool
 		
