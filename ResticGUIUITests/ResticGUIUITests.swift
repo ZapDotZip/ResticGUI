@@ -55,6 +55,41 @@ class ResticGUIUITests: XCTestCase {
 		XCTAssertFalse(app.menuItems["test repo"].exists)
 	}
 	
+	func testPerformancePreferences() {
+		// Open Preferences Window
+		app.typeKey(",", modifierFlags:.command)
+		app.toolbars.buttons["Performance"].click()
+		
+		// Store current values
+		let initialQoS = app.popUpButtons["CPU QoS Selector"].value as! String
+		let initialConcurrency = app.checkBoxes["Limit read concurrency when running on efficiency cores"].isSelected
+		let initialBattery = app.checkBoxes["Always use efficiency cores on battery"].value as! Bool
+		let initialLowPower = app.checkBoxes["Always use efficiency cores on Low Power mode"].value as! Bool
+		
+		// Change values
+		app.popUpButtons["CPU QoS Selector"].click()
+		if initialQoS != "Utility" {
+			app.menuItems["Utility"].click()
+		} else {
+			app.menuItems["Default"].click()
+		}
+		app.checkBoxes["Limit read concurrency when running on efficiency cores"].click()
+		app.checkBoxes["Always use efficiency cores on battery"].click()
+		app.checkBoxes["Always use efficiency cores on Low Power mode"].click()
+		
+		// Close preferences window
+		app.windows["PreferencesWindow"].typeKey("w", modifierFlags:.command)
+		// Open Preferences Window
+		app.typeKey(",", modifierFlags:.command)
+		app.toolbars.buttons["Performance"].click()
+		
+		// Check if changes persisted
+		XCTAssertNotEqual(initialQoS, app.popUpButtons["CPU QoS Selector"].value as! String)
+		XCTAssertNotEqual(initialConcurrency, app.checkBoxes["Limit read concurrency when running on efficiency cores"].value as! Bool)
+		XCTAssertNotEqual(initialBattery, app.checkBoxes["Always use efficiency cores on battery"].value as! Bool)
+		XCTAssertNotEqual(initialLowPower, app.checkBoxes["Always use efficiency cores on Low Power mode"].value as! Bool)
+	}
+	
 	
 	func testLaunchPerformance() {
 		if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {

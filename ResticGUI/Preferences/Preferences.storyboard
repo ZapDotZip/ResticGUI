@@ -418,7 +418,7 @@
                                         <stackView key="contentView" distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bes-uZ-EYQ">
                                             <rect key="frame" x="123" y="78" width="387" height="134"/>
                                             <subviews>
-                                                <popUpButton verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="jKO-q7-6wX">
+                                                <popUpButton identifier="CPU QoS Selector" toolTip="Limit the CPU usage of Restic." verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="jKO-q7-6wX">
                                                     <rect key="frame" x="-3" y="110" width="251" height="25"/>
                                                     <popUpButtonCell key="cell" type="push" title="Default" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Fx5-K0-Vj3" id="GF3-us-bnZ">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -434,6 +434,7 @@
                                                             </items>
                                                         </menu>
                                                     </popUpButtonCell>
+                                                    <accessibility identifier="CPU QoS Selector"/>
                                                     <connections>
                                                         <action selector="backupQoSDidChange:" target="THJ-5G-T9t" id="sxX-T4-IjA"/>
                                                     </connections>
@@ -447,7 +448,7 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button toolTip="Prevents restic from reading more files at once than you have efficiency cores." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fxS-fK-zks">
+                                                <button identifier="Limit Background Core Count" toolTip="Prevents restic from using more reading threads than you have efficiency cores." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fxS-fK-zks">
                                                     <rect key="frame" x="-2" y="43" width="370" height="18"/>
                                                     <buttonCell key="cell" type="check" title="Limit read concurrency when running on efficiency cores" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="EgN-i1-z4j">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -461,7 +462,7 @@
                                                         </binding>
                                                     </connections>
                                                 </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I1Z-Ig-p7A">
+                                                <button identifier="QoS Background on Battery" toolTip="Limit Restic to background QoS while running on battery power." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I1Z-Ig-p7A">
                                                     <rect key="frame" x="-2" y="21" width="259" height="18"/>
                                                     <buttonCell key="cell" type="check" title="Always use efficiency cores on battery" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VgL-Ej-tu6">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -475,7 +476,7 @@
                                                         </binding>
                                                     </connections>
                                                 </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hnn-SE-MyE">
+                                                <button identifier="QoS Background on Low Power" toolTip="Limit Restic to background QoS while Low Power mode is on." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hnn-SE-MyE">
                                                     <rect key="frame" x="-2" y="-1" width="319" height="18"/>
                                                     <buttonCell key="cell" type="check" title="Always use efficiency cores on Low Power mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3Ao-TI-di9">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -520,7 +521,7 @@
                                         <stackView key="contentView" distribution="fill" orientation="vertical" alignment="leading" spacing="6" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tsx-KE-CLP">
                                             <rect key="frame" x="123" y="0.0" width="387" height="68"/>
                                             <subviews>
-                                                <popUpButton verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ry5-Zc-EJS">
+                                                <popUpButton identifier="Storage QoS" toolTip="Limit Restic's IO access." verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ry5-Zc-EJS">
                                                     <rect key="frame" x="-3" y="44" width="99" height="25"/>
                                                     <popUpButtonCell key="cell" type="push" title="Standard" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="pZS-Q6-yWS" id="eCe-2d-j5q">
                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
