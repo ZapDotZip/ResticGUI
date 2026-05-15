@@ -79,7 +79,7 @@ class ProfileManager {
 		try data.write(to: filePath)
 	}
 	
-	static func alreadyExists(_ profile: Profile) -> Bool {
+	static func exists(_ profile: Profile) -> Bool {
 		return FileManager.default.fileExists(atPath: getProfilePath(profile.name).localPath)
 	}
 	

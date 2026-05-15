@@ -175,34 +175,46 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
 		guard let urls = STBFilePanels.openPanel(message: "Select profile(s) to import.", prompt: "Import Profile", canSelectMultipleItems: true, canCreateDirectories: false, selectableTypes: [.files(["plist"])]) else { return }
 		let newProfiles = urls.compactMap { url -> String? in
 			
-			guard let profile = { () -> Profile? in
-				if let ep = try? AppDelegate.plistDecoder.decode(ExportedProfile.self, from: .init(contentsOf: url)) {
-					try? repoManager.importRepo(ep.repo)
-					return ep.profile
-				} else {
-					return ProfileManager.load(url)
-				}
-			}() else {
-				STBAlerts.alert(title: "Unable to import profile.", message: "The profile at \(url.localPath) couldn't be loaded.", style: .warning)
-				return nil
-			}
-			
-			if ProfileManager.alreadyExists(profile) {
-				let overwrite = STBAlerts.destructiveAlert(title: "Profile already exists",
-					message: "A profile with the name \(profile.name) already exists. Do you want to overwrite it?",
-					style: .warning, destructiveButtonText: "Overwrite")
-				guard overwrite else { return nil }
-			}
-			
 			do {
-				try ProfileManager.save(profile)
-				return profile.name
+				
+				let profile = try {
+					if let exportedProfile = try? ExportedProfile.decodeFrom(url) {
+						let overwrite = {
+							if repoManager.exists(exportedProfile.repo) {
+								return STBAlerts.destructiveAlert(title: "Repo already exists", message: "The repository \"\(exportedProfile.repo.getName())\" already exists in your repository list. Overwrite it with the information from \(url.localPath)?", style: .warning, destructiveButtonText: "Overwrite")
+							} else {
+								return true
+							}
+						}()
+						if overwrite {
+							try ReposManager.default.importRepo(exportedProfile.repo)
+						}
+						return exportedProfile.profile
+					} else {
+						return try Profile.decodeFrom(url)
+					}
+				}()
+				
+				let overwrite = {
+					if ProfileManager.exists(profile) {
+						return STBAlerts.destructiveAlert(title: "Profile already exists", message: "A profile with the name \(profile.name) already exists. Do you want to overwrite it?", style: .warning, destructiveButtonText: "Overwrite")
+					} else {
+						return true
+					}
+				}()
+				if overwrite {
+					try ProfileManager.save(profile)
+					return profile.name
+				} else {
+					return nil
+				}
+				
 			} catch {
-				STBAlerts.alert(title: "Couldn't save profile", message: "Failed to save the profile located at \(url.localPath). The profile may be corrupt, or invalid.", error: error, style: .critical)
+				STBAlerts.alert(title: "Unable to import profile", message: "The profile at \(url.localPath) couldn't be loaded.", error: error, style: .warning)
 				return nil
 			}
-			
 		}
+		
 		initSidebar(newProfiles)
 	}
 	
