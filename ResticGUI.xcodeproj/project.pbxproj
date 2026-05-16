@@ -19,6 +19,7 @@
 		ED581FF62E0A11A700F2BE6F /* SwiftToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED581FED2E0A116F00F2BE6F /* SwiftToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED5B37762DAE1201006D76E9 /* ResticResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */; };
 		ED73B1B52E247FC200038D68 /* DefaultTimeMachineExclusions.plist in Resources */ = {isa = PBXBuildFile; fileRef = ED73B1B32E247FC200038D68 /* DefaultTimeMachineExclusions.plist */; };
+		ED7476472FB912A800290401 /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7476462FB912A800290401 /* Repo.swift */; };
 		ED75B93B2C43212700EB9E39 /* ResticGUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */; };
 		ED75B9462C43212700EB9E39 /* ResticGUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED75B9452C43212700EB9E39 /* ResticGUIUITests.swift */; };
 		ED8B19FB2E9A033E0069E5B7 /* NewProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8B19F72E9A033E0069E5B7 /* NewProfileVC.swift */; };
@@ -39,7 +40,7 @@
 		EDE0AA842D10C1390081E223 /* RGLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6A2D10C1390081E223 /* RGLogger.swift */; };
 		EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */; };
 		EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */; };
-		EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6F2D10C1390081E223 /* DataClasses.swift */; };
+		EDE0AA872D10C1390081E223 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA6F2D10C1390081E223 /* Profile.swift */; };
 		EDE0AA892D10C1390081E223 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA742D10C1390081E223 /* ProfileManager.swift */; };
 		EDE0AA8A2D10C1390081E223 /* RepoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA752D10C1390081E223 /* RepoEditViewController.swift */; };
 		EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0AA762D10C1390081E223 /* ReposManager.swift */; };
@@ -160,6 +161,7 @@
 		ED581FE72E0A116F00F2BE6F /* SwiftToolbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftToolbox.xcodeproj; path = ../SwiftToolbox/SwiftToolbox.xcodeproj; sourceTree = "<group>"; };
 		ED5B37752DAE11FC006D76E9 /* ResticResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticResponse.swift; sourceTree = "<group>"; };
 		ED73B1B32E247FC200038D68 /* DefaultTimeMachineExclusions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DefaultTimeMachineExclusions.plist; sourceTree = "<group>"; };
+		ED7476462FB912A800290401 /* Repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		ED75B9242C43212600EB9E39 /* ResticGUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResticGUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B9362C43212700EB9E39 /* ResticGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResticGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED75B93A2C43212700EB9E39 /* ResticGUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResticGUITests.swift; sourceTree = "<group>"; };
@@ -184,7 +186,7 @@
 		EDE0AA6A2D10C1390081E223 /* RGLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGLogger.swift; sourceTree = "<group>"; };
 		EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDE0AA6E2D10C1390081E223 /* BackupPathsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupPathsDataSource.swift; sourceTree = "<group>"; };
-		EDE0AA6F2D10C1390081E223 /* DataClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataClasses.swift; sourceTree = "<group>"; };
+		EDE0AA6F2D10C1390081E223 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		EDE0AA702D10C1390081E223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE0AA712D10C1390081E223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EDE0AA742D10C1390081E223 /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
@@ -358,7 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				EDE0AA6C2D10C1390081E223 /* AppDelegate.swift */,
-				EDE0AA6F2D10C1390081E223 /* DataClasses.swift */,
+				EDE0AA6F2D10C1390081E223 /* Profile.swift */,
+				ED7476462FB912A800290401 /* Repo.swift */,
 				EDE0AA742D10C1390081E223 /* ProfileManager.swift */,
 				EDE0AA762D10C1390081E223 /* ReposManager.swift */,
 				EDE0AA722D10C1390081E223 /* Main.storyboard */,
@@ -603,7 +606,7 @@
 				EDB652742DE923F40052CBF4 /* PrefTabEnvVars.swift in Sources */,
 				EDE0AA852D10C1390081E223 /* AppDelegate.swift in Sources */,
 				EDE0AA862D10C1390081E223 /* BackupPathsDataSource.swift in Sources */,
-				EDE0AA872D10C1390081E223 /* DataClasses.swift in Sources */,
+				EDE0AA872D10C1390081E223 /* Profile.swift in Sources */,
 				EDE0AA892D10C1390081E223 /* ProfileManager.swift in Sources */,
 				EDE0AA8A2D10C1390081E223 /* RepoEditViewController.swift in Sources */,
 				EDE0AA8B2D10C1390081E223 /* ReposManager.swift in Sources */,
@@ -613,6 +616,7 @@
 				ED8B19FF2E9A03EF0069E5B7 /* ResponsiveProgressBar.swift in Sources */,
 				EDF742982E7502DE003BE29E /* InteractiveResticBase.swift in Sources */,
 				ED8B19FB2E9A033E0069E5B7 /* NewProfileVC.swift in Sources */,
+				ED7476472FB912A800290401 /* Repo.swift in Sources */,
 				ED0996972EB19BC0004F40BB /* MountCoordinator.swift in Sources */,
 				ED8B19FC2E9A033E0069E5B7 /* ProfileEditorController.swift in Sources */,
 				ED8B19FD2E9A033E0069E5B7 /* ProfileOrHeader.swift in Sources */,
