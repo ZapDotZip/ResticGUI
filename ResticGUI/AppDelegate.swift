@@ -215,6 +215,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			menuPauseBackup.title = "Pause Backup"
 		}
 	}
+	
+	@IBAction func openLogLocationMenuItem(_ sender: NSMenuItem) {
+		if let logPath = RGLogger.default.logPath, let logDir = RGLogger.default.logDir {
+			NSWorkspace.shared.selectFile(logPath.localPath, inFileViewerRootedAtPath: logDir.localPath)
+		} else {
+			sender.isEnabled = false
+		}
+	}
+	
 }
 
 extension Notification.Name {
