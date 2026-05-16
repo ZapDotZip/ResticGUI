@@ -88,6 +88,13 @@ class ResticGUIUITests: XCTestCase {
 		XCTAssertNotEqual(initialConcurrency, app.checkBoxes["Limit read concurrency when running on efficiency cores"].value as! Bool)
 		XCTAssertNotEqual(initialBattery, app.checkBoxes["Always use efficiency cores on battery"].value as! Bool)
 		XCTAssertNotEqual(initialLowPower, app.checkBoxes["Always use efficiency cores on Low Power mode"].value as! Bool)
+		
+		// Restore original settings
+		app.popUpButtons["CPU QoS Selector"].click()
+		app.menuItems[initialQoS].click()
+		app.checkBoxes["Limit read concurrency when running on efficiency cores"].click()
+		app.checkBoxes["Always use efficiency cores on battery"].click()
+		app.checkBoxes["Always use efficiency cores on Low Power mode"].click()
 	}
 	
 	
