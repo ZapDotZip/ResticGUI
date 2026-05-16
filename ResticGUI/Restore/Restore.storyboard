@@ -41,7 +41,7 @@
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rCn-Ld-ZVF">
-                                <rect key="frame" x="13" y="13" width="76" height="32"/>
+                                <rect key="frame" x="13" y="13" width="81" height="32"/>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lLy-2t-lCM">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -98,7 +98,7 @@ Gw
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="VuY-4J-Xh1"/>
                                 </constraints>
                             </customView>
-                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="h6o-ri-O4y">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="h6o-ri-O4y">
                                 <rect key="frame" x="18" y="169" width="442" height="28"/>
                                 <textFieldCell key="cell" controlSize="small" selectable="YES" title="Drag and drop files and folder to restore, or secondary-click inside the table for more options." id="eTu-PU-IGP">
                                     <font key="font" metaFont="smallSystem"/>
@@ -114,6 +114,7 @@ Gw
                             <constraint firstAttribute="trailing" secondItem="h6o-ri-O4y" secondAttribute="trailing" constant="20" symbolic="YES" id="7dA-RU-6kQ"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="75S-jy-Jdf" secondAttribute="trailing" constant="20" symbolic="YES" id="EUI-HK-sLK"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ga0-82-dfw" secondAttribute="trailing" constant="20" symbolic="YES" id="Ijq-Zp-h0P"/>
+                            <constraint firstItem="rCn-Ld-ZVF" firstAttribute="width" secondItem="BgO-lt-jcn" secondAttribute="width" id="JBR-N5-0an"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9pQ-iZ-2Sl" secondAttribute="trailing" constant="20" symbolic="YES" id="NuU-hx-LBA"/>
                             <constraint firstItem="BgO-lt-jcn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rCn-Ld-ZVF" secondAttribute="trailing" constant="12" symbolic="YES" id="PBH-zC-knM"/>
                             <constraint firstItem="xjz-w1-dMQ" firstAttribute="leading" secondItem="tOy-S4-hL0" secondAttribute="leading" id="PXY-3S-yxk"/>
@@ -172,7 +173,7 @@ Gw
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="pQT-CR-6pR"/>
                                 </constraints>
                             </progressIndicator>
-                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVl-O3-xP9">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVl-O3-xP9">
                                 <rect key="frame" x="18" y="56" width="304" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingMiddle" placeholderString="Progress" id="Xgc-1Y-TFU">
                                     <font key="font" usesAppearanceFont="YES"/>
@@ -194,7 +195,7 @@ Gw
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BCA-Fn-Dxr">
-                                <rect key="frame" x="256" y="13" width="71" height="32"/>
+                                <rect key="frame" x="251" y="13" width="76" height="32"/>
                                 <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jBy-Ib-agP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -215,6 +216,7 @@ Gw
                             <constraint firstItem="U9T-km-gnx" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="cRt-x8-UaW"/>
                             <constraint firstItem="IVl-O3-xP9" firstAttribute="leading" secondItem="U9T-km-gnx" secondAttribute="leading" id="eya-sz-mUx"/>
                             <constraint firstItem="IVl-O3-xP9" firstAttribute="top" secondItem="U9T-km-gnx" secondAttribute="bottom" constant="8" symbolic="YES" id="kCg-7F-KYa"/>
+                            <constraint firstItem="K6A-5K-wPg" firstAttribute="width" secondItem="BCA-Fn-Dxr" secondAttribute="width" id="nq3-Wr-Lkn"/>
                             <constraint firstItem="BCA-Fn-Dxr" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="pp0-wP-hbN"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="leading" secondItem="bWN-nX-HP3" secondAttribute="leading" constant="20" symbolic="YES" id="tV9-jr-wMO"/>
                             <constraint firstItem="K6A-5K-wPg" firstAttribute="top" secondItem="IVl-O3-xP9" secondAttribute="bottom" constant="16" id="xNt-tv-Ch5"/>

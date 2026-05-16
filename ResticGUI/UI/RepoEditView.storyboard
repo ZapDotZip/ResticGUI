@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button identifier="repoSaveEditButton" toolTip="Add the repository to the list of repositories." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wt5-ld-vgq">
-                                <rect key="frame" x="407" y="9" width="64" height="32"/>
+                                <rect key="frame" x="395" y="9" width="76" height="32"/>
                                 <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="00U-OH-Hve">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -25,7 +25,7 @@
                                 </connections>
                             </button>
                             <button identifier="repoCancelEditButton" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lvn-he-94D">
-                                <rect key="frame" x="335" y="9" width="76" height="32"/>
+                                <rect key="frame" x="323" y="9" width="76" height="32"/>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bcB-OR-cXB">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -183,6 +183,7 @@ Gw
                             <constraint firstItem="FGM-3c-sGA" firstAttribute="firstBaseline" secondItem="4fy-Bx-kUc" secondAttribute="firstBaseline" id="7Mg-bV-Wga"/>
                             <constraint firstItem="lvn-he-94D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gbf-Lu-eKG" secondAttribute="trailing" constant="28" id="8VX-oX-5mj"/>
                             <constraint firstItem="Q77-nY-6O4" firstAttribute="top" secondItem="MRl-Dj-lZe" secondAttribute="bottom" constant="8" id="8ok-Ji-84w"/>
+                            <constraint firstItem="lvn-he-94D" firstAttribute="width" secondItem="wt5-ld-vgq" secondAttribute="width" id="A9J-Xe-iZx"/>
                             <constraint firstItem="0An-qq-nEY" firstAttribute="leading" secondItem="9ef-Ze-Z3G" secondAttribute="trailing" constant="10" id="Bgz-TP-yGi"/>
                             <constraint firstItem="Q77-nY-6O4" firstAttribute="leading" secondItem="csN-nK-7HZ" secondAttribute="trailing" constant="6" id="C9I-Zq-Iqz"/>
                             <constraint firstAttribute="trailing" secondItem="MFh-h7-QZp" secondAttribute="trailing" constant="16" id="Dth-RA-AXk"/>
