@@ -13,6 +13,9 @@ final class RGLogger {
 	private let dq: DispatchQueue
 	static let `default` = RGLogger()
 	
+	public let logDir: URL?
+	public let logPath: URL?
+	
 	private init() {
 		df = DateFormatter.init()
 		df.locale = .current
@@ -28,10 +31,14 @@ final class RGLogger {
 				FileManager.default.createFile(atPath: logfilePath.path, contents: nil, attributes: nil)
 			}
 			logfile = try FileHandle.init(forUpdating: logfilePath)
+			logDir = loggingDir
+			logPath = logfilePath
 		} catch {
 			NSLog("Error creating log directory: \(error)")
 			STBAlerts.alert(title: "An error occured trying to create the log file.", message: "ResticGUI will still run, but error information will not be recorded.", error: error, style: .informational)
 			logfile = FileHandle.standardError
+			logDir = nil
+			logPath = nil
 		}
 		dq = DispatchQueue(label: "LoggingQueue", qos: .background)
 		
