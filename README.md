@@ -17,9 +17,9 @@ ResticGUI is a macOS front-end for [restic](https://restic.net/). It's currently
 - [x] Custom environment variables
 - [x] QoS (efficiency core) preferences, including low power mode and on-battery support, storage QoS support
 - [x] Store repository passwords in the keychain
-- [ ] Delete snapshots
-- [ ] Open log menu item
-
+- [x] Delete snapshots
+- [x] Open log menu item
+- [x] Refresh snapshots list after backup/delete backup completes
 
 
 ![ResticGUI Window](https://zapdotzip.github.io/apps/ResticGUI_screenshot.png)
