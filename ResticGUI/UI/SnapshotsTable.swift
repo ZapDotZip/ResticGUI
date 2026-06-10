@@ -63,7 +63,7 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		table.reloadData()
 	}
 	
-	@IBAction func reloadButton(_ sender: NSButton) {
+	@IBAction func reloadButton(_ sender: Any) {
 		guard let selectedRepo = repoManager.getSelectedRepo(),
 				let selectedProfile = viewCon.selectedProfile else { return }
 		loadState = .loading
@@ -207,11 +207,13 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 				try ResticController.default.deleteSnapshots(snapshots, repo: selectedRepo)
 				DispatchQueue.main.async {
 					self.loadState = .notLoading
+					self.reloadButton(self)
 					STBAlerts.alert(title: "Deleted snapshots", message: "Deleted the snapshots:\n\(dates)", style: .informational)
 				}
 			} catch {
 				DispatchQueue.main.async {
 					self.loadState = .notLoading
+					self.reloadButton(self)
 					STBAlerts.alert(title: "Couldn't delete snapshot.", message: "An error occured trying to delete the snapshot.", error: error)
 				}
 			}
