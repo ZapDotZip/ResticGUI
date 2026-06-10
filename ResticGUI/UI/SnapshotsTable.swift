@@ -44,6 +44,9 @@ class SnapshotsTable: NSScrollView, NSTableViewDataSource, NSTableViewDelegate {
 		df.locale = .autoupdatingCurrent
 		super.init(coder: coder)
 		UserDefaults.standard.addObserver(self, forKeyPath: DefaultsKeys.snapshotDateFormat, options: .new, context: nil)
+		NotificationCenter.default.addObserver(forName: .BackupDidFinish, object: nil, queue: .main) { notif in
+			self.reloadButton(notif)
+		}
 	}
 	
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

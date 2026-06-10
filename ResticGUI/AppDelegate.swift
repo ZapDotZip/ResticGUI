@@ -228,4 +228,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension Notification.Name {
 	static let EnvTableDidChange = Notification.Name("EnvTableDidChange")
+	static let BackupDidStart = Notification.Name("BackupDidStart")
+	static let BackupDidFinish = Notification.Name("BackupDidFinish")
 }

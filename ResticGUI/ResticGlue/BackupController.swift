@@ -178,6 +178,7 @@ class BackupController: InteractiveResticBase<ResticResponse.backupProgress, Res
 		} else {
 			RGLogger.default.log("No summary available.")
 		}
+		NotificationCenter.default.post(name: .BackupDidFinish, object: summary)
 		DispatchQueue.main.async {
 			self.display.finish(summary: self.summary, with: nil)
 		}
