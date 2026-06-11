@@ -87,9 +87,11 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	
 // MARK: dragging implementation
 	private var NormalBorderColor: CGColor?
+	private var NormalBorderWidth: CGFloat = 1.0
 	
 	override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
 		if sender.draggingPasteboard.canReadObject(forClasses: [NSURL.self], options: nil) {
+			NormalBorderWidth = self.layer?.borderWidth ?? 1.0
 			self.layer?.borderWidth = 2.0
 			NormalBorderColor = self.layer?.borderColor ?? NSColor.controlBackgroundColor.cgColor
 			self.layer?.borderColor = NSColor.selectedTextBackgroundColor.cgColor
@@ -116,12 +118,12 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	override func draggingEnded(_ sender: NSDraggingInfo) {
-		self.layer?.borderWidth = 0.0
+		self.layer?.borderWidth = NormalBorderWidth
 		self.layer?.borderColor = NormalBorderColor
 	}
 	
 	override func draggingExited(_ sender: NSDraggingInfo?) {
-		self.layer?.borderWidth = 0.0
+		self.layer?.borderWidth = NormalBorderWidth
 		self.layer?.borderColor = NormalBorderColor
 	}
 	
