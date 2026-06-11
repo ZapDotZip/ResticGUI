@@ -102,7 +102,13 @@ class BackupPathsDataSource: NSScrollView, NSTableViewDataSource, NSTableViewDel
 	}
 	
 	override func prepareForDragOperation(_ sender: NSDraggingInfo) -> Bool {
-		// TODO: check if path already exists
+		if let draggedObjects = sender.draggingPasteboard.readObjects(forClasses: [NSURL.self], options: nil) {
+			if draggedObjects.count == 1, let draggedURL = (draggedObjects.first as? NSURL)?.path {
+				if selectedProfile?.paths.contains(draggedURL) ?? false {
+					return false
+				}
+			}
+		}
 		return true
 	}
 	
